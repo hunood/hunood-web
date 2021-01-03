@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import Login from './components/pages/Login';
+import Login from 'routers/areaAberta/pages/login';
 
 function Routes() {
     return (

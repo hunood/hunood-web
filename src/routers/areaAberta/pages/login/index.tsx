@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 import { Button, DatePicker } from 'antd';
-// import './App.less';
+import { t } from 'i18n';
 
 const Login: FC = () => {
-  return (
-    <>
-      <Button type="primary">PRESS ME</Button>
-      <DatePicker placeholder="select date" />
-    </>
-  );
+    return (
+        <>
+            <h1>{t('areaAberta:hunood')}</h1>
+            <Button type="primary">PRESS MeE</Button>
+            <DatePicker placeholder="select date" />
+        </>
+    );
 }
 
-export default Login;
+export default Login; 
