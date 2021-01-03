@@ -23,7 +23,7 @@ export const PublicRoute: FC<RouteProps> = ({ component, ...rest }) => {
 };
 
 export const PrivateRoute: FC<RouteProps> = ({ component, ...rest }) => {
-    const token = undefined; // useUserSessionStorage();
+    const token = undefined;
 
     return (
         <Route
