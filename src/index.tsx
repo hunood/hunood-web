@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RootRouter from './routers';
+import RootRouter from './router';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
 import './style.global.less';

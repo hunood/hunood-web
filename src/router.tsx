@@ -6,7 +6,22 @@ export const base = {
 };
 
 // Imports
-const AreaAbertaModule = lazy(() => import('./areaAberta'));
+const AreaAbertaModule = lazy(() => import('./modules/areaAberta'));
+
+const RootRouter = () => (
+    <Suspense fallback={
+        <BrowserRouter basename={base.url}>
+            {/* exibição em carregamento de requisição */}
+            <div>Carregando...</div>
+        </BrowserRouter>
+    }>
+        <BrowserRouter basename={base.url}>
+            {/* declaração das rotas */}
+            <PublicRoute path="/" component={AreaAbertaModule} />
+            <Redirect from="*" to="/login" />
+        </BrowserRouter>
+    </Suspense>
+);
 
 export const PublicRoute: FC<RouteProps> = ({ component, ...rest }) => {
     return (
@@ -37,20 +52,5 @@ export const PrivateRoute: FC<RouteProps> = ({ component, ...rest }) => {
         />
     );
 };
-
-const RootRouter = () => (
-    <Suspense fallback={
-        <BrowserRouter basename={base.url}>
-            {/* exibição em carregamento de requisição */}
-            <div>Carregando...</div>
-        </BrowserRouter>
-    }>
-        <BrowserRouter basename={base.url}>
-            {/* declaração das rotas */}
-            <PublicRoute path="/" component={AreaAbertaModule} />
-            <Redirect from="*" to="/login" />
-        </BrowserRouter>
-    </Suspense>
-);
 
 export default RootRouter;
