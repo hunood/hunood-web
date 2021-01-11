@@ -1,5 +1,5 @@
-import areaAberta from './pt-br/areaAberta.json';
+import openedArea from './pt-br/openedArea.json';
 
 export {
-    areaAberta as areaAbertaBR
+    openedArea as openedAreaBR
 };

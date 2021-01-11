@@ -3,7 +3,7 @@ import i18next from 'i18next';
 
 import {
     // imports pt-br
-    areaAbertaBR
+    openedAreaBR
 } from './translation';
 
 const options = {
@@ -14,7 +14,7 @@ const options = {
     resources: {
         pt_br: {
             // exports pt-br
-            areaAberta: areaAbertaBR
+            areaAberta: openedAreaBR
         }
     }
 };

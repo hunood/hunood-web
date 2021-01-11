@@ -6,7 +6,7 @@ export const base = {
 };
 
 // Imports
-const AreaAbertaModule = lazy(() => import('./modules/areaAberta'));
+const AreaAbertaModule = lazy(() => import('./modules/openedArea'));
 
 const RootRouter = () => (
     <Suspense fallback={
