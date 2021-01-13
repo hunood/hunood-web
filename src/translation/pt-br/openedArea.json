@@ -1,3 +1,13 @@
 {
-    "hunood": "Hunood"
+  "login": {
+    "hunood": "Hunood",
+    "registre-se": "Registre-se",
+    "usuario-email": "Usuário ou e-mail",
+    "email": "E-mail",
+    "senha": "Senha",
+    "lembrar-senha": "Lembrar senha",
+    "esqueci-minha-senha": "Esqueci minha senha",
+    "entrar": "Entrar",
+    "iniciar": "Iniciar"
+  }
 }
