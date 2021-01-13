@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 // Routes
 import Login from './pages/login';
 
-const AreaAbertaModule: FC = () => {
+const OpenedAreaModule: FC = () => {
   return (
     <>
       <Switch>
@@ -14,4 +14,4 @@ const AreaAbertaModule: FC = () => {
   );
 };
 
-export default AreaAbertaModule;
+export default OpenedAreaModule;

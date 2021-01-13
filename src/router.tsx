@@ -6,7 +6,7 @@ export const base = {
 };
 
 // Imports
-const AreaAbertaModule = lazy(() => import('./modules/openedArea'));
+const OpenedAreaModule = lazy(() => import('./modules/openedArea'));
 
 const RootRouter = () => (
     <Suspense fallback={
@@ -17,7 +17,7 @@ const RootRouter = () => (
     }>
         <BrowserRouter basename={base.url}>
             {/* declaração das rotas */}
-            <PublicRoute path="/" component={AreaAbertaModule} />
+            <PublicRoute path="/" component={OpenedAreaModule} />
             <Redirect from="*" to="/login" />
         </BrowserRouter>
     </Suspense>
