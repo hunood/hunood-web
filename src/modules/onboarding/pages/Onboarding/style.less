@@ -1,0 +1,52 @@
+.steps-cursors {
+  width: 100%;
+  max-width: 350px;
+  display: inline-block;
+}
+
+.btn-previous,
+.btn-next {
+  width: 100%;
+  max-width: 120px;
+}
+
+.btn-previous {
+  margin-right: 10px;
+}
+
+.btn-start {
+  float: right;
+  padding: 0 40px;
+}
+
+.footer {
+  width: 100%;
+}
+
+@media only screen and (max-width: 575px) {
+  .steps-cursors {
+    max-width: none;
+    display: flex !important;
+  }
+
+  .btn-previous,
+  .btn-next {
+    width: 50%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  .btn-previous {
+    margin-right: 10px;
+  }
+
+  .btn-start {
+    width: 100%;
+    padding: 0 40px;
+    margin-top: 10px;
+  }
+  
+  .content {
+    margin: 20px 10px;
+  }
+}
