@@ -1,4 +1,4 @@
-import { languagesTypes } from './types/languages';
+import { config } from 'config';
 import i18next from 'i18next';
 
 import {
@@ -11,7 +11,7 @@ const options = {
     interpolation: {
         escapeValue: false
     },
-    lng: languagesTypes.portuguese_br,
+    lng: config.language,
     resources: {
         pt_br: {
             // exports pt-br

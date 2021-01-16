@@ -19,7 +19,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "config": ["./src/config.ts", "./config.ts"]
+    }
   },
   "include": [
     "src/**/*"
