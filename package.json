@@ -1,6 +1,9 @@
 {
   "name": "hunood",
   "version": "0.1.0",
+  "author": "Dannyel Kayke",
+  "description": "Projeto frontend web do sistema de gerenciamento de estabelecimentos gastronômicos Hunood",
+  "license": "ISC",
   "private": true,
   "scripts": {
     "start": "craco start",

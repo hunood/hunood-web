@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // Routes
-import Login from './pages/login';
+import Login from './pages/Login';
 
 const OpenedAreaModule: FC = () => {
   return (

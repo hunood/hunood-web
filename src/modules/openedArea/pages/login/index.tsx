@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Button, Checkbox, Form, Input, Layout, Tabs } from 'antd';
 import { LockOutlined, UserOutlined, MailOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { SquareAnimation } from 'components/animations';
@@ -179,13 +180,21 @@ const SignUp: FC<ISignUp> = ({ onFinish }) => {
 const LoginSignUp: FC = () => {
     const { TabPane } = Tabs;
 
+    const [redirectOnboarding, setRedirectOnboarding] = useState(false);
+
     const onFinishLogin = (values: LoginReturnType) => {
         console.log('Login: ', values);
+        setRedirectOnboarding(true);
     };
-
+    
     const onFinishSignUp = (values: SignUpType) => {
         console.log('SignUp: ', values);
+        setRedirectOnboarding(true);
     };
+
+    if(redirectOnboarding) {
+        return <Redirect to='/onboarding'/>;
+    }
 
     return (
         <>
