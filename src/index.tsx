@@ -14,10 +14,10 @@ const configProviderProps = {
 
 ReactDOM.render(
     <>
-        <h1>Olá</h1>
-        {/* <ConfigProvider {...configProviderProps as any}>
+        {/* <h1>Olá</h1> */}
+        <ConfigProvider {...configProviderProps as any}>
             <RootRouter />
-        </ConfigProvider> */}
+        </ConfigProvider>
     </>, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
