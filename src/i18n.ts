@@ -11,7 +11,7 @@ const options = {
     interpolation: {
         escapeValue: false
     },
-    lng: config.language,
+    lng: config.language as string,
     resources: {
         pt_br: {
             // exports pt-br
