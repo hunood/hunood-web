@@ -1,13 +1,6 @@
 {
     "compilerOptions": {
         "baseUrl": "./src",
-        "paths": {
-           "components/*" : ["./components/*"],
-           "modules/*" : ["./modules/*"],
-           "services/*" : ["./services/*"],
-           "translation/*" : ["./translation/*"],
-           "types/*" : ["./types/*"],
-           "@config/*" : ["./config.ts"]
-         }
+        "paths": {}
     }
 }
