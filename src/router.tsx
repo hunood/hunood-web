@@ -18,8 +18,8 @@ const RootRouter = () => (
     }>
         <BrowserRouter basename={base.url}>
             {/* declaração das rotas */}
-            {/* <PublicRoute path="/onboarding" component={OnboardingModule} /> */}
-            {/* <PublicRoute path="/" component={OpenedAreaModule} /> */}
+            <PublicRoute path="/onboarding" component={OnboardingModule} />
+            <PublicRoute path="/" component={OpenedAreaModule} />
             {/* <Redirect from="*" to="/login" /> */}
         </BrowserRouter>
     </Suspense>
