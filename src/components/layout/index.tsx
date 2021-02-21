@@ -1,4 +1,4 @@
-import LayoutWithoutMenu from './LayoutWithoutMenu';
+import LayoutWithoutMenu from './LayoutOnboarding';
 
 export {
     LayoutWithoutMenu

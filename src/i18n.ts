@@ -4,7 +4,8 @@ import i18next from 'i18next';
 import {
     // imports pt-br
     openedAreaBR,
-    messagesBR
+    messagesBR,
+    onboardingBR
 } from './translation';
 
 const options = {
@@ -16,7 +17,8 @@ const options = {
         pt_br: {
             // exports pt-br
             openedArea: openedAreaBR,
-            messages: messagesBR
+            messages: messagesBR,
+            onboarding: onboardingBR
         }
     }
 };

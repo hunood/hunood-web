@@ -14,7 +14,6 @@ const configProviderProps = {
 
 ReactDOM.render(
     <>
-        {/* <h1>Olá</h1> */}
         <ConfigProvider {...configProviderProps as any}>
             <RootRouter />
         </ConfigProvider>
