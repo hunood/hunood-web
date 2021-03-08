@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom';
 import RootRouter from './router';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
-import ptBR from 'antd/lib/locale/pt_BR';
+
+import ptBR from "antd/es/locale/pt_BR";
+import "moment/locale/pt-br";
+
 import './i18n';
 import './style.global.less';
 
 const configProviderProps = {
     locale: ptBR,
-    componentSize: 'large'
+    componentSize: 'middle'
 };
 
 ReactDOM.render(

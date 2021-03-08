@@ -5,7 +5,8 @@ import {
     // imports pt-br
     openedAreaBR,
     messagesBR,
-    onboardingBR
+    onboardingBR,
+    formsBR
 } from './translation';
 
 const options = {
@@ -18,7 +19,8 @@ const options = {
             // exports pt-br
             openedArea: openedAreaBR,
             messages: messagesBR,
-            onboarding: onboardingBR
+            onboarding: onboardingBR,
+            forms: formsBR
         }
     }
 };

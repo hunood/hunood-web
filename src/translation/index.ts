@@ -1,9 +1,11 @@
-import openedArea from './pt-br/openedArea.json';
-import messages from './pt-br/messages.json';
-import onboarding from './pt-br/onboarding.json';
+import openedAreaBR from './pt-br/openedArea.json';
+import messagesBR from './pt-br/messages.json';
+import onboardingBR from './pt-br/onboarding.json';
+import formsBR from './pt-br/forms.json';
 
 export {
-    openedArea as openedAreaBR,
-    messages as messagesBR,
-    onboarding as onboardingBR
+    openedAreaBR,
+    messagesBR,
+    onboardingBR,
+    formsBR
 };

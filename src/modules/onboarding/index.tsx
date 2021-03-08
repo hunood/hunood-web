@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // Routes
-import Onboarding from './pages/Onboarding';
+import { Onboarding } from './pages/Onboarding';
 
 const OnboardingModule: FC = () => {
   return (

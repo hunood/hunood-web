@@ -1,0 +1,33 @@
+{
+  "user": {
+    "dados-pessoais": "Dados pessoais",
+    "CPF": "CPF - Cadastro de Pessoa Física",
+    "nome": "Nome completo",
+    "data-nascimento": "Data de nascimento",
+    "genero": "Gênero",
+    "tratar-como": "Refira-se a mim como"
+  },
+  "contact" :{
+      "numero-de-contato": "Número de contato ({{index}})",
+      "tipo-contato": "Tipo contato",
+      "contato": "Contato",
+      "contatos": "Contatos"
+  },
+  "address": {
+      "CEP": "CEP - Código de Endereço Postal",
+      "logradouro": "Logradouro",
+      "numero": "Número",
+      "complemento": "Complemento",
+      "bairro": "Bairro",
+      "cidade": "Cidade",
+      "estado": "Estado",
+      "logradouro-descricao": "Designação do endereço (Rua, Avenida, Viela...)"
+  },
+  "business": {
+      "CNPJ": "CNPJ - Cadastro Nacional de Pessoa Jurídica",
+      "razao-social": "Razão social",
+      "razao-social-descricao": "Razão social é o nome sob o qual uma empresa se registra e exerce sua atividade, constando em documentos legais, contratos e escrituras.",
+      "nome-fantasia": "Nome fantasia",
+      "nome-fantasia-descricao": "Nome fantasia, também chamado nome de marca, nome comercial ou nome de fachada, é a designação popular do título do estabelecimento comercial."
+  }
+}

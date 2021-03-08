@@ -1,17 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Layout, Menu } from 'antd';
-import { t } from 'i18n';
+// import { Button, Layout, Menu } from 'antd';
+// import { t } from 'i18n';
 import './style.less';
 
-const { Header, Content, Footer } = Layout;
+// const { Header, Content, Footer } = Layout;
 
 interface LayoutOnboardingProps {
     initialStep: number,
     numberOfSteps: number,
+    hasError: boolean,
     getCurrentStep: (current: number) => void;
 }
 
-const LayoutOnboarding: FC<LayoutOnboardingProps> = ({ children, numberOfSteps, getCurrentStep }) => {
+const LayoutOnboarding: FC<LayoutOnboardingProps> = ({ children, numberOfSteps, hasError, getCurrentStep }) => {
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {
@@ -20,7 +21,9 @@ const LayoutOnboarding: FC<LayoutOnboardingProps> = ({ children, numberOfSteps, 
     }, [current, getCurrentStep]);
 
     const next = () => {
-        setCurrent(current + 1);
+        if(!hasError) {
+            setCurrent(current + 1);
+        }
     };
 
     const prev = () => {
@@ -31,9 +34,11 @@ const LayoutOnboarding: FC<LayoutOnboardingProps> = ({ children, numberOfSteps, 
         // message.success('Processing complete!');
     }
 
+    React.useEffect(() => { return; });
+
     return (
         <>
-            <Layout className="layout-100 box">
+            {/* <Layout className="layout-100 box">
                 <Header className="site-layout-background">
                     <Menu theme='light'></Menu>
                 </Header>
@@ -47,19 +52,19 @@ const LayoutOnboarding: FC<LayoutOnboardingProps> = ({ children, numberOfSteps, 
                                 {t('onboarding:voltar')}
                             </Button>
 
-                            <Button type="primary" className="btn-next" onClick={() => next()} disabled={current === numberOfSteps - 1}>
+                            <Button type="primary" htmlType="submit" className="btn-next" onClick={() => next()} disabled={current === numberOfSteps - 1}>
                                 {t('onboarding:proximo')}
                             </Button>
                         </div>
 
-                        <Button type="primary" className="btn-start" onClick={() => done()} disabled={current !== numberOfSteps - 1}>
+                        <Button type="primary" htmlType="submit" className="btn-start" onClick={() => done()} disabled={current !== numberOfSteps - 1}>
                             {t('onboarding:finalizar')}
                         </Button>
                     </div>
                 </Footer>
-            </Layout>
+            </Layout> */}
         </>
     );
 }
 
-export default LayoutOnboarding;
+export { LayoutOnboarding };

@@ -1,5 +1,5 @@
-import LayoutWithoutMenu from './LayoutOnboarding';
+import { LayoutOnboarding } from './LayoutOnboarding';
 
 export {
-    LayoutWithoutMenu
+    LayoutOnboarding
 }
