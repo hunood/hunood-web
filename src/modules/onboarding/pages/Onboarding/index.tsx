@@ -8,32 +8,32 @@ import {
     BusinessForm, businessOnFinish, businessOnFinishFailed
 } from 'components/forms';
 
-const { Step } = Steps;
-
-const steps = [
-    {
-        title: t('onboarding:dados-pessoais'),
-        content: <UserForm />,
-        onFinish: userOnFinish,
-        onFinishFailed: userOnFinishFailed
-    },
-    {
-        title: t('onboarding:sua-empresa'),
-        content: <BusinessForm />,
-        onFinish: businessOnFinish,
-        onFinishFailed: businessOnFinishFailed
-    },
-    {
-        title: t('onboarding:conta-finalizacao'),
-        content: '<Conta />',
-        onFinish: userOnFinish,
-        onFinishFailed: userOnFinishFailed
-    },
-];
-
 const Onboarding: FC = () => {
+    const { Step } = Steps;
     const { Header, Content, Footer } = Layout;
     const [current, setCurrent] = useState(0);
+    const [form] = Form.useForm();
+
+    const steps = [
+        {
+            title: t('onboarding:dados-pessoais'),
+            content: <UserForm />,
+            onFinish: userOnFinish,
+            onFinishFailed: userOnFinishFailed
+        },
+        {
+            title: t('onboarding:sua-empresa'),
+            content: <BusinessForm form={form} />,
+            onFinish: businessOnFinish,
+            onFinishFailed: businessOnFinishFailed
+        },
+        {
+            title: t('onboarding:conta-finalizacao'),
+            content: '<Conta />',
+            onFinish: userOnFinish,
+            onFinishFailed: userOnFinishFailed
+        },
+    ];
 
     const next = () => {
         setCurrent(current + 1);
@@ -46,12 +46,6 @@ const Onboarding: FC = () => {
     const done = () => {
         // message.success('Processing complete!');
     }
-
-
-    const layout = {
-        labelCol: { span: 24 },
-        wrapperCol: { span: 24 },
-    };
 
     const onFinish = (values: any) => {
         if (current === steps.length - 1) {
@@ -66,19 +60,23 @@ const Onboarding: FC = () => {
         steps[current].onFinishFailed(values);
     }
 
+    const layout = {
+        labelCol: { span: 24 },
+        wrapperCol: { span: 24 },
+    };
 
     React.useEffect(() => { return; });
 
     return (
         <>
             <Form
-                {...layout}
                 name="user"
                 layout="vertical"
-
+                form={form}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                {...layout}
             >
                 <Layout className="layout-100 box">
                     <Header className="site-layout-background">

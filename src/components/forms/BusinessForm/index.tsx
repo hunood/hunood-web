@@ -5,7 +5,11 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { AddressForm } from '../AddressForm';
 import { t } from 'i18n';
 import './style.less'
+import { FormInstance } from 'antd/lib/form';
 
+interface BusinessFormProps {
+    form: FormInstance
+}
 export interface Business {
     id?: string;
     cnpj: string;
@@ -23,13 +27,15 @@ export interface Business {
 const onFinish = (business: Business, callback?: () => void) => {
     console.log(business);
     callback && callback();
+    return business;
 };
 
 const onFinishFailed = (business: Business, callback?: () => void) => {
     callback && callback();
+    return business;
 };
 
-const BusinessForm: FC = () => {
+const BusinessForm: FC<BusinessFormProps> = ({ form }) => {
 
     React.useEffect(() => { return; });
 
@@ -62,11 +68,9 @@ const BusinessForm: FC = () => {
                 <Input />
             </Form.Item>
 
-            <AddressForm />
+            <AddressForm form={form}/>
         </>
     );
 };
-
-
 
 export { BusinessForm, onFinish, onFinishFailed };
