@@ -5,7 +5,7 @@ export const config: Config = {
     environment: 'development',
     language: Languages.PortuguesBr,
     appName: 'Hunood Web',
-    baseUrl: process.env.URL_BASE || 'http://localhost:3000',
-    backendUrl: process.env.URL_BACKEND || 'https://hunood-backend.herokuapp.com/',
+    baseUrl: process.env.URL_BASE as string,
+    backendUrl: process.env.URL_BACKEND as string,
     timeout: 5000
 };
