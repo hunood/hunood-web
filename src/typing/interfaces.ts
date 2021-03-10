@@ -6,5 +6,6 @@ export interface Config {
     appName: string,
     baseUrl: string,
     backendUrl: string,
+    timeout: number
 }
  

@@ -2,7 +2,8 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
-            "typing": ["typing/*"]
+            "typing": ["typing/*"],
+            "services": ["services/*"]
         }
     }
 }
