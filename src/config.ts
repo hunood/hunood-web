@@ -6,6 +6,6 @@ export const config: Config = {
     language: Languages.PortuguesBr,
     appName: 'Hunood Web',
     baseUrl: 'https://hunood-web.herokuapp.com/',
-    backendUrl: 'https://hunood-backend.herokuapp.com/',
+    backendUrl: 'http://localhost:3001/', // 'https://hunood-backend.herokuapp.com/',
     timeout: 5000
 };

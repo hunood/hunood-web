@@ -53,8 +53,14 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
         form.setFieldsValue({
             nome_logradouro: null,
             bairro_logradouro: null,
-            cidade_logradouro: null
+            cidade_logradouro: null,
+            estado_logradouro: null,
         });
+        
+        form.setFields([{
+            name: 'cep_logradouro',
+            errors: [t('messages:cep-invalido')]
+        }])
     })
 
     const findCEP = (cep: string) => {
@@ -90,7 +96,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                         tooltip={{ title: t('forms:address.logradouro-descricao'), icon: <InfoCircleOutlined /> }}
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <Input id="address_nome_logradouro" />
+                        <Input />
                     </Form.Item>
                 </Col>
                 <Col sm={{ span: 5 }} xs={{ span: 24 }}>
@@ -120,7 +126,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                         name="bairro_logradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <Input id="address_bairro_logradouro" />
+                        <Input />
                     </Form.Item>
                 </Col>
                 <Col sm={{ span: 8 }} xs={{ span: 24 }}>
@@ -129,7 +135,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                         name="cidade_logradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <Input id="address_cidade_logradouro" />
+                        <Input />
                     </Form.Item>
                 </Col>
                 <Col sm={{ span: 6 }} xs={{ span: 24 }}>

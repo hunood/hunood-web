@@ -8,6 +8,7 @@
     "campo-obrigatorio": "Campo obrigatório.",
     "senhas-nao-coincidem": "Os campos de senha não coincidem.",
     "email-invalido": "E-mail inválido.",
-    "cpf-invalido": "CPF inválido",
-    "cnpj-invalido": "CNPJ inválido"
+    "cpf-invalido": "CPF inválido.",
+    "cnpj-invalido": "CNPJ inválido.",
+    "cep-invalido": "CEP inválido."
 }

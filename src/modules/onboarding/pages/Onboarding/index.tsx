@@ -5,7 +5,8 @@ import './style.less';
 
 import {
     UserForm, userOnFinish, userOnFinishFailed,
-    BusinessForm, businessOnFinish, businessOnFinishFailed
+    BusinessForm, businessOnFinish, businessOnFinishFailed,
+    ValidationAccountForm
 } from 'components/forms';
 
 const Onboarding: FC = () => {
@@ -29,10 +30,10 @@ const Onboarding: FC = () => {
         },
         {
             title: t('onboarding:conta-finalizacao'),
-            content: '<Conta />',
+            content: <ValidationAccountForm form={form} />,
             onFinish: userOnFinish,
             onFinishFailed: userOnFinishFailed
-        },
+        }
     ];
 
     const next = () => {

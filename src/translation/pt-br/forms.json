@@ -30,5 +30,12 @@
       "razao-social-descricao": "Razão social é o nome sob o qual uma empresa se registra e exerce sua atividade, constando em documentos legais, contratos e escrituras.",
       "nome-fantasia": "Nome fantasia",
       "nome-fantasia-descricao": "Nome fantasia, também chamado nome de marca, nome comercial ou nome de fachada, é a designação popular do título do estabelecimento comercial."
+  },
+  "validationAccount": {
+    "enviado-codigo": "Enviamos um código para o e-mail",
+    "por-favor-verique": "Por favor, verifique sua caixa principal, lixeira e spam e insira o código no campo abaixo para validação da conta.",
+    "codigo": "Código de validação",
+    "li-e-aceito": "Li e aceito",
+    "termos-de-uso": "Termos de Uso e Privacidade"
   }
 }
