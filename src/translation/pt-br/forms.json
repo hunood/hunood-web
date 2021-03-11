@@ -1,7 +1,8 @@
 {
   "user": {
     "dados-pessoais": "Dados pessoais",
-    "CPF": "CPF - Cadastro de Pessoa Física",
+    "cpf": "CPF - Cadastro de Pessoa Física",
+    "cpf-descricao": "Digite seu cpf no campo abaixo, caso o mesmo inicie com 2 digitos, insira 0 (zero) à esquerda para completar, caso não tenha digito ou ele seja X, insira 0 (zero) no lugar.",
     "nome": "Nome completo",
     "data-nascimento": "Data de nascimento",
     "genero": "Gênero",

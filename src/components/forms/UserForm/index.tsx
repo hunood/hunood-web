@@ -1,11 +1,16 @@
 import React, { FC, useState } from 'react';
 import MaskedInput from 'antd-mask-input';
 import { Form, Input, DatePicker, Select, Row, Col } from 'antd';
+import { FormInstance } from 'antd/lib/form';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { Generos, TratarComo } from 'typing/enums';
 import { ContactForm, Contact, contactOnFinish, contactOnFinishFailed } from 'components/forms';
+import { cpf } from 'cpf-cnpj-validator';
 import { t } from 'i18n';
 import './style.less'
-
+interface UserFormProps {
+    form: FormInstance
+}
 export interface User extends Contact {
     id?: string;
     cpf: string;
@@ -19,10 +24,8 @@ export interface User extends Contact {
 
 const onFinish = (user: User, callback?: () => void) => {
     contactOnFinish(user.contact);
-    user.cpf = user.cpf.replaceAll('_', '').replaceAll('-', '').replaceAll('.', '');
-    localStorage.setItem('onboarding-user', JSON.stringify(user));
-    console.log(user);
     callback && callback();
+    console.log(user);
 };
 
 const onFinishFailed = (user: User, callback?: () => void) => {
@@ -30,23 +33,32 @@ const onFinishFailed = (user: User, callback?: () => void) => {
     callback && callback();
 }
 
-const UserForm: FC = () => {
-    const storage = JSON.parse(localStorage.getItem('onboarding-user') || '{}');
-    const [genero, setGenero] = useState(storage.genero as Generos);
+const UserForm: FC<UserFormProps> = ({ form }) => {
+    const [genero, setGenero] = useState<Generos>();
+
+    const hoje = new Date();
+    const limiteIdade = new Date(`${hoje.getFullYear() - 18}/${hoje.getMonth() + 1}/${hoje.getDate() + 1}`);
+
+    const onBlurCpf = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (event.target.value.length > 0 && !cpf.isValid(event.target.value)) {
+            form.setFields([{ name: 'cpf', errors: [t('messages:cpf-invalido')] }])
+        }
+    }
 
     React.useEffect(() => { return; });
 
     return (
         <>
-            <h1>{t('forms:dados-pessoais')}</h1>
+            <h1>{t('forms:user.dados-pessoais')}</h1>
             <Row gutter={[16, 8]}>
                 <Col sm={{ span: 8 }} xs={{ span: 24 }}>
                     <Form.Item
-                        label={t('forms:user.CPF')}
+                        label={t('forms:user.cpf')}
                         name="cpf"
+                        tooltip={{ title: t('forms:user.cpf-descricao'), icon: <InfoCircleOutlined /> }}
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <MaskedInput mask="111.111.111-11" placeholder="" />
+                        <MaskedInput mask="111.111.111-11" placeholder="000.000.000-00" onBlur={onBlurCpf} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -66,7 +78,13 @@ const UserForm: FC = () => {
                         name="data_nascimento"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
+                        <DatePicker
+                            style={{ width: '100%' }}
+                            format="DD/MM/YYYY"
+                            placeholder={'dd/mm/aaaa'}
+                            showToday={false}
+                            disabledDate={d => !d || d.isAfter(limiteIdade)}
+                        />
                     </Form.Item>
                 </Col>
 
@@ -105,7 +123,6 @@ const UserForm: FC = () => {
                         label="Gênero personalizado"
                         name="genero_personalizado"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
-
                     >
                         <Input />
                     </Form.Item>

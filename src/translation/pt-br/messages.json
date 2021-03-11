@@ -7,5 +7,7 @@
     "minimo-numero": "Mínimo de 1 número.",
     "campo-obrigatorio": "Campo obrigatório.",
     "senhas-nao-coincidem": "Os campos de senha não coincidem.",
-    "email-invalido": "E-mail inválido."
+    "email-invalido": "E-mail inválido.",
+    "cpf-invalido": "CPF inválido",
+    "cnpj-invalido": "CNPJ inválido"
 }

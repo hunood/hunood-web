@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
 import MaskedInput from 'antd-mask-input';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { FormInstance } from 'antd/lib/form';
+import { removeFormatting } from 'assets/utils/format';
 import { Estados } from 'typing/enums';
 import { t } from 'i18n';
 import './style.less'
 
 import { CepService } from 'services/cep';
-import { FormInstance } from 'antd/lib/form';
 
 interface AddressFormProps {
     form: FormInstance
@@ -22,12 +23,12 @@ export interface Address {
     estado_logradouro: string;
 }
 
-const onFinish = (address: Address, callback?: () => void) => {
+const onFinish = (address: Address[], callback?: () => void) => {
     callback && callback();
     return address;
 };
 
-const onFinishFailed = (address: Address, callback?: () => void) => {
+const onFinishFailed = (address: Address[], callback?: () => void) => {
     callback && callback();
     return address;
 };
@@ -57,7 +58,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
     })
 
     const findCEP = (cep: string) => {
-        cep = cep.replaceAll('_', '').replaceAll('-', '');
+        cep = removeFormatting(cep);
 
         if (cep.length === 8) {
             cepService.Send({ cep });
@@ -76,7 +77,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                         name="cep_logradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <MaskedInput mask="11111-111" placeholder='' onChange={(event) => findCEP(event.target.value)} />
+                        <MaskedInput mask="11111-111" placeholder='000000-000' onChange={(event) => findCEP(event.target.value)} />
                     </Form.Item>
                 </Col>
             </Row>

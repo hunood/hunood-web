@@ -16,7 +16,6 @@ interface ContactFormProps {
 }
 
 const onFinish = (contact: Contact[], callback?: () => void) => {
-    console.log(contact);
     callback && callback();
 };
 

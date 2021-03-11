@@ -6,6 +6,6 @@ export const config: Config = {
     language: Languages.PortuguesBr,
     appName: 'Hunood Web',
     baseUrl: process.env.REACT_APP_URL_BASE as string,
-    backendUrl: process.env.REACT_APP_URL_BACKEND as string,
+    backendUrl: 'http://localhost:3001',
     timeout: 5000
 };

@@ -17,7 +17,7 @@ const Onboarding: FC = () => {
     const steps = [
         {
             title: t('onboarding:dados-pessoais'),
-            content: <UserForm />,
+            content: <UserForm form={form} />,
             onFinish: userOnFinish,
             onFinishFailed: userOnFinishFailed
         },
@@ -38,11 +38,7 @@ const Onboarding: FC = () => {
     const next = () => {
         setCurrent(current + 1);
     };
-
-    const prev = () => {
-        setCurrent(current - 1);
-    };
-
+    
     const done = () => {
         // message.success('Processing complete!');
     }
@@ -93,21 +89,9 @@ const Onboarding: FC = () => {
                         </div>
                     </Content>
                     <Footer className="footer">
-                        <div className="steps-action">
-                            <div className="steps-cursors">
-                                <Button className="btn-previous" onClick={() => prev()} disabled={current === 0}>
-                                    {t('onboarding:voltar')}
-                                </Button>
-
-                                <Button type="primary" htmlType="submit" className="btn-next" disabled={current === steps.length - 1}>
-                                    {t('onboarding:proximo')}
-                                </Button>
-                            </div>
-
-                            <Button type="primary" htmlType="submit" className="btn-start" disabled={current !== steps.length - 1}>
-                                {t('onboarding:finalizar')}
-                            </Button>
-                        </div>
+                        <Button type="primary" htmlType="submit" className="btn-steps">
+                            {current < steps.length - 1 ? t('onboarding:proximo') : t('onboarding:finalizar')}
+                        </Button>
                     </Footer>
                 </Layout>
             </Form>
