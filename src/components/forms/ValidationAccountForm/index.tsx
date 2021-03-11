@@ -30,11 +30,11 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = () => {
     return (
         <>
             <Row gutter={[16, 8]}>
-                <Col sm={{ span: 24 }}>
+                <Col xs={{ span: 24 }}>
                     <h3>{t('forms:validationAccount.enviado-codigo')} <Text keyboard>{formatEmail('dannyel.kayke@hotmail.com')}</Text></h3>
                     <p>{t('forms:validationAccount.por-favor-verique')}</p>
                 </Col>
-                <Col sm={{ span: 24 }} className="codigo">
+                <Col xs={{ span: 24 }} className="codigo">
                     <Form.Item
                         name="codigo"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
@@ -42,7 +42,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = () => {
                         <Input placeholder={t('forms:validationAccount.codigo')} className="input-codigo" />
                     </Form.Item>
                 </Col>
-                <Col sm={{ span: 24 }}>
+                <Col xs={{ span: 24 }}>
                     <Form.Item
                         name="aceite_termos"
                         valuePropName="checked"
