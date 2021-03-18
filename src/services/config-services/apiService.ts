@@ -13,6 +13,13 @@ interface IApiBehavior<Response, Request> {
     transformOnSuccess?: (response: Response) => Response;
 }
 
+interface ResponseError {
+    code: string,
+    message: string,
+    status: string,
+    error: boolean
+}
+
 export default class ApiService<Response, Request = {}> {
     private _connector: Connector;
     private _loader: Loader;
@@ -86,7 +93,7 @@ export default class ApiService<Response, Request = {}> {
         }, secondsToGo * 1000);
     }
 
-    private _handleError = (error: AxiosError<any>) => {
+    private _handleError = (error: AxiosError<ResponseError>) => {
         const { handleError, handleNotFoundError = false } = this._apiBehavior;
         const { response } = error;
 

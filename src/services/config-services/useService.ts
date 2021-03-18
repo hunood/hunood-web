@@ -50,9 +50,9 @@ export default function useService<Response, Request>(
   return {
     response,
     error,
-    Send,
-    OnSuccess,
-    OnError,
-    OnFinish,
+    send: Send,
+    onSuccess: OnSuccess,
+    onError: OnError,
+    onFinish: OnFinish,
   };
 }

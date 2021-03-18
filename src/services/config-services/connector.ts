@@ -7,6 +7,15 @@ export default class Connector {
 
   private constructor() {
     this._axios = Connector.createAxios();
+    this._axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
+      const token = localStorage.getItem('@Auth:token');
+
+      if (token) {
+        config.headers.Authorization = token;
+      }
+
+      return config;
+    });
   }
 
   get axios() {

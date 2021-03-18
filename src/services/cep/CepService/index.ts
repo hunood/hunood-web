@@ -1,11 +1,11 @@
 import ApiService from 'services/config-services/apiService';
-import CEPResponse from './interfaces/response';
-import CEPRequest from './interfaces/request';
+import CepResponse from './interfaces/response';
+import CepRequest from './interfaces/request';
 
-class CEPService extends ApiService<CEPResponse, CEPRequest> {
+class CepService extends ApiService<CepResponse, CepRequest> {
   constructor() {
     super({
-      config: (request: CEPRequest) => ({
+      config: (request: CepRequest) => ({
         url: `cep/find/${request.cep}`,
         method: 'GET',
         data: request,
@@ -16,5 +16,5 @@ class CEPService extends ApiService<CEPResponse, CEPRequest> {
   }
 }
 
-export default CEPService;
-export type { CEPResponse, CEPRequest };
+export default CepService;
+export type { CepResponse, CepRequest };
