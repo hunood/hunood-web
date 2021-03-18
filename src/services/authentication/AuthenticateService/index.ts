@@ -1,4 +1,4 @@
-import ApiService from 'services/config-services/apiService';
+import ApiService from 'services/_config-services/apiService';
 import AuthenticateResponse from './interfaces/response';
 import AuthenticateRequest from './interfaces/request';
 

@@ -1,4 +1,4 @@
-import ApiService from 'services/config-services/apiService';
+import ApiService from 'services/_config-services/apiService';
 import CepResponse from './interfaces/response';
 import CepRequest from './interfaces/request';
 

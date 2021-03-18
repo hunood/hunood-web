@@ -5,6 +5,6 @@ export default interface AuthentecateResponse {
   etapaOnboarding: number,
   accessToken: string,
   refreshToken: string,
-  createdAt: Date,
-  updatedAt: Date
+  readonly createdAt: Date,
+  readonly updatedAt: Date
 }
