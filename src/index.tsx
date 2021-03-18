@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import RootRouter from './router';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
+import { ConfigProviderProps } from 'antd/es/config-provider';
 
 import ptBR from "antd/es/locale/pt_BR";
 import "moment/locale/pt-br";
@@ -10,14 +11,14 @@ import "moment/locale/pt-br";
 import './i18n';
 import './style.global.less';
 
-const configProviderProps = {
+const configProviderProps: ConfigProviderProps = {
     locale: ptBR,
     componentSize: 'middle'
 };
 
 ReactDOM.render(
     <>
-        <ConfigProvider {...configProviderProps as any}>
+        <ConfigProvider {...configProviderProps}>
             <RootRouter />
         </ConfigProvider>
     </>, document.getElementById('root'));

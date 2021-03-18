@@ -3,7 +3,9 @@
         "baseUrl": "./src",
         "paths": {
             "typing": ["typing/*"],
-            "services": ["services/*"]
+            "services": ["services/*"],
+            "context": ["assets/context/*"],
+            "hooks": ["assets/hooks/*"]
         }
     }
 }
