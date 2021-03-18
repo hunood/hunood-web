@@ -1,57 +1,37 @@
-import React, { FC, lazy, Suspense } from 'react';
+import { AuthProvider, AuthContext } from 'assets/context/AuthContext';
+import React, { FC, lazy, Suspense, useContext } from 'react';
 import { BrowserRouter, Redirect, Route, RouteProps } from 'react-router-dom';
 
 export const base = {
     url: '/'
 };
 
-// // Imports
 const OpenedAreaModule = lazy(() => import('./modules/openedArea'));
 const OnboardingModule = lazy(() => import('./modules/onboarding'));
 
 const RootRouter = () => (
     <Suspense fallback={
         <BrowserRouter basename={base.url}>
-            {/* exibição em carregamento de requisição */}
             <div>Carregando...</div>
         </BrowserRouter>
     }>
         <BrowserRouter basename={base.url}>
-            {/* declaração das rotas */}
-            <PublicRoute path="/onboarding" component={OnboardingModule} />
-            <PublicRoute path="/" component={OpenedAreaModule} />
+            <AuthProvider>
+                <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
+                <CustomRoute path="/" component={OpenedAreaModule} />
+            </AuthProvider>
         </BrowserRouter>
     </Suspense>
 );
 
-export const PublicRoute: FC<RouteProps> = ({ component, ...rest }) => {
-    return (
-        <Route
-            {...rest}
-            render={props => {
-                if (component) {
-                    return React.createElement(component, props);
-                }
-                return <Redirect to="/" />;
-            }}
-        />
-    );
-};
+export const CustomRoute: FC<RouteProps & { isPrivate?: boolean }> = ({ isPrivate, ...rest }) => {
+    const { authenticated } = useContext(AuthContext);
 
-export const PrivateRoute: FC<RouteProps> = ({ component, ...rest }) => {
-    const token = undefined;
+    if (isPrivate && !authenticated) {
+        return <Redirect to="/login" />
+    }
 
-    return (
-        <Route
-            {...rest}
-            render={props => {
-                if (token && component) {
-                    return React.createElement(component, props);
-                }
-                return <Redirect to="/" />;
-            }}
-        />
-    );
+    return <Route {...rest} />;
 };
 
 export default RootRouter;
