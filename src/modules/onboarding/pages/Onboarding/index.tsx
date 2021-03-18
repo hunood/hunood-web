@@ -1,5 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { Button, Form, Steps, Layout, Menu } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
+import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
 import './style.less';
 
@@ -10,9 +12,11 @@ import {
 } from 'components/forms';
 
 const Onboarding: FC = () => {
+    const { handleLogout, auth } = useContext(AuthContext);
+
     const { Step } = Steps;
     const { Header, Content, Footer } = Layout;
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState(auth.etapaOnboarding);
     const [form] = Form.useForm();
 
     const steps = [
@@ -39,7 +43,7 @@ const Onboarding: FC = () => {
     const next = () => {
         setCurrent(current + 1);
     };
-    
+
     const done = () => {
         // message.success('Processing complete!');
     }
@@ -76,8 +80,12 @@ const Onboarding: FC = () => {
                 {...layout}
             >
                 <Layout className="layout-100 box">
-                    <Header className="site-layout-background">
-                        <Menu theme='light'></Menu>
+                    <Header className="site-layout-background header-logout">
+                        <Menu theme='dark'>
+                            <Menu.Item key="1" onClick={() => handleLogout()}>
+                                {t('onboarding:sair')} &nbsp;<LogoutOutlined />
+                            </Menu.Item>
+                        </Menu>
                     </Header>
                     <Content className="content">
                         <div className="steps-content">

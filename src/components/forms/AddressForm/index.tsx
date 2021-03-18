@@ -36,7 +36,7 @@ const onFinishFailed = (address: Address[], callback?: () => void) => {
 const AddressForm: FC<AddressFormProps> = ({ form }) => {
     const cepService = new CepService().useAsHook();
 
-    cepService.OnSuccess(() => {
+    cepService.onSuccess(() => {
         const response = cepService.response;
 
         if (response) {
@@ -49,7 +49,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
         }
     })
 
-    cepService.OnError(() => {
+    cepService.onError(() => {
         form.setFieldsValue({
             nome_logradouro: null,
             bairro_logradouro: null,
@@ -67,7 +67,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
         cep = removeFormatting(cep);
 
         if (cep.length === 8) {
-            cepService.Send({ cep });
+            cepService.send({ cep });
         }
     }
 
