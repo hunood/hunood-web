@@ -25,13 +25,13 @@ export default class ApiService<Response, Request = {}> {
     private _loader: Loader;
 
     constructor(private _apiBehavior: IApiBehavior<Response, Request>) {
-        this._connector = Connector.getInstance(this._apiBehavior.url);
+        this._connector = Connector.getInstance();
         this._loader = Loader.getInstance();
     }
 
-    public execute = (request: Request = {} as Request, correlationId?: string) => {
+    public execute = (request: Request = {} as Request) => {
         const { handleLoader } = this._apiBehavior;
-        const mountedConfig = this._mountConfig(request, correlationId);
+        const mountedConfig = this._mountConfig(request);
 
         if (handleLoader) this._loader.show();
 
@@ -48,17 +48,13 @@ export default class ApiService<Response, Request = {}> {
         return UseService<Response, Request>(this);
     };
 
-    private _mountConfig = (request: Request, correlationId?: string) => {
+    private _mountConfig = (request: Request) => {
         const { config } = this._apiBehavior;
         const mountedConfig = config(request);
 
         mountedConfig.headers = {
             ...mountedConfig.headers,
         };
-
-        if (correlationId) {
-            mountedConfig.headers['X-Correlation-ID'] = correlationId;
-        }
 
         return mountedConfig;
     };

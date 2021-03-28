@@ -4,34 +4,28 @@ import { Form, Input, DatePicker, Select, Row, Col } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Generos, TratarComo } from 'typing/enums';
-import { ContactForm, Contact, contactOnFinish, contactOnFinishFailed } from 'components/forms';
+import { ContactForm, Contact, contactOnFinish } from 'components/forms';
 import { cpf } from 'cpf-cnpj-validator';
 import { t } from 'i18n';
 import './style.less'
 interface UserFormProps {
     form: FormInstance
 }
-export interface User extends Contact {
-    id?: string;
+export interface User {
     cpf: string;
     nome: string;
-    data_nascimento: string;
+    dataNascimento: Date;
     genero: keyof typeof Generos;
-    genero_personalizado?: string;
-    tratar_por: keyof typeof TratarComo;
-    contact: Contact[]
+    generoPersonalizado?: string;
+    tratarPor: keyof typeof TratarComo;
+    contatos: Contact[]
 }
 
 const onFinish = (user: User, callback?: () => void) => {
-    contactOnFinish(user.contact);
+    contactOnFinish(user.contatos);
     callback && callback();
     console.log(user);
 };
-
-const onFinishFailed = (user: User, callback?: () => void) => {
-    contactOnFinishFailed(user.contact);
-    callback && callback();
-}
 
 const UserForm: FC<UserFormProps> = ({ form }) => {
     const [genero, setGenero] = useState<Generos>();
@@ -75,7 +69,7 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
                 <Col sm={{ span: 8 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:user.data-nascimento')}
-                        name="data_nascimento"
+                        name="dataNascimento"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <DatePicker
@@ -105,7 +99,7 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
                 <Col sm={{ span: 8 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:user.tratar-como')}
-                        name="tratar_como"
+                        name="tratarPor"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <Select allowClear>
@@ -121,7 +115,7 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
                 <>
                     <Form.Item
                         label="Gênero personalizado"
-                        name="genero_personalizado"
+                        name="generoPersonalizado"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <Input />
@@ -135,4 +129,4 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
     );
 };
 
-export { UserForm, onFinish, onFinishFailed };
+export { UserForm, onFinish };

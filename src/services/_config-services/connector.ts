@@ -1,5 +1,6 @@
 import Axios, { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 import { config } from 'config';
+import { refreshToken } from './refresh';
 
 export default class Connector {
   private static _instance?: Connector;
@@ -7,15 +8,40 @@ export default class Connector {
 
   private constructor() {
     this._axios = Connector.createAxios();
-    this._axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
-      const token = localStorage.getItem('@Auth:token');
+    this._axios.defaults.headers['Accept'] = 'application/json, text/plain, */*';
 
-      if (token) {
-        config.headers.Authorization = token;
+    const allResponse = async (response: AxiosResponse) => {
+      const accessToken = response.headers['authorization'];
+      const refreshToken = response.headers['refresh-authorization'];
+
+      if (response.config.url === 'authentication') {
+        response.data = Object.assign(response.data, { accessToken, refreshToken });
       }
 
-      return config;
-    });
+      return response;
+    };
+
+    const errorResponse = async (error: any) => {
+      const originalRequest = error?.config;
+
+      if (error?.response?.status === 401) {
+        const refresh = await refreshToken(error);
+
+        delete this._axios.defaults.headers['Authorization'];
+        delete this._axios.defaults.headers['Refresh-Authorization'];
+
+        this._axios.defaults.headers['Authorization'] = refresh.accessToken;
+        this._axios.defaults.headers['Refresh-Authorization'] = refresh.refreshToken;
+
+        originalRequest.headers['Authorization'] = refresh.accessToken;
+        originalRequest.headers['Refresh-Authorization'] = refresh.refreshToken;
+
+        return this._axios(originalRequest);
+      }
+      return Promise.reject(error);
+    };
+
+    this._axios.interceptors.response.use(allResponse, errorResponse);
   }
 
   get axios() {
@@ -37,7 +63,7 @@ export default class Connector {
     return this._axios.request<Response>(config);
   }
 
-  public static getInstance(url?: string): Connector {
+  public static getInstance(): Connector {
     if (!this._instance) {
       this._instance = new this();
     }

@@ -1,44 +1,65 @@
 import React, { FC, useContext, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Button, Form, Steps, Layout, Menu } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
-import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
 import './style.less';
 
 import {
-    UserForm, userOnFinish, userOnFinishFailed,
-    BusinessForm, businessOnFinish, businessOnFinishFailed,
-    ValidationAccountForm
+    User, UserForm, userOnFinish,
+    BusinessForm, businessOnFinish,
+    ValidationAccountForm,
 } from 'components/forms';
 
+import { UserStepService,
+    //  BusinessStepService 
+    } from 'services/onboarding';
+import { AuthContext } from 'assets/context/AuthContext';
+
+
 const Onboarding: FC = () => {
-    const { handleLogout, auth } = useContext(AuthContext);
+    React.useEffect(() => { return; }, []);
+
+    const { handleLogout, authenticated } =  useContext(AuthContext);
+    const userService = new UserStepService().useAsHook();
 
     const { Step } = Steps;
+
     const { Header, Content, Footer } = Layout;
-    const [current, setCurrent] = useState(auth.etapaOnboarding);
+    const [current, setCurrent] = useState(0);
+    const [redirectLogin, setRedirectLogin] = useState(false);
     const [form] = Form.useForm();
 
     const steps = [
         {
-            title: t('onboarding:dados-pessoais'),
-            content: <UserForm form={form} />,
-            onFinish: userOnFinish,
-            onFinishFailed: userOnFinishFailed
-        },
-        {
             title: t('onboarding:sua-empresa'),
             content: <BusinessForm form={form} />,
-            onFinish: businessOnFinish,
-            onFinishFailed: businessOnFinishFailed
+            onFinish: businessOnFinish
+        },
+        {
+            title: t('onboarding:dados-pessoais'),
+            content: <UserForm form={form} />,
+            onFinish: (values: User) => userService.send(Object.assign(values))
         },
         {
             title: t('onboarding:conta-finalizacao'),
             content: <ValidationAccountForm form={form} />,
-            onFinish: userOnFinish,
-            onFinishFailed: userOnFinishFailed
+            onFinish: userOnFinish
         }
     ];
+
+    const layout = {
+        labelCol: { span: 24 },
+        wrapperCol: { span: 24 },
+    };
+
+    const logout = () => {
+        handleLogout().then((logout) => {
+            console.log('>> ', authenticated);
+            setRedirectLogin(true);
+        });
+    }
+
 
     const next = () => {
         setCurrent(current + 1);
@@ -57,16 +78,9 @@ const Onboarding: FC = () => {
         steps[current].onFinish(values, next);
     }
 
-    const onFinishFailed = (values: any) => {
-        steps[current].onFinishFailed(values);
+    if (redirectLogin) {
+        return <Redirect to='/login' />;
     }
-
-    const layout = {
-        labelCol: { span: 24 },
-        wrapperCol: { span: 24 },
-    };
-
-    React.useEffect(() => { return; });
 
     return (
         <>
@@ -75,14 +89,13 @@ const Onboarding: FC = () => {
                 layout="vertical"
                 form={form}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 {...layout}
             >
                 <Layout className="layout-100 box">
                     <Header className="site-layout-background header-logout">
                         <Menu theme='dark'>
-                            <Menu.Item key="1" onClick={() => handleLogout()}>
+                            <Menu.Item key="1" onClick={logout}>
                                 {t('onboarding:sair')} &nbsp;<LogoutOutlined />
                             </Menu.Item>
                         </Menu>

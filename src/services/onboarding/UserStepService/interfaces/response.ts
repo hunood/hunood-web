@@ -1,6 +1,6 @@
 import { Generos } from "typing/enums";
 
-export default interface AuthentecateResponse {
+export default interface UserStepResponse {
   id: string;
   idAutenticacao: string;
   cpf: string;

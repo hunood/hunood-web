@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { AuthenticateService, AuthenticateResponse } from 'services/authentication';
+import { AuthenticateService, AuthenticateResponse, ForbidService } from 'services/authentication';
+import Connector from 'services/_config-services/connector';
 
 interface DataAuthentication extends AuthenticateResponse { }
 
@@ -10,9 +11,11 @@ const useAuth = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('@Auth:token');
+        const auth = localStorage.getItem('@Auth:auth');
 
         if (token) {
             setAuthenticated(true);
+            setAuth(JSON.parse(auth || '{}'));
         }
 
         setLoading(false);
@@ -25,12 +28,21 @@ const useAuth = () => {
                 senha: login.password
             });
 
-            setAuth(auth);
-            setAuthenticated(true);
-
-            if (auth?.accessToken) {
-                localStorage.setItem('@Auth:token', auth.accessToken.split('Bearer')[1].trim());
+            if (auth) {
+                localStorage.setItem('@Auth:token', auth.accessToken);
+                localStorage.setItem('@Auth:refresh', auth.refreshToken);
+                localStorage.setItem('@Auth:auth', JSON.stringify(auth));
             }
+
+            setAuthenticated(true);
+            setAuth(auth);
+
+            Connector
+                .getInstance()
+                .axios.defaults.headers.common = {
+                'Authorization': auth.accessToken,
+                'Refresh-Authorization': auth.refreshToken
+            };
 
             return Promise.resolve(true);
         }
@@ -39,10 +51,23 @@ const useAuth = () => {
         }
     }
 
-    const handleLogout = () => {
-        localStorage.removeItem('@Auth:token');
-        setAuth({} as DataAuthentication);
-        setAuthenticated(false);
+    const handleLogout = async () => {
+        try {
+            new ForbidService().execute()
+                .finally(() => {
+                    setAuthenticated(false);
+                    setAuth({} as DataAuthentication);
+                    localStorage.removeItem('@Auth:token');
+                    localStorage.removeItem('@Auth:refresh');
+                    localStorage.removeItem('@Auth:auth');
+                });
+
+            return Promise.resolve(true);
+        }
+        catch (err) {
+            return Promise.resolve(false);
+        }
+
     }
 
     return { authenticated, loading, auth, handleLogin, handleLogout };

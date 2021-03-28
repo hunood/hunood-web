@@ -1,13 +1,11 @@
-import { Generos } from "typing/enums";
+import { Generos, TratarComo } from "typing/enums";
 
-export default interface AuthentecateRequest {
+export default interface UserStepRequest {
   idAutenticacao: string;
   cpf: string;
   nome: string;
   dataNascimento: Date;
   genero: keyof typeof Generos;
-  generoPersonalizado: string;
-  tratarPor: string;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  generoPersonalizado?: string;
+  tratarPor: keyof typeof TratarComo;
 }

@@ -13,16 +13,16 @@ export default function useService<Response, Request>(
   let onFinally: (() => void) | undefined = (): Promise<AxiosResponse<any>> =>
     (undefined as unknown) as Promise<AxiosResponse<any>>;
 
-  function _execute(request?: Request, correlationId?: string) {
+  function _execute(request?: Request) {
     service
-      .execute(request, correlationId)
+      .execute(request)
       .then(setResponse)
       .catch(setError)
       .finally(onFinally);
   }
 
-  function Send(request: Request, correlationId?: string) {
-    _execute(request, correlationId);
+  function Send(request: Request) {
+    _execute(request);
   }
 
   function OnSuccess(handleSuccess: () => void) {
@@ -34,7 +34,7 @@ export default function useService<Response, Request>(
     }, [response]);
   }
 
-  function OnError(handleError: () => void) {
+  function OnError(handleError: () => void) {    
     React.useEffect(() => {
       if (error) {
         handleError();

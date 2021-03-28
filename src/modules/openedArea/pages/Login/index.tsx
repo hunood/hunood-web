@@ -9,6 +9,7 @@ import { t } from 'i18n';
 import "./style.less";
 
 const LoginSignUp: FC = () => {
+    React.useEffect(() => { return; }, []);
     const { authenticated, handleLogin } = useContext(AuthContext);
 
     const { TabPane } = Tabs;
@@ -18,7 +19,6 @@ const LoginSignUp: FC = () => {
     const [tab, setTab] = useState<TabsKey>('login');
 
     const onFinish = async (values: Login | Signup) => {
-
         if (tab === 'signup') {
             await new SignupService().execute({
                 email: values.username,
@@ -32,8 +32,8 @@ const LoginSignUp: FC = () => {
     };
 
     if (authenticated) {
-        return <Redirect to='/onboarding' />;
-    }
+        return <Redirect to='/onboarding' />
+    };
 
     return (
         <>

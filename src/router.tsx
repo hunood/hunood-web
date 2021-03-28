@@ -1,4 +1,4 @@
-import { AuthProvider, AuthContext } from 'assets/context/AuthContext';
+import { AuthContext } from 'assets/context/AuthContext';
 import React, { FC, lazy, Suspense, useContext } from 'react';
 import { BrowserRouter, Redirect, Route, RouteProps } from 'react-router-dom';
 
@@ -16,16 +16,14 @@ const RootRouter = () => (
         </BrowserRouter>
     }>
         <BrowserRouter basename={base.url}>
-            <AuthProvider>
-                <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
-                <CustomRoute path="/" component={OpenedAreaModule} />
-            </AuthProvider>
+            <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
+            <CustomRoute path="/" component={OpenedAreaModule} />
         </BrowserRouter>
     </Suspense>
 );
 
 export const CustomRoute: FC<RouteProps & { isPrivate?: boolean }> = ({ isPrivate, ...rest }) => {
-    const { authenticated } = useContext(AuthContext);
+    const {  authenticated } = useContext(AuthContext);
 
     if (isPrivate && !authenticated) {
         return <Redirect to="/login" />

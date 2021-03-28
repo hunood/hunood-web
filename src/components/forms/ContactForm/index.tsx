@@ -7,7 +7,7 @@ import { t } from 'i18n';
 import './style.less'
 
 export interface Contact {
-    tipo_contato: keyof typeof TiposTelefone;
+    tipoContato: keyof typeof TiposTelefone;
     contato: string
 }
 
@@ -42,7 +42,7 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
                                     </Col>
                                     <Col sm={10} xs={20}>
                                         <Form.Item shouldUpdate
-                                            name={[field.name, "tipo_contato"]}
+                                            name={[field.name, "tipoContato"]}
                                             fieldKey={[field.fieldKey, "tipoContato"]}
                                             rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                                         >

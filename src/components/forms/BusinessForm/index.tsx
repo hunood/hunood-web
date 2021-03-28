@@ -3,7 +3,7 @@ import { Form, Input } from 'antd';
 import MaskedInput from 'antd-mask-input';
 import { FormInstance } from 'antd/lib/form';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { AddressForm, Address, addressOnFinish, addressOnFinishFailed } from 'components/forms';
+import { AddressForm, Address, addressOnFinish } from 'components/forms';
 import { cnpj } from 'cpf-cnpj-validator';
 import { t } from 'i18n';
 import './style.less'
@@ -23,12 +23,6 @@ const onFinish = (business: Business, callback?: () => void) => {
     addressOnFinish(business.address)
     callback && callback();
     console.log(business);
-};
-
-const onFinishFailed = (business: Business, callback?: () => void) => {
-    addressOnFinishFailed(business.address)
-    callback && callback();
-    return business;
 };
 
 const BusinessForm: FC<BusinessFormProps> = ({ form }) => {
@@ -75,4 +69,4 @@ const BusinessForm: FC<BusinessFormProps> = ({ form }) => {
     );
 };
 
-export { BusinessForm, onFinish, onFinishFailed };
+export { BusinessForm, onFinish };
