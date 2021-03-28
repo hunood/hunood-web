@@ -24,7 +24,7 @@ export default class Connector {
     const errorResponse = async (error: any) => {
       const originalRequest = error?.config;
 
-      if (error?.response?.status === 401) {
+      if (error?.response?.status === 401 || error?.response?.status === 418) {
         const refresh = await refreshToken(error);
 
         delete this._axios.defaults.headers['Authorization'];

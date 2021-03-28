@@ -3,6 +3,10 @@ import { config } from "config";
 
 const refreshToken = async (error: any) => {
     try {
+        if(error?.response?.status === 418){
+            throw new Error('Aunteicação inválida, token não enviado.');
+        }
+
         const sendAccessToken =  error.config.headers['Authorization'];
         const sendRefreshToken = error.config.headers['Refresh-Authorization'];
         axios.defaults.headers.common['Authorization'] = sendAccessToken;
