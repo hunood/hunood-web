@@ -44,10 +44,10 @@ const useAuth = () => {
                 'Refresh-Authorization': auth.refreshToken
             };
 
-            return Promise.resolve(true);
+            return Promise.resolve(auth);
         }
         catch (err) {
-            return Promise.resolve(false);
+            return Promise.resolve(err as { message: string, error: boolean });
         }
     }
 

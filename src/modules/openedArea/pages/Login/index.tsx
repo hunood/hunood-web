@@ -19,16 +19,26 @@ const LoginSignUp: FC = () => {
     const [tab, setTab] = useState<TabsKey>('login');
 
     const onFinish = async (values: Login | Signup) => {
+        if (tab === 'login') {
+            const login = await handleLogin(values as Login) as any;
+            if (login.message) {
+                form.setFields([{ name: 'username', errors: [login.message] }]);
+                form.setFields([{ name: 'password', errors: [login.message] }]);
+            }
+            return;
+        }
+
         if (tab === 'signup') {
             await new SignupService().execute({
                 email: values.username,
                 senha: values.password
+            }).then(async () => {
+                (values as Login).remember = false;
+                await handleLogin(values as Login);
+            }).catch((error) => {
+                form.setFields([{ name: 'username', errors: [error.message] }]);
             });
-
-            (values as Login).remember = false;
         }
-
-        await handleLogin(values as Login);
     };
 
     if (authenticated) {

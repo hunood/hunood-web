@@ -54,7 +54,7 @@ const LoginForm: FC<LoginFormProps> = () => {
                 </a>
             </Form.Item>
 
-            <Form.Item>
+            <Form.Item name="btn-entrar">
                 <Button type="primary" htmlType="submit" className="login-form-button" block>
                     {t('openedArea:login.entrar')}
                 </Button>
