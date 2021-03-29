@@ -97,7 +97,7 @@ export default class ApiService<Response, Request = {}> {
             const { status } = response;
 
             if (status >= 500) {
-                this.modal('error', `Erro ${response?.data.code}`, response?.data.message);
+                this.modal('error', `Ocorreu um erro :(`, response?.data.message);
             } else if (handleNotFoundError && status === 404) {
                 // to implement
             }
