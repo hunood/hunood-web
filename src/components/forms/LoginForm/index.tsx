@@ -15,16 +15,6 @@ interface LoginFormProps {
     form?: FormInstance
 }
 
-const onFinish = (login: Login, callback?: () => void) => {
-    callback && callback();
-    return login;
-};
-
-const onFinishFailed = (login: Login, callback?: () => void) => {
-    callback && callback();
-    return login;
-};
-
 const LoginForm: FC<LoginFormProps> = () => {
     return (
         <>
@@ -63,4 +53,4 @@ const LoginForm: FC<LoginFormProps> = () => {
     )
 }
 
-export { LoginForm, onFinish, onFinishFailed };
+export { LoginForm };

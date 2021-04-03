@@ -14,16 +14,6 @@ interface SignupFormProps {
     form?: FormInstance
 }
 
-const onFinish = (signup: Signup, callback?: () => void) => {
-    callback && callback();
-    return signup;
-};
-
-const onFinishFailed = (signup: Signup, callback?: () => void) => {
-    callback && callback();
-    return signup;
-};
-
 const SignupForm: FC<SignupFormProps> = () => {
     return (
         <>
@@ -122,4 +112,4 @@ const SignupForm: FC<SignupFormProps> = () => {
     )
 }
 
-export { SignupForm, onFinish, onFinishFailed };
+export { SignupForm };

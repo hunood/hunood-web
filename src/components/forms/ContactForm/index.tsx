@@ -15,14 +15,6 @@ interface ContactFormProps {
     telefones: Contact[]
 }
 
-const onFinish = (contact: Contact[], callback?: () => void) => {
-    callback && callback();
-};
-
-const onFinishFailed = (contact: Contact[], callback?: () => void) => {
-    callback && callback();
-};
-
 const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
 
     React.useEffect(() => { return; });
@@ -31,7 +23,7 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
         <>
             <h1>{t('forms:contact.contatos')}</h1>
             { telefones.length >= 0 &&
-                <Form.List name="contact" initialValue={telefones} >
+                <Form.List name="contatos" initialValue={telefones} >
                     {(fields, { add, remove }) => (
                         <div  >
 
@@ -87,4 +79,4 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
 };
 
 
-export { ContactForm, onFinish, onFinishFailed };
+export { ContactForm };

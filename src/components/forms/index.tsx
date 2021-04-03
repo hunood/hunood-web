@@ -1,19 +1,19 @@
-import { UserForm, User, onFinish as userOnFinish } from './UserForm';
-import { BusinessForm, Business, onFinish as businessOnFinish } from './BusinessForm';
-import { AddressForm, Address, onFinish as addressOnFinish } from './AddressForm';
-import { ContactForm, Contact, onFinish as contactOnFinish } from './ContactForm';
-import { ValidationAccountForm, ValidationAccount, onFinish as validationAccountOnFinish } from './ValidationAccountForm';
-import { LoginForm, Login, onFinish as loginOnFinish } from './LoginForm';
-import { SignupForm, Signup, onFinish as signupOnFinish } from './SignupForm';
+import { UserForm, User } from './UserForm';
+import { BusinessForm, Business } from './BusinessForm';
+import { AddressForm, Address } from './AddressForm';
+import { ContactForm, Contact } from './ContactForm';
+import { ValidationAccountForm, ValidationAccount } from './ValidationAccountForm';
+import { LoginForm, Login } from './LoginForm';
+import { SignupForm, Signup } from './SignupForm';
 
 export {
-    UserForm, userOnFinish,
-    BusinessForm, businessOnFinish,
-    AddressForm, addressOnFinish,
-    ContactForm, contactOnFinish,
-    ValidationAccountForm, validationAccountOnFinish,
-    LoginForm, loginOnFinish,
-    SignupForm, signupOnFinish
+    UserForm,
+    BusinessForm,
+    AddressForm,
+    ContactForm,
+    ValidationAccountForm,
+    LoginForm,
+    SignupForm
 }
 
 export type {

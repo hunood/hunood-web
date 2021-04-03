@@ -41,7 +41,14 @@ export default class Connector {
       return Promise.reject(error);
     };
 
+    const allRequest = (requestConfig: AxiosRequestConfig) => {
+      requestConfig.headers.common['Authorization'] = localStorage.getItem('@Auth:token') || '';
+      requestConfig.headers.common['Refresh-Authorization'] = localStorage.getItem('@Auth:refresh') || '';
+      return requestConfig;
+    }
+
     this._axios.interceptors.response.use(allResponse, errorResponse);
+    this._axios.interceptors.request.use(allRequest);
   }
 
   get axios() {

@@ -1,3 +1,4 @@
+import { Contact } from "components/forms";
 import { Generos, TratarComo } from "typing/enums";
 
 export default interface UserStepRequest {
@@ -8,4 +9,5 @@ export default interface UserStepRequest {
   genero: keyof typeof Generos;
   generoPersonalizado?: string;
   tratarPor: keyof typeof TratarComo;
+  contatos: Contact[]
 }

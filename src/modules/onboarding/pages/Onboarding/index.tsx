@@ -6,79 +6,74 @@ import { t } from 'i18n';
 import './style.less';
 
 import {
-    User, UserForm, userOnFinish,
-    BusinessForm, businessOnFinish,
+    User, UserForm,
+    BusinessForm,
     ValidationAccountForm,
+    Business,
 } from 'components/forms';
 
-import { UserStepService,
-    //  BusinessStepService 
-    } from 'services/onboarding';
+import {
+    UserStepService,
+    BusinessStepService
+} from 'services/onboarding';
 import { AuthContext } from 'assets/context/AuthContext';
 
 
 const Onboarding: FC = () => {
-    React.useEffect(() => { return; }, []);
-
-    const { handleLogout, authenticated } =  useContext(AuthContext);
+    
+    const { handleLogout, auth, authenticated } = useContext(AuthContext);
     const userService = new UserStepService().useAsHook();
+    const businessStepService = new BusinessStepService().useAsHook();
 
     const { Step } = Steps;
 
     const { Header, Content, Footer } = Layout;
     const [current, setCurrent] = useState(0);
-    const [redirectLogin, setRedirectLogin] = useState(false);
     const [form] = Form.useForm();
 
     const steps = [
-        {
-            title: t('onboarding:sua-empresa'),
-            content: <BusinessForm form={form} />,
-            onFinish: businessOnFinish
-        },
         {
             title: t('onboarding:dados-pessoais'),
             content: <UserForm form={form} />,
             onFinish: (values: User) => userService.send(Object.assign(values))
         },
         {
+            title: t('onboarding:sua-empresa'),
+            content: <BusinessForm form={form} />,
+            onFinish: (values: Business) => businessStepService.send(Object.assign(values))
+        },
+        {
             title: t('onboarding:conta-finalizacao'),
-            content: <ValidationAccountForm form={form} />,
-            onFinish: userOnFinish
+            content: <ValidationAccountForm form={form} email={auth.email}/>,
+            onFinish: (values: Business) => businessStepService.send(Object.assign(values))
         }
     ];
-
-    const layout = {
-        labelCol: { span: 24 },
-        wrapperCol: { span: 24 },
-    };
-
-    const logout = () => {
-        handleLogout().then((logout) => {
-            console.log('>> ', authenticated);
-            setRedirectLogin(true);
-        });
-    }
-
 
     const next = () => {
         setCurrent(current + 1);
     };
 
-    const done = () => {
-        // message.success('Processing complete!');
-    }
+    // const done = () => {
+    //     // message.success('Processing complete!');
+    // }
 
     const onFinish = (values: any) => {
         if (current === steps.length - 1) {
-            steps[current].onFinish(values, done);
+            steps[current].onFinish(values);
             return;
         }
-
-        steps[current].onFinish(values, next);
+        steps[current].onFinish(values);
     }
 
-    if (redirectLogin) {
+    userService.onSuccess(next);
+    businessStepService.onSuccess(next);
+
+    React.useEffect(() => { 
+        setCurrent(auth.etapaOnboarding ?? 0);
+        return; 
+    }, [auth]);
+
+    if (!authenticated) {
         return <Redirect to='/login' />;
     }
 
@@ -90,12 +85,13 @@ const Onboarding: FC = () => {
                 form={form}
                 onFinish={onFinish}
                 autoComplete="off"
-                {...layout}
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
             >
                 <Layout className="layout-100 box">
                     <Header className="site-layout-background header-logout">
                         <Menu theme='dark'>
-                            <Menu.Item key="1" onClick={logout}>
+                            <Menu.Item key="1" onClick={handleLogout}>
                                 {t('onboarding:sair')} &nbsp;<LogoutOutlined />
                             </Menu.Item>
                         </Menu>

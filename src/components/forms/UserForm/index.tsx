@@ -4,7 +4,7 @@ import { Form, Input, DatePicker, Select, Row, Col } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Generos, TratarComo } from 'typing/enums';
-import { ContactForm, Contact, contactOnFinish } from 'components/forms';
+import { ContactForm, Contact } from 'components/forms';
 import { cpf } from 'cpf-cnpj-validator';
 import { t } from 'i18n';
 import './style.less'
@@ -21,11 +21,11 @@ export interface User {
     contatos: Contact[]
 }
 
-const onFinish = (user: User, callback?: () => void) => {
-    contactOnFinish(user.contatos);
-    callback && callback();
-    console.log(user);
-};
+// const onFinish = (user: User, callback?: () => void) => {
+//     contactOnFinish(user.contatos);
+//     callback && callback();
+//     console.log(user);
+// };
 
 const UserForm: FC<UserFormProps> = ({ form }) => {
     const [genero, setGenero] = useState<Generos>();
@@ -129,4 +129,4 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
     );
 };
 
-export { UserForm, onFinish };
+export { UserForm };

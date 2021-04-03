@@ -23,16 +23,6 @@ export interface Address {
     estado_logradouro: string;
 }
 
-const onFinish = (address: Address[], callback?: () => void) => {
-    callback && callback();
-    return address;
-};
-
-const onFinishFailed = (address: Address[], callback?: () => void) => {
-    callback && callback();
-    return address;
-};
-
 const AddressForm: FC<AddressFormProps> = ({ form }) => {
     const cepService = new CepService().useAsHook();
 
@@ -157,4 +147,4 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
 };
 
 
-export { AddressForm, onFinish, onFinishFailed };
+export { AddressForm };

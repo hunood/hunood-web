@@ -22,8 +22,8 @@ const LoginSignUp: FC = () => {
         if (tab === 'login') {
             const login = await handleLogin(values as Login) as any;
             if (login.message) {
-                form.setFields([{ name: 'username', errors: [login.message] }]);
-                form.setFields([{ name: 'password', errors: [login.message] }]);
+                form.setFields([{ name: 'username', errors: [t('onboarding:autenticacao-invalida')] }]);
+                form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
             }
             return;
         }
