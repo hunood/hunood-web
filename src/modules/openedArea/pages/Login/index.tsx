@@ -10,7 +10,7 @@ import "./style.less";
 
 const LoginSignUp: FC = () => {
     React.useEffect(() => { return; }, []);
-    const { authenticated, handleLogin } = useContext(AuthContext);
+    const { auth, authenticated, handleLogin } = useContext(AuthContext);
 
     const { TabPane } = Tabs;
     const [form] = Form.useForm();
@@ -22,7 +22,7 @@ const LoginSignUp: FC = () => {
         if (tab === 'login') {
             const login = await handleLogin(values as Login) as any;
             if (login.message) {
-                form.setFields([{ name: 'username', errors: [t('onboarding:autenticacao-invalida')] }]);
+                form.setFields([{ name: 'username', errors: [''] }]);
                 form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
             }
             return;
@@ -42,7 +42,7 @@ const LoginSignUp: FC = () => {
     };
 
     if (authenticated) {
-        return <Redirect to='/onboarding' />
+        return auth.etapaOnboarding >= 3 ? <Redirect to='/dashboard' /> : <Redirect to='/onboarding' />;
     };
 
     return (

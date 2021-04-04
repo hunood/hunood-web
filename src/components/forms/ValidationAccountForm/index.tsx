@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Col, Checkbox, Form, Input, Row, Typography } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { t } from 'i18n';
 import './style.less'
 import { formatEmail } from 'assets/utils/format';
+import { SendCodeService } from 'services/onboarding';
 
 interface ValidationAccountFormProps {
     form: FormInstance,
@@ -14,23 +15,54 @@ export interface ValidationAccount {
     aceite_termos: boolean;
 }
 
-const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ email }) => {
-    const { Text } = Typography;
+const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) => {
     React.useEffect(() => { return; });
+
+    const sendCodeService = new SendCodeService().useAsHook();
+    const [counter, setCounter] = useState<number>(0);
+    const { Text } = Typography;
+    const { Search } = Input;
+
+    useEffect(() => {
+        if (counter === 10) {
+            let seconds = 10;
+            const timer = setInterval(() => {
+                seconds -= 1;
+                setCounter(seconds);
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(timer);
+            }, 11 * 1000);
+
+        }
+    }, [counter]);
+
+    const reenviar = () => {
+        if (counter <= 0) {
+            setCounter(10);
+            sendCodeService.send({ email });
+        }
+    }
 
     return (
         <>
             <Row gutter={[16, 8]}>
                 <Col xs={{ span: 24 }}>
                     <h3>{t('forms:validationAccount.enviado-codigo')} <Text keyboard>{formatEmail(email)}</Text></h3>
-                    <p>{t('forms:validationAccount.por-favor-verique')}</p>
+                    <p style={{ marginBottom: 0 }}>{t('forms:validationAccount.por-favor-verique')}</p>
                 </Col>
                 <Col xs={{ span: 24 }} className="codigo">
                     <Form.Item
                         name="codigo"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <Input placeholder={t('forms:validationAccount.codigo')} className="input-codigo" />
+                        <Search
+                            placeholder={t('forms:validationAccount.codigo')}
+                            enterButton={counter > 0 ? t('onboarding:aguarde', {segundos: ("0" + counter).slice(-2)}) 
+                            : t('onboarding:reenviar')} style={{ height: 50 }} loading={counter > 0}
+                            onSearch={reenviar}
+                        />
                     </Form.Item>
                 </Col>
                 <Col xs={{ span: 24 }}>

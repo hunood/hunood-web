@@ -1,4 +1,4 @@
-export default interface AuthentecateResponse {
+export default interface BusinessStepResponse {
   id: string;
   cnpj: string;
   razaoSocial: string;

@@ -21,12 +21,6 @@ export interface User {
     contatos: Contact[]
 }
 
-// const onFinish = (user: User, callback?: () => void) => {
-//     contactOnFinish(user.contatos);
-//     callback && callback();
-//     console.log(user);
-// };
-
 const UserForm: FC<UserFormProps> = ({ form }) => {
     const [genero, setGenero] = useState<Generos>();
 

@@ -6,5 +6,7 @@
     "sua-empresa": "Sua empresa",
     "conta-finalizacao": "Conta e finalização",
     "sair": "Sair",
-    "autenticacao-invalida": "Autenticação inválida."
+    "autenticacao-invalida": "Autenticação inválida.",
+    "reenviar": "Reenviar código",
+    "aguarde": "Aguarde ({{segundos}})"
 }

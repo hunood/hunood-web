@@ -5,20 +5,14 @@ import Connector from 'services/_config-services/connector';
 interface DataAuthentication extends AuthenticateResponse { }
 
 const useAuth = () => {
-    const [authenticated, setAuthenticated] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [auth, setAuth] = useState({} as DataAuthentication);
+    const [authenticated, setAuthenticated] = useState(!!localStorage.getItem('@Auth:token'));
 
     useEffect(() => {
         const token = localStorage.getItem('@Auth:token');
-        const auth = localStorage.getItem('@Auth:auth');
 
         if (token) {
             setAuthenticated(true);
-            setAuth(JSON.parse(auth || '{}'));
         }
-
-        setLoading(false);
     }, []);
 
     const handleLogin = async (login: { username: string, password: string, remember: boolean }) => {
@@ -35,8 +29,7 @@ const useAuth = () => {
             }
 
             setAuthenticated(true);
-            setAuth(auth);
-
+            
             Connector
                 .getInstance()
                 .axios.defaults.headers.common = {
@@ -56,7 +49,6 @@ const useAuth = () => {
             new ForbidService().execute()
                 .finally(() => {
                     setAuthenticated(false);
-                    setAuth({} as DataAuthentication);
                     localStorage.removeItem('@Auth:token');
                     localStorage.removeItem('@Auth:refresh');
                     localStorage.removeItem('@Auth:auth');
@@ -70,7 +62,11 @@ const useAuth = () => {
 
     }
 
-    return { authenticated, loading, auth, handleLogin, handleLogout };
+    const auth = (() => {
+        return JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
+    })()
+
+    return { authenticated, auth, handleLogin, handleLogout };
 }
 
 type Auth = ReturnType<typeof useAuth>

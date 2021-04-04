@@ -1,4 +1,4 @@
-export default interface SignupRequest {
+export default interface BusinessStepRequest {
   cnpj?: string;
   razaoSocial?: string;
   nomeFantasia: boolean;
@@ -9,6 +9,4 @@ export default interface SignupRequest {
   bairroLogradouro: string;
   cidadeLogradouro: string;
   estadoLogradouro: string;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
 }

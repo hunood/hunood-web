@@ -7,28 +7,27 @@ import './style.less';
 
 import {
     User, UserForm,
-    BusinessForm,
-    ValidationAccountForm,
-    Business,
+    Business, BusinessForm,
+    ValidationAccount, ValidationAccountForm,
 } from 'components/forms';
 
-import {
-    UserStepService,
-    BusinessStepService
-} from 'services/onboarding';
+import { UserStepService, BusinessStepService, SendCodeService, VerificationCodeService } from 'services/onboarding';
 import { AuthContext } from 'assets/context/AuthContext';
 
-
 const Onboarding: FC = () => {
-    
+
     const { handleLogout, auth, authenticated } = useContext(AuthContext);
+
     const userService = new UserStepService().useAsHook();
     const businessStepService = new BusinessStepService().useAsHook();
+    const sendCodeService = new SendCodeService().useAsHook();
+    const verificationCodeService = new VerificationCodeService().useAsHook();
 
     const { Step } = Steps;
-
     const { Header, Content, Footer } = Layout;
-    const [current, setCurrent] = useState(0);
+    
+    const [current, setCurrent] = useState<number>(0);
+    const [redirectDashboard, setRedirectDashboard] = useState<boolean>(false);
     const [form] = Form.useForm();
 
     const steps = [
@@ -44,34 +43,36 @@ const Onboarding: FC = () => {
         },
         {
             title: t('onboarding:conta-finalizacao'),
-            content: <ValidationAccountForm form={form} email={auth.email}/>,
-            onFinish: (values: Business) => businessStepService.send(Object.assign(values))
+            content: <ValidationAccountForm form={form} email={auth.email} />,
+            onFinish: (values: ValidationAccount) => verificationCodeService.send({ codigo: values.codigo })
         }
     ];
 
     const next = () => {
+        if (current === 1) sendCodeService.send({ email: auth.email });
         setCurrent(current + 1);
     };
 
-    // const done = () => {
-    //     // message.success('Processing complete!');
-    // }
+    const done = () => {
+        setRedirectDashboard(true);
+    }
 
     const onFinish = (values: any) => {
-        if (current === steps.length - 1) {
-            steps[current].onFinish(values);
-            return;
-        }
         steps[current].onFinish(values);
     }
 
     userService.onSuccess(next);
     businessStepService.onSuccess(next);
+    verificationCodeService.onSuccess(done);
 
-    React.useEffect(() => { 
-        setCurrent(auth.etapaOnboarding ?? 0);
-        return; 
+    React.useEffect(() => {
+        setCurrent(auth?.etapaOnboarding || 0);
+        return;
     }, [auth]);
+
+    if (redirectDashboard) {
+        return <Redirect to='/dashboard' />;
+    }
 
     if (!authenticated) {
         return <Redirect to='/login' />;
