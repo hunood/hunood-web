@@ -2,17 +2,17 @@ export const removeFormatting = (str: string) => {
     return str.replaceAll('_', '').replaceAll('-', '').replaceAll('.', '');
 }
 
-export const firstCharOnlyMask = (value: string, mask: string = '*') => {
-    if (mask.length > 1) {
+export const firstAndSecondCharOnlyMask = (value: string, mask: string = '*') => {
+    if (mask.length > 2) {
       throw new Error(
-        '[firstCharOnlyMask] Mask string must contain only one character'
+        '[firstAndSecondCharOnlyMask] Mask string must contain only two character'
       );
     }
   
-    const [firstChar, ...restChars] = value.split('');
+    const [firstChar, secondChar, ...restChars] = value.split('');
     const maskedValue = restChars.reduce(
       currentValue => currentValue + mask,
-      firstChar
+      firstChar + secondChar
     );
     return maskedValue;
   }
@@ -28,8 +28,8 @@ export const formatEmail = (email: string) => {
     const [userName, domain] = email.split('@');
     const [domainName, ...extensions] = domain.split('.');
   
-    const maskedUserName = firstCharOnlyMask(userName);
-    const maskedDomainName = firstCharOnlyMask(domainName);
+    const maskedUserName = firstAndSecondCharOnlyMask(userName);
+    const maskedDomainName = firstAndSecondCharOnlyMask(domainName);
     const formatedExtension = extensions.reduce(
       (value, extension) => `${value}.${extension}`,
       ''
