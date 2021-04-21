@@ -25,7 +25,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
     const { updateAuth } = useContext(AuthContext);
     const sendCodeService = new SendCodeService().useAsHook();
 
-    const time = 10;
+    const time = 60;
     const [counter, setCounter] = useState<number>(time);
     const [email_, setEmail] = useState<string>(email);
     const [visible, setVisible] = useState<boolean>(false);
