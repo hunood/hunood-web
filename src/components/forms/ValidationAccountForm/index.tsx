@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { Col, Checkbox, Form, Input, Row, Typography } from 'antd';
 import { FormInstance } from 'antd/lib/form';
+import { SendCodeService } from 'services/onboarding';
+import { AlterEmailModal } from 'components/modals';
+import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
 import './style.less'
-import { formatEmail } from 'assets/utils/format';
-import { SendCodeService } from 'services/onboarding';
 
 interface ValidationAccountFormProps {
     form: FormInstance,
@@ -18,14 +19,20 @@ export interface ValidationAccount {
 const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) => {
     React.useEffect(() => { return; });
 
-    const sendCodeService = new SendCodeService().useAsHook();
-    const [counter, setCounter] = useState<number>(0);
     const { Text } = Typography;
     const { Search } = Input;
 
+    const { updateAuth } = useContext(AuthContext);
+    const sendCodeService = new SendCodeService().useAsHook();
+
+    const time = 10;
+    const [counter, setCounter] = useState<number>(time);
+    const [email_, setEmail] = useState<string>(email);
+    const [visible, setVisible] = useState<boolean>(false);
+
     useEffect(() => {
-        if (counter === 10) {
-            let seconds = 10;
+        if (counter === time) {
+            let seconds = time;
             const timer = setInterval(() => {
                 seconds -= 1;
                 setCounter(seconds);
@@ -33,23 +40,47 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
 
             setTimeout(() => {
                 clearInterval(timer);
-            }, 11 * 1000);
+            }, (time + 1 )* 1000);
 
         }
     }, [counter]);
 
-    const reenviar = () => {
+    const resend = () => {
         if (counter <= 0) {
-            setCounter(10);
             sendCodeService.send({ email });
         }
     }
 
+    const onChangeEmail = (event: { visible: boolean, email?: string }) => {
+        setVisible(event.visible)
+        if (event.email) {
+            updateAuth({ email: event.email });
+            setEmail(event.email)
+            sendCodeService.send({ email: event.email });
+        }
+    };
+
+    sendCodeService.onSuccess(() => {
+        setCounter(time);
+    });
+
+    sendCodeService.onError(() => {
+        setCounter(0);
+    });
+
+    const showModal = () => {
+        setVisible(true);
+    };
+
     return (
         <>
+            {visible && <AlterEmailModal email={email_} onChange={onChangeEmail} visible={visible} />}
             <Row gutter={[16, 8]}>
                 <Col xs={{ span: 24 }}>
-                    <h3>{t('forms:validationAccount.enviado-codigo')} <Text keyboard>{formatEmail(email)}</Text></h3>
+                    <h3>{t('forms:validationAccount.enviado-codigo')} <Text keyboard>{email_}</Text></h3>
+                    <h5 className="naoEhSeuEmail" onClick={showModal}>{t('forms:validationAccount.naoEhseuEmail')}</h5>
+                </Col>
+                <Col xs={{ span: 24 }}>
                     <p style={{ marginBottom: 0 }}>{t('forms:validationAccount.por-favor-verique')}</p>
                 </Col>
                 <Col xs={{ span: 24 }} className="codigo">
@@ -59,9 +90,9 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
                     >
                         <Search
                             placeholder={t('forms:validationAccount.codigo')}
-                            enterButton={counter > 0 ? t('onboarding:aguarde', {segundos: ("0" + counter).slice(-2)}) 
-                            : t('onboarding:reenviar')} style={{ height: 50 }} loading={counter > 0}
-                            onSearch={reenviar}
+                            enterButton={counter > 0 ? t('onboarding:aguarde', { segundos: ("0" + counter).slice(-2) })
+                                : t('onboarding:reenviar')} style={{ height: 50 }} loading={counter > 0}
+                            onSearch={resend}
                         />
                     </Form.Item>
                 </Col>

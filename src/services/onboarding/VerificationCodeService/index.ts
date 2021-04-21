@@ -6,7 +6,7 @@ class VerificationCodeService extends ApiService<VerificationCodeResponse, Verif
   constructor() {
     super({
       config: (request: VerificationCodeRequest) => ({
-        url: `onboarding/verificationCode`,
+        url: `onboarding/verification-code`,
         method: 'POST',
         data: request,
       }),

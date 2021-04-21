@@ -6,6 +6,7 @@ import { LoginForm, Login, SignupForm, Signup } from 'components/forms';
 import { AuthContext } from 'assets/context/AuthContext';
 import { SignupService } from 'services/authentication'
 import { t } from 'i18n';
+import logo from "assets/img/logo.png";
 import "./style.less";
 
 const LoginSignUp: FC = () => {
@@ -21,7 +22,7 @@ const LoginSignUp: FC = () => {
     const onFinish = async (values: Login | Signup) => {
         if (tab === 'login') {
             const login = await handleLogin(values as Login) as any;
-            if (login.message) {
+            if (login?.message) {
                 form.setFields([{ name: 'username', errors: [''] }]);
                 form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
             }
@@ -36,7 +37,7 @@ const LoginSignUp: FC = () => {
                 (values as Login).remember = false;
                 await handleLogin(values as Login);
             }).catch((error) => {
-                form.setFields([{ name: 'username', errors: [error.message] }]);
+                form.setFields([{ name: 'username', errors: [error?.message] }]);
             });
         }
     };
@@ -48,7 +49,7 @@ const LoginSignUp: FC = () => {
     return (
         <>
             <Layout className="layout-center">
-                <h1>{t('openedArea:login.hunood')}</h1>
+                <img src={logo} alt={t('openedArea:login.hunood')} className="logo"/>
                 <Form
                     name="login-signup"
                     spellCheck='false'

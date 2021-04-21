@@ -1,0 +1,8 @@
+{
+  "alter-email": {
+    "email-em-uso": "E-mail em uso, tente outro.",
+    "alteracao-email-apos-codigo": "A alteração do email só será efetivada após a confirmação do código de segurança.",
+    "alterar-email": "Alterar e-mail",
+    "email": "Novo e-mail"
+  }
+}

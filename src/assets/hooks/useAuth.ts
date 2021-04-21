@@ -42,7 +42,7 @@ const useAuth = () => {
         catch (err) {
             return Promise.resolve(err as { message: string, error: boolean });
         }
-    }
+    };
 
     const handleLogout = async () => {
         try {
@@ -60,13 +60,19 @@ const useAuth = () => {
             return Promise.resolve(false);
         }
 
-    }
+    };
+
+    const updateAuth = ({...dataAuth}: Partial<DataAuthentication>) => {
+        const auth = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
+        const newAuth = Object.assign(auth, dataAuth);
+        localStorage.setItem('@Auth:auth', JSON.stringify(newAuth));
+    };
 
     const auth = (() => {
         return JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
-    })()
+    })();
 
-    return { authenticated, auth, handleLogin, handleLogout };
+    return { authenticated, auth, handleLogin, handleLogout, updateAuth };
 }
 
 type Auth = ReturnType<typeof useAuth>

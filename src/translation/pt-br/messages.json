@@ -10,5 +10,10 @@
     "email-invalido": "E-mail inválido.",
     "cpf-invalido": "CPF inválido.",
     "cnpj-invalido": "CNPJ inválido.",
-    "cep-invalido": "CEP inválido."
+    "cep-invalido": "CEP inválido.",
+    "autenticacao-invalida-nao-enviada": "Autenticação inválida, token não enviado.",
+    "sessao-expirada": "Sessão expirada",
+    "sera-deslogado": "Você será deslogado, por favor, entre novamente!",
+    "occoreu-um-erro": "Ocorreu um erro :("
+
 }

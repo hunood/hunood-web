@@ -1,8 +1,9 @@
 import { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
-import { Modal } from 'antd';
+import { Modal } from 'assets/utils/modal';
 import Connector from './connector';
 import Loader from './loader';
 import UseService from './useService';
+import { t } from 'i18n';
 
 interface IApiBehavior<Response, Request> {
     handleLoader: boolean;
@@ -67,28 +68,6 @@ export default class ApiService<Response, Request = {}> {
         return Promise.resolve(data);
     };
 
-    private modal(type: 'info' | 'error' | 'success' | 'warning', title: string, message: string) {
-        let secondsToGo = 60;
-
-        const modal = (Modal as any)[type]({
-            title: `${title}`,
-            content: message,
-            okText: `OK (${secondsToGo})`
-        });
-
-        const timer = setInterval(() => {
-            secondsToGo -= 1;
-            if (secondsToGo > 0) modal.update({
-                okText: `OK (${secondsToGo})`
-            });
-        }, 1000);
-
-        setTimeout(() => {
-            clearInterval(timer);
-            modal.destroy();
-        }, secondsToGo * 1000);
-    }
-
     private _handleError = (error: AxiosError<ResponseError>) => {
         const { handleError, handleNotFoundError = false } = this._apiBehavior;
         const { response } = error;
@@ -97,7 +76,7 @@ export default class ApiService<Response, Request = {}> {
             const { status } = response;
 
             if (status >= 500) {
-                this.modal('error', `Ocorreu um erro :(`, response?.data.message);
+                Modal.openTimerModal('error', t('messages:occoreu-um-erro'), response?.data.message);
             } else if (handleNotFoundError && status === 404) {
                 // to implement
             }

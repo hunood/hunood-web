@@ -34,8 +34,9 @@
   "validationAccount": {
     "enviado-codigo": "Enviamos um código para o e-mail",
     "por-favor-verique": "Por favor, verifique sua caixa principal, lixeira e spam e insira o código no campo abaixo para validação da conta.",
-    "codigo": "Código de validação",
+    "codigo": "000000",
     "li-e-aceito": "Li e aceito",
-    "termos-de-uso": "Termos de Uso e Privacidade"
+    "termos-de-uso": "Termos de Uso e Privacidade",
+    "naoEhseuEmail": "Não possui acesso à esse email? Altere aqui!"
   }
 }

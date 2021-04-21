@@ -6,7 +6,8 @@ import {
     openedAreaBR,
     messagesBR,
     onboardingBR,
-    formsBR
+    formsBR,
+    modalsBR
 } from './translation';
 
 const options = {
@@ -20,7 +21,8 @@ const options = {
             openedArea: openedAreaBR,
             messages: messagesBR,
             onboarding: onboardingBR,
-            forms: formsBR
+            forms: formsBR,
+            modals: modalsBR
         }
     }
 };

@@ -6,7 +6,7 @@ class SendCodeService extends ApiService<SendCodeResponse, SendCodeRequest> {
   constructor() {
     super({
       config: (request: SendCodeRequest) => ({
-        url: `onboarding/sendCode`,
+        url: `onboarding/send-code`,
         method: 'POST',
         data: request,
       }),
