@@ -6,7 +6,7 @@ import { LoginForm, Login, SignupForm, Signup } from 'components/forms';
 import { AuthContext } from 'assets/context/AuthContext';
 import { SignupService } from 'services/authentication'
 import { t } from 'i18n';
-import logo from "assets/img/logo.png";
+import Logo from "assets/img/logo.png";
 import "./style.less";
 
 const LoginSignUp: FC = () => {
@@ -49,7 +49,7 @@ const LoginSignUp: FC = () => {
     return (
         <>
             <Layout className="layout-center">
-                <img src={logo} alt={t('openedArea:login.hunood')} className="logo"/>
+                <img src={Logo} alt={t('openedArea:login.hunood')} className="logo-login"/>
                 <Form
                     name="login-signup"
                     spellCheck='false'
