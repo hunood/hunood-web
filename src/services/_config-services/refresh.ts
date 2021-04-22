@@ -19,6 +19,9 @@ const refreshToken = async (error: any) => {
         
         const accessToken = res.headers['authorization'];
         const refreshToken = res.headers['refresh-authorization'];
+
+        localStorage.setItem('@Auth:token', accessToken);
+        localStorage.setItem('@Auth:refresh', refreshToken);
         
         return Promise.resolve({ accessToken, refreshToken });
     } catch (_) {

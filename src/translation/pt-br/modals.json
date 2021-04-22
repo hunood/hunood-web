@@ -2,6 +2,7 @@
   "alter-email": {
     "email-em-uso": "E-mail em uso, tente outro.",
     "alteracao-email-apos-codigo": "A alteração do email só será efetivada após a confirmação do código de segurança.",
+    "alteracao-permanente": "A alteração de e-mail é permanente e refletirá no modo de entrar no site. O e-mail substituido não será mais acessível na aplicação.",
     "alterar-email": "Alterar e-mail",
     "email": "Novo e-mail"
   }

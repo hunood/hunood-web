@@ -14,6 +14,7 @@
     "autenticacao-invalida-nao-enviada": "Autenticação inválida, token não enviado.",
     "sessao-expirada": "Sessão expirada",
     "sera-deslogado": "Você será deslogado, por favor, entre novamente!",
-    "occoreu-um-erro": "Ocorreu um erro :("
+    "occoreu-um-erro": "Ocorreu um erro :(",
+    "codigo-invalido-ou-expirado": "Código inválido ou expirado."
 
 }

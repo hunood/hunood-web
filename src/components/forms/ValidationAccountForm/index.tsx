@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { Col, Checkbox, Form, Input, Row, Typography } from 'antd';
+import { Col, Form, Input, Row, Typography } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { SendCodeService } from 'services/onboarding';
 import { AlterEmailModal } from 'components/modals';
@@ -9,14 +9,15 @@ import './style.less'
 
 interface ValidationAccountFormProps {
     form: FormInstance,
-    email: string
+    email: string,
+    timerResendEmail: number
 }
 export interface ValidationAccount {
     codigo: string;
     aceite_termos: boolean;
 }
 
-const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) => {
+const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ email, timerResendEmail }) => {
     React.useEffect(() => { return; });
 
     const { Text } = Typography;
@@ -25,22 +26,29 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
     const { updateAuth } = useContext(AuthContext);
     const sendCodeService = new SendCodeService().useAsHook();
 
-    const time = 60;
-    const [counter, setCounter] = useState<number>(time);
+    const timer = 60;
+    const timeout = React.useRef<NodeJS.Timeout>();
+    const interval= React.useRef<NodeJS.Timeout>();
+
+    const [counter, setCounter] = useState<number>(timerResendEmail);
     const [email_, setEmail] = useState<string>(email);
     const [visible, setVisible] = useState<boolean>(false);
 
     useEffect(() => {
-        if (counter === time) {
-            let seconds = time;
-            const timer = setInterval(() => {
+        if (counter === timer) {
+            let seconds = timer;
+
+            interval.current && clearInterval(interval.current);
+            timeout.current && clearTimeout(timeout.current);
+
+            interval.current = setInterval(() => {
                 seconds -= 1;
                 setCounter(seconds);
             }, 1000);
 
-            setTimeout(() => {
-                clearInterval(timer);
-            }, (time + 1 )* 1000);
+            timeout.current = setTimeout(() => {
+                clearInterval(interval.current as NodeJS.Timeout);
+            }, (timer + 1) * 1000);
 
         }
     }, [counter]);
@@ -61,7 +69,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
     };
 
     sendCodeService.onSuccess(() => {
-        setCounter(time);
+        setCounter(timer);
     });
 
     sendCodeService.onError(() => {
@@ -86,9 +94,13 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
                 <Col xs={{ span: 24 }} className="codigo">
                     <Form.Item
                         name="codigo"
-                        rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
+                        rules={[
+                            { required: true, message: t('messages:campo-obrigatorio') },
+                            { max: 6, message: t('messages:maximo-x-caracteres', { quantidade: 6 }) }
+                        ]}
                     >
                         <Search
+                            maxLength={6}
                             placeholder={t('forms:validationAccount.codigo')}
                             enterButton={counter > 0 ? t('onboarding:aguarde', { segundos: ("0" + counter).slice(-2) })
                                 : t('onboarding:reenviar')} style={{ height: 50 }} loading={counter > 0}
@@ -96,7 +108,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
                         />
                     </Form.Item>
                 </Col>
-                <Col xs={{ span: 24 }}>
+                {/* <Col xs={{ span: 24 }}>
                     <Form.Item
                         name="aceite_termos"
                         valuePropName="checked"
@@ -108,7 +120,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ form, email }) 
                             {t('forms:validationAccount.li-e-aceito')} {t('forms:validationAccount.termos-de-uso')}
                         </Checkbox>
                     </Form.Item>
-                </Col>
+                </Col> */}
             </Row>
         </>
     );
