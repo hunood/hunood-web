@@ -19,7 +19,6 @@ const SignupForm: FC<SignupFormProps> = () => {
         <>
             <Form.Item
                 name="username"
-                hasFeedback
                 rules={[
                     {
                         required: true,
