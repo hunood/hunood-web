@@ -1,15 +1,22 @@
+import { DashboardLayout } from 'components/layouts';
 import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // Routes
-import Dashboard from './pages/Dashboard';
+import Welcome from './pages/Welcome';
+import Employees from './pages/Employees';
+import Stock from './pages/Stock';
 
 const DashboardModule: FC = () => {
   return (
     <>
-      <Switch>
-        <Route exact path="/dashboard" component={Dashboard} />
-      </Switch>
+      <DashboardLayout>
+        <Switch>
+          <Route exact path="/dashboard" component={Welcome} />
+          <Route exact path="/dashboard/employees" component={Employees} />
+          <Route exact path="/dashboard/stock" component={Stock} />
+        </Switch>
+      </DashboardLayout>
     </>
   );
 };
