@@ -16,7 +16,7 @@ import { AuthContext } from 'assets/context/AuthContext';
 
 const Onboarding: FC = () => {
 
-    const { handleLogout, auth, authenticated } = useContext(AuthContext);
+    const { handleLogout, updateAuth, auth, authenticated } = useContext(AuthContext);
 
     const userService = new UserStepService().useAsHook();
     const businessStepService = new BusinessStepService().useAsHook();
@@ -25,8 +25,9 @@ const Onboarding: FC = () => {
 
     const { Step } = Steps;
     const { Header, Content, Footer } = Layout;
-    
+
     const [current, setCurrent] = useState<number>(0);
+    const [timerResendEmail, setTimerResendEmail] = useState<number>(0);
     const [redirectDashboard, setRedirectDashboard] = useState<boolean>(false);
     const [form] = Form.useForm();
 
@@ -43,27 +44,44 @@ const Onboarding: FC = () => {
         },
         {
             title: t('onboarding:conta-finalizacao'),
-            content: <ValidationAccountForm form={form} email={auth.email} />,
+            content: <ValidationAccountForm form={form} email={auth.email} timerResendEmail={timerResendEmail} />,
             onFinish: (values: ValidationAccount) => verificationCodeService.send({ codigo: values.codigo })
         }
     ];
 
     const next = () => {
-        if (current === 1) sendCodeService.send({ email: auth.email });
+        if (current === 1) {
+            sendCodeService.send({ email: auth.email });
+            return;
+        }
         setCurrent(current + 1);
     };
 
     const done = () => {
+        updateAuth({ emailValido: true });
         setRedirectDashboard(true);
-    }
+    };
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: User & Business & ValidationAccount) => {
         steps[current].onFinish(values);
-    }
+    };
 
     userService.onSuccess(next);
     businessStepService.onSuccess(next);
     verificationCodeService.onSuccess(done);
+
+    verificationCodeService.onError(() => {
+        form.setFields([{ name: 'codigo', errors: [t('messages:codigo-invalido-ou-expirado')] }])
+    });
+
+    sendCodeService.onFinish(() => {
+        setTimerResendEmail(60);
+        setCurrent(current + 1);
+    });
+
+    React.useEffect(() => {
+        updateAuth({ etapaOnboarding: current });
+    }, [current, updateAuth]);
 
     React.useEffect(() => {
         setCurrent(auth?.etapaOnboarding || 0);
