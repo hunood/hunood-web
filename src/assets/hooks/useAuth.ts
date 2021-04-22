@@ -29,7 +29,7 @@ const useAuth = () => {
             }
 
             setAuthenticated(true);
-            
+
             Connector
                 .getInstance()
                 .axios.defaults.headers.common = {
@@ -62,14 +62,17 @@ const useAuth = () => {
 
     };
 
-    const updateAuth = ({...dataAuth}: Partial<DataAuthentication>) => {
+    const updateAuth = ({ ...dataAuth }: Partial<DataAuthentication>) => {
         const auth = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
         const newAuth = Object.assign(auth, dataAuth);
         localStorage.setItem('@Auth:auth', JSON.stringify(newAuth));
     };
 
     const auth = (() => {
-        return JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
+        const auth_ = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
+        auth_.accessToken = localStorage.getItem('@Auth:token') || '';
+        auth_.refreshToken = localStorage.getItem('@Auth:refresh') || '';
+        return auth_;
     })();
 
     return { authenticated, auth, handleLogin, handleLogout, updateAuth };
