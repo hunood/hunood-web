@@ -39,7 +39,8 @@
   },
   "devDependencies": {
     "@types/react-router": "^5.1.9",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "cz-conventional-changelog": "^3.3.0"
   },
   "eslintConfig": {
     "extends": [
@@ -63,5 +64,10 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx)$"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
