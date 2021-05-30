@@ -6,8 +6,6 @@ import { Layout, Menu, Form } from 'antd';
 import { UserOutlined, LogoutOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
 import "./style.less";
-import Logo from 'assets/img/logo-branco.png';
-import LogoCurto from 'assets/img/logo-branco-curto.png';
 
 const { Header, Sider, Content } = Layout;
 
@@ -45,10 +43,9 @@ const DashboardLayout: FC = ({ children }) => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={toggle}>
-                <div className="logo">
-                    {!collapsed && <img src={Logo} className="logo-longo" alt={'Hunood'} />}
-                    {collapsed && <img src={LogoCurto} className="logo-curto" alt={'Hunood'} />}
-                </div>
+
+                <div id="logo" className={collapsed ? 'logo-curto' : 'logo-longo'}></div>
+
                 <Menu theme="dark" mode="inline" >
                     {menus.map((menu, key) => {
                         return (<Menu.Item key={key} icon={menu.icon} onClick={() => handleClick(menu.route)}>
