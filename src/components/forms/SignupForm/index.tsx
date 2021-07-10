@@ -6,8 +6,8 @@ import { t } from 'i18n';
 import './style.less'
 
 export interface Signup {
-    username: string,
-    password: string
+    newUsername: string,
+    newPassword: string
 }
 
 interface SignupFormProps {
@@ -15,10 +15,12 @@ interface SignupFormProps {
 }
 
 const SignupForm: FC<SignupFormProps> = () => {
+    React.useEffect(() => { return; });
+
     return (
         <>
             <Form.Item
-                name="username"
+                name="newUsername"
                 rules={[
                     {
                         required: true,
@@ -30,11 +32,15 @@ const SignupForm: FC<SignupFormProps> = () => {
                     }
                 ]}
             >
-                <Input prefix={<MailOutlined className="login-icon-input" />} type="email" placeholder={t('openedArea:login.email')} />
+                <Input
+                    prefix={<MailOutlined className="login-icon-input" />}
+                    type="email"
+                    placeholder={t('openedArea:login.email')}
+                />
             </Form.Item>
 
             <Form.Item
-                name="password"
+                name="newPassword"
                 hasFeedback
                 rules={[
                     {
@@ -77,7 +83,7 @@ const SignupForm: FC<SignupFormProps> = () => {
 
             <Form.Item
                 name="confirm"
-                dependencies={['password']}
+                dependencies={['newPassword']}
                 hasFeedback
                 rules={[
                     {
@@ -86,7 +92,7 @@ const SignupForm: FC<SignupFormProps> = () => {
                     },
                     ({ getFieldValue }) => ({
                         validator(_, value) {
-                            if (!value || getFieldValue('password') === value) {
+                            if (!value || getFieldValue('newPassword') === value) {
                                 return Promise.resolve();
                             }
                             return Promise.reject(t('messages:senhas-nao-coincidem'));

@@ -16,8 +16,10 @@ interface LoginFormProps {
 }
 
 const LoginForm: FC<LoginFormProps> = () => {
+    React.useEffect(() => { return; });
+
     return (
-        <>
+        <span>
             <Form.Item name="username" rules={[{ required: true, message: t('messages:campo-obrigatorio') }]} >
                 <Input
                     type="text"
@@ -49,7 +51,7 @@ const LoginForm: FC<LoginFormProps> = () => {
                     {t('openedArea:login.entrar')}
                 </Button>
             </Form.Item>
-        </>
+        </span>
     )
 }
 

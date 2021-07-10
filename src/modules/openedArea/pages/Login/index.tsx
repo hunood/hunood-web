@@ -19,25 +19,34 @@ const LoginSignUp: FC = () => {
     type TabsKey = 'login' | 'signup';
     const [tab, setTab] = useState<TabsKey>('login');
 
-    const onFinish = async (values: Login | Signup) => {
+    const onFinish = async (values: Signup & Login) => {
         if (tab === 'login') {
             const login = await handleLogin(values as Login) as any;
+
+            if (!login) {
+                form.setFields([{ name: 'password', errors: [t('onboarding:falha-autenticacao')] }]);
+            }
+
             if (login?.message) {
-                form.setFields([{ name: 'username', errors: [''] }]);
                 form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
             }
+
+            form.setFields([{ name: 'username', errors: [''] }]);
             return;
         }
 
         if (tab === 'signup') {
             await new SignupService().execute({
-                email: values.username,
-                senha: values.password
+                email: values.newUsername,
+                senha: values.newPassword
             }).then(async () => {
-                (values as Login).remember = false;
-                await handleLogin(values as Login);
-            }).catch((error) => {
-                form.setFields([{ name: 'username', errors: [error?.message] }]);
+                await handleLogin({
+                    username: values.newUsername,
+                    password: values.newPassword,
+                    remember: false
+                });
+            }).catch((_) => {
+                form.setFields([{ name: 'newUsername', errors: [t('onboarding:email-ja-registrado')] }]);
             });
         }
     };
@@ -49,7 +58,7 @@ const LoginSignUp: FC = () => {
     return (
         <>
             <Layout className="layout-center">
-                <img src={Logo} alt={t('openedArea:login.hunood')} className="logo-login"/>
+                <img src={Logo} alt={t('openedArea:login.hunood')} className="logo-login" />
                 <Form
                     name="login-signup"
                     spellCheck='false'

@@ -19,24 +19,29 @@
   color: #1890ff;
 }
 
+.box-logo {
+  padding: 15px;
+  height: 65px;
+  border-bottom: 1.2px solid rgba(0,0,0,0.3);
+}
+
 #logo {
-  height: 50px;
-  margin: 16px;
-  margin-bottom: 10px;
-  text-align: center;
-  background-size: contain;
+  margin: 0px;
+  height: 34px;
+  background-position: center;
   background-repeat: no-repeat;
   transition: background-image 0.2s ease-in-out;
-  
+
   &.logo-longo {
+    background-size: 100px;
     background-image: url("../../../assets/img/logo-branco.png");
   }
 
   &.logo-curto {
+    background-size: 33px;
     background-image: url("../../../assets/img/logo-branco-curto.png");
   }
 }
-
 
 .content-layout-dashboard {
   margin: 10px 10px !important;

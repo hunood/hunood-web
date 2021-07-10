@@ -44,7 +44,9 @@ const DashboardLayout: FC = ({ children }) => {
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={toggle}>
 
-                <div id="logo" className={collapsed ? 'logo-curto' : 'logo-longo'}></div>
+                <div className="box-logo">
+                    <div id="logo" className={collapsed ? 'logo-curto' : 'logo-longo'}></div>
+                </div>
 
                 <Menu theme="dark" mode="inline" >
                     {menus.map((menu, key) => {

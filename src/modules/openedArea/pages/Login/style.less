@@ -1,7 +1,7 @@
 .login-tabs-panel {
   background: #ffffff;
   box-sizing: border-box;
-  min-width: 450px;
+  width: 450px;
   min-height: 380px;
   padding: 30px;
   margin: 20px;
@@ -9,24 +9,14 @@
   box-shadow: 0 0 10px #808080;
 }
 
-.login-form-forgot {
-  float: right;
+.logo-login {
+  max-width: 200px;
 }
 
-.login-icon-input > svg {
-    background: transparent;
-    color: rgba(255, 81, 0, 0.5);
-    margin-right: 5px;
-  }
-  
-  .logo-login {
-    max-width: 200px;
-  }
-  
-  @media only screen and (max-width: 550px) {
-    .login-tabs-panel {
-      width: calc(100% - 20px) !important;
-      min-width: auto;
-      margin-left: 10px;
+@media only screen and (max-width: 550px) {
+  .login-tabs-panel {
+    width: 100%;
+    min-width: 300px;
+    margin-left: 10px;
   }
 }

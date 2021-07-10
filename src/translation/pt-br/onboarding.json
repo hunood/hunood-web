@@ -6,7 +6,9 @@
     "sua-empresa": "Sua empresa",
     "conta-finalizacao": "Conta e finalização",
     "sair": "Sair",
+    "email-ja-registrado": "E-mail já registrado.",
     "autenticacao-invalida": "Autenticação inválida.",
+    "falha-autenticacao": "Não podemos autenticar seu usuário no momento, por favor, tente novamente mais tarde!",
     "reenviar": "Reenviar código",
     "aguarde": "Aguarde ({{segundos}})"
 }
