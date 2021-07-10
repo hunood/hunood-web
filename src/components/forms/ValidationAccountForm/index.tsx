@@ -23,7 +23,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ email, timerRes
     const { Text } = Typography;
     const { Search } = Input;
 
-    const { updateAuth } = useContext(AuthContext);
+    const { updateAuth, auth } = useContext(AuthContext);
     const sendCodeService = new SendCodeService().useAsHook();
 
     const timer = 60;
@@ -31,7 +31,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ email, timerRes
     const interval= React.useRef<NodeJS.Timeout>();
 
     const [counter, setCounter] = useState<number>(timerResendEmail);
-    const [email_, setEmail] = useState<string>(email);
+    const [email_, setEmail] = useState<string>(email || auth.email);
     const [visible, setVisible] = useState<boolean>(false);
 
     useEffect(() => {
