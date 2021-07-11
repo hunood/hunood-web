@@ -1,9 +1,9 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import RootRouter from './router';
 import reportWebVitals from './reportWebVitals';
 import { ConfigProvider } from 'antd';
 import { ConfigProviderProps } from 'antd/es/config-provider';
+import 'override';
 
 import ptBR from "antd/es/locale/pt_BR";
 import "moment/locale/pt-br";
