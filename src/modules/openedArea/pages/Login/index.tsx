@@ -18,40 +18,44 @@ const LoginSignUp: FC = () => {
 
     type TabsKey = 'login' | 'signup';
     const [tab, setTab] = useState<TabsKey>('login');
+    const [finish, setFinish] = useState<boolean>(false);
 
-    const onFinish = async (values: Signup & Login) => {
-        if (tab === 'login') {
-            const login = await handleLogin(values as Login) as any;
+    const login = async (values: Login) => {
+        const login = await handleLogin(values) as any;
 
-            if (!login) {
-                form.setFields([{ name: 'password', errors: [t('onboarding:falha-autenticacao')] }]);
-            }
-
-            if (login?.message) {
-                form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
-            }
-
-            form.setFields([{ name: 'username', errors: [''] }]);
-            return;
+        if (!login) {
+            form.setFields([{ name: 'password', errors: [t('onboarding:falha-autenticacao')] }]);
         }
 
-        if (tab === 'signup') {
-            await new SignupService().execute({
-                email: values.newUsername,
-                senha: values.newPassword
-            }).then(async () => {
-                await handleLogin({
-                    username: values.newUsername,
-                    password: values.newPassword,
-                    remember: false
-                });
-            }).catch((_) => {
-                form.setFields([{ name: 'newUsername', errors: [t('onboarding:email-ja-registrado')] }]);
-            });
+        if (login?.message) {
+            form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
         }
+
+        form.setFields([{ name: 'username', errors: [''] }]);
+        setFinish(true);
     };
 
-    if (authenticated) {
+    const signup = async (values: Signup) => {
+        await new SignupService().execute({
+            email: values.newUsername,
+            senha: values.newPassword
+        }).then(async () => {
+            await handleLogin({
+                username: values.newUsername,
+                password: values.newPassword,
+                remember: false
+            });
+            setFinish(true);
+        }).catch((_) => {
+            form.setFields([{ name: 'newUsername', errors: [t('onboarding:email-ja-registrado')] }]);
+        });
+    };
+
+    const onFinish = async (values: Signup & Login) => {
+        tab === 'login' ? login(values) : signup(values);
+    };
+
+    if (authenticated && finish) {
         return auth.etapaOnboarding >= 3 ? <Redirect to='/dashboard' /> : <Redirect to='/onboarding' />;
     };
 
