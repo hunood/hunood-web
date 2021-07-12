@@ -46,13 +46,18 @@ const useAuth = () => {
 
     const handleLogout = async () => {
         try {
-            new ForbidService().execute()
-                .finally(() => {
-                    setAuthenticated(false);
-                    localStorage.removeItem('@Auth:token');
-                    localStorage.removeItem('@Auth:refresh');
-                    localStorage.removeItem('@Auth:auth');
-                });
+            const cleanAuthStorage = () => {
+                setAuthenticated(false);
+                localStorage.removeItem('@Auth:token');
+                localStorage.removeItem('@Auth:refresh');
+                localStorage.removeItem('@Auth:auth');
+            };
+
+            if (localStorage.hasItem('@Auth:token') && localStorage.hasItem('@Auth:refresh')) {
+                new ForbidService().execute().finally(cleanAuthStorage);
+            } else {
+                cleanAuthStorage();
+            }
 
             return Promise.resolve(true);
         }
