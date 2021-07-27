@@ -7,10 +7,13 @@ import { Generos, TratarComo } from 'typing/enums';
 import { ContactForm, Contact } from 'components/forms';
 import { cpf } from 'cpf-cnpj-validator';
 import { t } from 'i18n';
-import './style.less'
+import moment from 'moment';
+import './style.less';
+
 interface UserFormProps {
     form: FormInstance
 }
+
 export interface User {
     cpf: string;
     nome: string;
@@ -27,7 +30,7 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
     const hoje = new Date();
     const limiteIdade = new Date(`${hoje.getFullYear() - 18}/${hoje.getMonth() + 1}/${hoje.getDate() + 1}`);
 
-    const onBlurCpf = (event: React.FocusEvent<HTMLInputElement>) => {
+    const validarInputCpf = (event: React.FocusEvent<HTMLInputElement>) => {
         if (event.target.value.length > 0 && !cpf.isValid(event.target.value)) {
             form.setFields([{ name: 'cpf', errors: [t('messages:cpf-invalido')] }])
         }
@@ -46,7 +49,7 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
                         tooltip={{ title: t('forms:user.cpf-descricao'), icon: <InfoCircleOutlined /> }}
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <MaskedInput mask="111.111.111-11" placeholder="000.000.000-00" onBlur={onBlurCpf} />
+                        <MaskedInput mask="111.111.111-11" placeholder="000.000.000-00" onBlur={validarInputCpf} />
                     </Form.Item>
                 </Col>
             </Row>
@@ -72,6 +75,7 @@ const UserForm: FC<UserFormProps> = ({ form }) => {
                             placeholder={'dd/mm/aaaa'}
                             showToday={false}
                             disabledDate={d => !d || d.isAfter(limiteIdade)}
+                            defaultValue={moment(limiteIdade, 'DD/MM/YYYY')}
                         />
                     </Form.Item>
                 </Col>
