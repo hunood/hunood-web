@@ -1,7 +1,7 @@
 import { AuthContext } from 'assets/context/AuthContext';
 import useLoader from 'assets/hooks/useLoader';
 import { SpinAnimation } from 'components/animations';
-import React, { FC, lazy, Suspense, useContext } from 'react';
+import { FC, lazy, Suspense, useContext } from 'react';
 import { BrowserRouter, Redirect, Route, RouteProps } from 'react-router-dom';
 
 export const base = {
@@ -27,6 +27,7 @@ const RootRouter: FC = () => {
                     <CustomRoute isPrivate path="/dashboard" component={DashboardModule} />
                     <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
                     <CustomRoute path="/" component={OpenedAreaModule} />
+                    <CustomRoute component={() => <Redirect exact from="*" to="/login" />} />
                 </SpinAnimation>
             </BrowserRouter>
         </Suspense>
