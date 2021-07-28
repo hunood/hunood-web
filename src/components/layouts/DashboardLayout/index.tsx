@@ -58,8 +58,8 @@ const DashboardLayout: FC = ({ children }) => {
                 </div>
             </Sider>
             <Layout className="site-layout">
-                <Header className="site-layout-background" style={{ padding: 0 }} >
-                    <Menu theme="light" mode="horizontal">
+                <Header className="site-layout-background" style={{ padding: 0, marginBottom: 10, boxShadow: '1px 1px' }} >
+                    <Menu theme="light" mode="horizontal" >
                         <Menu.Item key="1">nav 1</Menu.Item>
                         <Menu.Item key="2">nav 2</Menu.Item>
                         <Menu.Item key="3">nav 3</Menu.Item>
