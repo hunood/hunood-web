@@ -8,7 +8,6 @@ import { t } from 'i18n';
 import "./style.less";
 
 const { Header, Sider, Content } = Layout;
-
 const DashboardLayout: FC = ({ children }) => {
     React.useEffect(() => { return; });
 
@@ -36,26 +35,24 @@ const DashboardLayout: FC = ({ children }) => {
         }
     ];
 
-    function handleClick(route: string) {
-        history.push(route);
-    }
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Sider collapsible collapsed={collapsed} onCollapse={toggle}>
+            <Sider collapsible collapsed={collapsed} onCollapse={toggle} >
+                <div  id="side" className={collapsed ? 'curto' : 'longo'}>
 
                 <div className="box-logo">
-                    <div id="logo" className={collapsed ? 'logo-curto' : 'logo-longo'}></div>
+                    <div id="logo" className={collapsed ? 'curto' : 'longo'}></div>
                 </div>
 
-                <Menu theme="dark" mode="inline" >
-                    {menus.map((menu, key) => {
-                        return (<Menu.Item key={key} icon={menu.icon} onClick={() => handleClick(menu.route)}>
+                <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
+                    {menus.map((menu) => {
+                        return (<Menu.Item key={menu.route} icon={menu.icon} onClick={() => history.push(menu.route)}>
                             {menu.name}
                         </Menu.Item>);
 
                     })}
                 </Menu>
+                </div>
             </Sider>
             <Layout className="site-layout">
                 <Header className="site-layout-background header-layout-dashboard">
@@ -72,16 +69,11 @@ const DashboardLayout: FC = ({ children }) => {
                     labelCol={{ span: 24 }}
                     wrapperCol={{ span: 24 }}
                 >
-                    {children && <Content
-                        className="site-layout-background content-layout-dashboard"
-                        style={{
-                            margin: '24px 16px',
-                            padding: 24,
-                            minHeight: 280,
-                        }}
-                    >
-                        {children}
-                    </Content>}
+                    {children && (
+                        <Content className="site-layout-background content">
+                            {children}
+                        </Content>
+                    )}
                 </Form>
             </Layout>
         </Layout>
