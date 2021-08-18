@@ -1,11 +1,12 @@
 import React, { FC, useContext, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
-import { Layout, Menu } from 'antd';
-import { UserOutlined, LogoutOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { Layout, Menu, Modal } from 'antd';
+import { UserOutlined, LogoutOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
 import './style.less';
 
+const { confirm } = Modal;
 const { Sider, Content } = Layout;
 
 type MenuOption = {
@@ -26,6 +27,7 @@ const DashboardLayout: FC = ({ children }) => {
 
     const collapsedMenu = Boolean(JSON.parse(localStorage.getItem('@CollapsedMenu') || String(window.innerWidth < 500)));
     const [collapsed, setCollapsed] = useState(collapsedMenu);
+    const [selectedKeys, setSelectedKeys] = useState(history.location.pathname);
 
     const toggle = () => {
         localStorage.setItem('@CollapsedMenu', String(!collapsed));
@@ -33,6 +35,7 @@ const DashboardLayout: FC = ({ children }) => {
     };
 
     const navegar = (route: string) => {
+        setSelectedKeys(route);
         history.push(route);
     };
 
@@ -63,6 +66,26 @@ const DashboardLayout: FC = ({ children }) => {
         }
     ], []);
 
+
+    function confirmarLogout() {
+        setSelectedKeys('sair');
+        confirm({
+            title: 'Tem certeza que deseja sair?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Sim',
+            cancelText: 'Cancelar',
+            content: 'Selecione Sim para sair ou Cancelar para permanecer logado no sistema.',
+            autoFocusButton: 'cancel',
+            onOk: () => {
+                Modal.destroyAll()
+                setTimeout(handleLogout, 500);
+            },
+            onCancel() {
+                setSelectedKeys(history.location.pathname)
+            }
+        });
+    }
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={toggle} >
@@ -72,14 +95,14 @@ const DashboardLayout: FC = ({ children }) => {
                         <div id='logo' className={collapsed ? 'curto' : 'longo'}></div>
                     </div>
 
-                    <Menu theme='dark' mode='inline' defaultSelectedKeys={[history.location.pathname]}>
+                    <Menu theme='dark' mode='inline' defaultSelectedKeys={[selectedKeys]} selectedKeys={[selectedKeys]}>
                         {menus.map((menu) => {
                             return (<Menu.Item key={menu.route} icon={menu.icon} onClick={() => navegar(menu.route)}>
                                 {menu.name}
                             </Menu.Item>);
 
                         })}
-                        <Menu.Item key='sair' onClick={handleLogout} icon={<LogoutOutlined />}>
+                        <Menu.Item key='sair' onClick={confirmarLogout} icon={<LogoutOutlined />}>
                             {t('onboarding:sair')}
                         </Menu.Item>
                     </Menu>
