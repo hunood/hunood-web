@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 // Routes
 import { Onboarding } from './pages/Onboarding';
@@ -9,6 +9,7 @@ const OnboardingModule: FC = () => {
     <>
       <Switch>
         <Route exact path="/onboarding" component={Onboarding} />
+        <Redirect from="*" to="/" />
       </Switch>
     </>
   );

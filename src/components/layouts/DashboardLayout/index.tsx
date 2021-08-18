@@ -1,13 +1,23 @@
-import React, { FC, useContext, useState } from 'react';
-import { useHistory } from "react-router-dom";
-
+import React, { FC, useContext, useState, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
 import { Layout, Menu } from 'antd';
 import { UserOutlined, LogoutOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
-import "./style.less";
+import './style.less';
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
+
+type MenuOption = {
+    name: string;
+    route: string;
+    icon: JSX.Element;
+};
+
+type MenuType = MenuOption & {
+    sub: MenuOption[];
+};
+
 const DashboardLayout: FC = ({ children }) => {
     React.useEffect(() => { return; });
 
@@ -22,51 +32,62 @@ const DashboardLayout: FC = ({ children }) => {
         setCollapsed(!collapsed);
     };
 
-    const menus = [
+    const navegar = (route: string) => {
+        history.push(route);
+    };
+
+    const menus: MenuType[] = useMemo(() => [
+        {
+            name: 'Resumo',
+            route: '/dashboard',
+            icon: <AppstoreOutlined />,
+            sub: []
+        },
         {
             name: 'Estoque',
             route: '/dashboard/stock',
-            icon: <AppstoreOutlined />
+            icon: <AppstoreOutlined />,
+            sub: []
         },
         {
             name: 'Colaboradores',
             route: '/dashboard/employees',
-            icon: <UserOutlined />
+            icon: <UserOutlined />,
+            sub: []
+        },
+        {
+            name: 'Teste',
+            route: '/dashboard/teste',
+            icon: <AppstoreOutlined />,
+            sub: []
         }
-    ];
+    ], []);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={toggle} >
-                <div id="side" className={collapsed ? 'curto' : 'longo'}>
+                <div id='side' className={collapsed ? 'curto' : 'longo'}>
 
-                    <div className="box-logo">
-                        <div id="logo" className={collapsed ? 'curto' : 'longo'}></div>
+                    <div className='box-logo'>
+                        <div id='logo' className={collapsed ? 'curto' : 'longo'}></div>
                     </div>
 
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
+                    <Menu theme='dark' mode='inline' defaultSelectedKeys={[history.location.pathname]}>
                         {menus.map((menu) => {
-                            return (<Menu.Item key={menu.route} icon={menu.icon} onClick={() => history.push(menu.route)}>
+                            return (<Menu.Item key={menu.route} icon={menu.icon} onClick={() => navegar(menu.route)}>
                                 {menu.name}
                             </Menu.Item>);
 
                         })}
-                        <Menu.Item key="sair" onClick={handleLogout} icon={<LogoutOutlined />}>
+                        <Menu.Item key='sair' onClick={handleLogout} icon={<LogoutOutlined />}>
                             {t('onboarding:sair')}
                         </Menu.Item>
                     </Menu>
                 </div>
             </Sider>
-            <Layout className="site-layout">
-                <Header className="site-layout-background" style={{ padding: 0, marginBottom: 10, boxShadow: '1px 1px' }} >
-                    <Menu theme="light" mode="horizontal" >
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
-                    </Menu>
-                </Header>
+            <Layout className='site-layout'>
                 {children && (
-                    <Content className="site-layout-background content">
+                    <Content className='ant-form ant-form-vertical site-layout-background content'>
                         {children}
                     </Content>
                 )}

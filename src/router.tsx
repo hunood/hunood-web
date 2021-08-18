@@ -12,7 +12,6 @@ const OpenedAreaModule = lazy(() => import('./modules/openedArea'));
 const OnboardingModule = lazy(() => import('./modules/onboarding'));
 const DashboardModule = lazy(() => import('./modules/dashboard'));
 
-
 const RootRouter: FC = () => {
     const { isLoading } = useLoader();
 
@@ -26,8 +25,7 @@ const RootRouter: FC = () => {
                 <SpinAnimation load={isLoading}>
                     <CustomRoute isPrivate path="/dashboard" component={DashboardModule} />
                     <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
-                    <CustomRoute path="/" component={OpenedAreaModule} />
-                    <CustomRoute component={() => <Redirect exact from="*" to="/login" />} />
+                    <CustomRoute component={OpenedAreaModule} />
                 </SpinAnimation>
             </BrowserRouter>
         </Suspense>

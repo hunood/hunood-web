@@ -55,7 +55,7 @@ const LoginSignUp: FC = () => {
         tab === 'login' ? login(values) : signup(values);
     };
 
-    if (authenticated && finish) {
+    if (authenticated && (auth.id || finish)) {
         return auth.etapaOnboarding >= 3 ? <Redirect to='/dashboard' /> : <Redirect to='/onboarding' />;
     };
 
