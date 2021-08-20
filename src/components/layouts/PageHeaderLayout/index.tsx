@@ -1,34 +1,49 @@
 import React, { FC, useMemo } from 'react';
+import { useHistory } from 'react-router';
 import { PageHeader, Tabs } from 'antd';
 import './style.less';
 
 const { TabPane } = Tabs;
 
+type Tab = {
+    nome: string,
+    route: string
+}
+
 interface PageHeaderLayoutProps {
+    tabs: Tab[],
     titulo?: string,
     subTitulo?: string,
-    tabs: string[],
-    onChangeTab: (event: { tab: string, index: number }) => void;
+    onChangeTab?: (event: { tab: Tab, index: number }) => void;
 }
 
 const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, onChangeTab, children }) => {
     React.useEffect(() => { return; });
 
+    const history = useHistory();
+
     const marginTopChildren = useMemo(() => {
-        return titulo ? 120 : subTitulo ? 110 : 80
+        return titulo ? 130 : subTitulo ? 120 : 80
     }, [titulo, subTitulo]);
+
+    const navegar = (key: string) => {
+        if(onChangeTab) {
+            onChangeTab({ tab: tabs[Number(key)], index: Number(key) });
+        }
+        history.push(tabs[Number(key)].route);
+    };
 
     return (
         <>
             <PageHeader
-                className="site-page-header-responsive"
+                className="page-header"
                 title={titulo || ''}
                 subTitle={subTitulo || ''}
                 footer={
-                    <Tabs defaultActiveKey="0" onChange={(key) => onChangeTab({ tab: tabs[Number(key)], index: Number(key) })}>
-                        {tabs.map((tab: string, index: number) => {
+                    <Tabs defaultActiveKey="0" onChange={navegar}>
+                        {tabs.map((tab: Tab, index: number) => {
                             return (
-                                <TabPane tab={tab} key={index} />
+                                <TabPane tab={tab.nome} key={index} />
                             );
                         })}
                     </Tabs>

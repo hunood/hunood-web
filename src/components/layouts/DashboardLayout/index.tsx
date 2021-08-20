@@ -2,7 +2,7 @@ import React, { FC, useContext, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
 import { Layout, Menu, Modal } from 'antd';
-import { UserOutlined, LogoutOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { TeamOutlined, LogoutOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
 import './style.less';
 
@@ -20,8 +20,6 @@ type MenuType = MenuOption & {
 };
 
 const DashboardLayout: FC = ({ children }) => {
-    React.useEffect(() => { return; });
-
     const history = useHistory();
     const { handleLogout } = useContext(AuthContext);
 
@@ -41,33 +39,20 @@ const DashboardLayout: FC = ({ children }) => {
 
     const menus: MenuType[] = useMemo(() => [
         {
-            name: 'Resumo',
+            name: 'Dashboard',
             route: '/dashboard',
             icon: <AppstoreOutlined />,
             sub: []
         },
         {
-            name: 'Estoque',
-            route: '/dashboard/stock',
-            icon: <AppstoreOutlined />,
-            sub: []
-        },
-        {
-            name: 'Colaboradores',
-            route: '/dashboard/employees',
-            icon: <UserOutlined />,
-            sub: []
-        },
-        {
-            name: 'Teste',
-            route: '/dashboard/teste',
-            icon: <AppstoreOutlined />,
+            name: 'Usuários',
+            route: '/users',
+            icon: <TeamOutlined />,
             sub: []
         }
     ], []);
-
-
-    function confirmarLogout() {
+    
+    const confirmarLogout = () => {
         setSelectedKeys('sair');
         confirm({
             title: 'Tem certeza que deseja sair?',
@@ -85,6 +70,10 @@ const DashboardLayout: FC = ({ children }) => {
             }
         });
     }
+    
+    React.useEffect(() => {
+        setSelectedKeys(history.location.pathname);
+    }, [history]);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -111,7 +100,10 @@ const DashboardLayout: FC = ({ children }) => {
             <Layout className='site-layout'>
                 {children && (
                     <Content className='ant-form ant-form-vertical site-layout-background content'>
+                        {/* <PageHeaderLayout tabs={['tab 1', 'tab 2']} onChangeTab={console.log} > */}
                         {children}
+                        {/* </PageHeaderLayout > */}
+
                     </Content>
                 )}
             </Layout>

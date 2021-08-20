@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import "./style.less";
 
-const Employees: FC = () => {
+const AddUser: FC = () => {
     React.useEffect(() => { return; });
 
     return (
         <>
-            <p>Employees</p>
+            <p>AddUser</p>
             <p>---</p>
             <p>---</p>
             <p>---</p>
@@ -101,4 +101,4 @@ const Employees: FC = () => {
     );
 
 }
-export default Employees;
+export default AddUser;

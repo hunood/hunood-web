@@ -11,6 +11,7 @@ export const base = {
 const OpenedAreaModule = lazy(() => import('./modules/openedArea'));
 const OnboardingModule = lazy(() => import('./modules/onboarding'));
 const DashboardModule = lazy(() => import('./modules/dashboard'));
+const UsersModule = lazy(() => import('./modules/users'));
 
 const RootRouter: FC = () => {
     const { isLoading } = useLoader();
@@ -23,9 +24,11 @@ const RootRouter: FC = () => {
         }>
             <BrowserRouter basename={base.url}>
                 <SpinAnimation load={isLoading}>
-                    <CustomRoute isPrivate path="/dashboard" component={DashboardModule} />
-                    <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
                     <CustomRoute component={OpenedAreaModule} />
+                    <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
+                    <CustomRoute isPrivate path="/dashboard" component={DashboardModule} />
+                    <CustomRoute isPrivate path="/users" component={UsersModule} />
+                    <Redirect to='/' />
                 </SpinAnimation>
             </BrowserRouter>
         </Suspense>
