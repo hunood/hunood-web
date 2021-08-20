@@ -1,5 +1,7 @@
 import { DashboardLayout } from './DashboardLayout';
+import { PageHeaderLayout } from './PageHeaderLayout';
 
 export {
-    DashboardLayout
+    DashboardLayout,
+    PageHeaderLayout
 }
