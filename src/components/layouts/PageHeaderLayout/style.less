@@ -1,8 +1,31 @@
 .page-header {
-    position: fixed !important;
-    background: white !important;
-    width: 100% !important;
-    margin: 0px !important;
-    padding: 0 15px !important;
-    box-shadow: 0px 0px 4px 0px #001529 !important;
+  position: fixed !important;
+  background: white !important;
+  margin: 0px !important;
+  padding: 0 15px !important;
+  box-shadow: 0px 0px 4px 0px #001529 !important;
+  z-index: 1 !important;
+  transition: all 0.2s;
+}
+
+.page-header-curto {
+  width: calc(100% - 200px) !important;
+}
+
+.page-header-longo {
+  width: calc(100% - 80px) !important;
+}
+
+.content-page-header {
+  margin: 0 20px !important;
+}
+
+.footer-page-header {
+  height: 45px;
+  background: transparent;
+}
+
+.back-top {
+  bottom: -10px;
+  right: -5px;
 }

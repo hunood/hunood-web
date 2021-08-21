@@ -1,6 +1,7 @@
 import React, { FC, useContext, useState, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
+import { GlobalContext } from 'assets/context/GlobalContext';
 import { Layout, Menu, Modal } from 'antd';
 import { TeamOutlined, LogoutOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
@@ -22,15 +23,9 @@ type MenuType = MenuOption & {
 const DashboardLayout: FC = ({ children }) => {
     const history = useHistory();
     const { handleLogout } = useContext(AuthContext);
+    const { toggleMenuDashboard, isMenuOpened } = useContext(GlobalContext);
 
-    const collapsedMenu = Boolean(JSON.parse(localStorage.getItem('@CollapsedMenu') || String(window.innerWidth < 500)));
-    const [collapsed, setCollapsed] = useState(collapsedMenu);
     const [selectedKeys, setSelectedKeys] = useState(history.location.pathname);
-
-    const toggle = () => {
-        localStorage.setItem('@CollapsedMenu', String(!collapsed));
-        setCollapsed(!collapsed);
-    };
 
     const navegar = (route: string) => {
         setSelectedKeys(route);
@@ -51,7 +46,7 @@ const DashboardLayout: FC = ({ children }) => {
             sub: []
         }
     ], []);
-    
+
     const confirmarLogout = () => {
         setSelectedKeys('sair');
         confirm({
@@ -70,18 +65,18 @@ const DashboardLayout: FC = ({ children }) => {
             }
         });
     }
-    
+
     React.useEffect(() => {
         setSelectedKeys(history.location.pathname);
     }, [history]);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Sider collapsible collapsed={collapsed} onCollapse={toggle} >
-                <div id='side' className={collapsed ? 'curto' : 'longo'}>
+            <Sider collapsible collapsed={isMenuOpened} onCollapse={toggleMenuDashboard} >
+                <div id='side' className={isMenuOpened ? 'curto' : 'longo'}>
 
                     <div className='box-logo'>
-                        <div id='logo' className={collapsed ? 'curto' : 'longo'}></div>
+                        <div id='logo' className={isMenuOpened ? 'curto' : 'longo'}></div>
                     </div>
 
                     <Menu theme='dark' mode='inline' defaultSelectedKeys={[selectedKeys]} selectedKeys={[selectedKeys]}>
@@ -100,10 +95,7 @@ const DashboardLayout: FC = ({ children }) => {
             <Layout className='site-layout'>
                 {children && (
                     <Content className='ant-form ant-form-vertical site-layout-background content'>
-                        {/* <PageHeaderLayout tabs={['tab 1', 'tab 2']} onChangeTab={console.log} > */}
                         {children}
-                        {/* </PageHeaderLayout > */}
-
                     </Content>
                 )}
             </Layout>

@@ -11,6 +11,7 @@ import "moment/locale/pt-br";
 import './i18n';
 import './style.global.less';
 import { AuthProvider } from 'assets/context/AuthContext';
+import { GlobalProvider } from 'assets/context/GlobalContext';
 
 const configProviderProps: ConfigProviderProps = {
     locale: ptBR,
@@ -19,11 +20,13 @@ const configProviderProps: ConfigProviderProps = {
 
 ReactDOM.render(
     <>
-        <AuthProvider>
-            <ConfigProvider {...configProviderProps}>
-                <RootRouter />
-            </ConfigProvider>
-        </AuthProvider>
+        <GlobalProvider>
+            <AuthProvider>
+                <ConfigProvider {...configProviderProps}>
+                    <RootRouter />
+                </ConfigProvider>
+            </AuthProvider>
+        </GlobalProvider>
     </>, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function

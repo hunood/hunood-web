@@ -1,9 +1,12 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useContext } from 'react';
 import { useHistory } from 'react-router';
-import { PageHeader, Tabs } from 'antd';
+import { PageHeader, Tabs, Layout, BackTop } from 'antd';
+import { UpCircleOutlined } from '@ant-design/icons';
+import { GlobalContext } from 'assets/context/GlobalContext';
 import './style.less';
 
 const { TabPane } = Tabs;
+const { Footer } = Layout;
 
 type Tab = {
     nome: string,
@@ -21,13 +24,14 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
     React.useEffect(() => { return; });
 
     const history = useHistory();
+    const { isMenuOpened } = useContext(GlobalContext);
 
     const marginTopChildren = useMemo(() => {
         return titulo ? 130 : subTitulo ? 120 : 80
     }, [titulo, subTitulo]);
 
     const navegar = (key: string) => {
-        if(onChangeTab) {
+        if (onChangeTab) {
             onChangeTab({ tab: tabs[Number(key)], index: Number(key) });
         }
         history.push(tabs[Number(key)].route);
@@ -36,11 +40,13 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
     return (
         <>
             <PageHeader
-                className="page-header"
+                className={`page-header ${isMenuOpened ? 'page-header-longo' : 'page-header-curto'}`}
                 title={titulo || ''}
                 subTitle={subTitulo || ''}
                 footer={
-                    <Tabs defaultActiveKey="0" onChange={navegar}>
+                    <Tabs defaultActiveKey="0"
+                        tabPosition="top"
+                        onChange={navegar}>
                         {tabs.map((tab: Tab, index: number) => {
                             return (
                                 <TabPane tab={tab.nome} key={index} />
@@ -53,9 +59,13 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
             <div style={{ margin: '0 20px', marginTop: marginTopChildren }}>
                 {children}
             </div>
+            <Footer className="footer-page-header">
+                <BackTop className="back-top" visibilityHeight={50}>
+                    <div><UpCircleOutlined /></div>
+                </BackTop>
+            </Footer>
         </>
     )
 };
-
 
 export { PageHeaderLayout };
