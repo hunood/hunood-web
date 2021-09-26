@@ -9,6 +9,7 @@
     "senhas-nao-coincidem": "Os campos de senha não coincidem.",
     "email-invalido": "E-mail inválido.",
     "cpf-invalido": "CPF inválido.",
+    "cpf-ja-cadastrado": "CPF já cadastrado.",
     "cnpj-invalido": "CNPJ inválido.",
     "cep-invalido": "CEP inválido.",
     "autenticacao-invalida-nao-enviada": "Autenticação inválida, token não enviado.",
@@ -16,5 +17,4 @@
     "sera-deslogado": "Você será deslogado, por favor, entre novamente!",
     "occoreu-um-erro": "Ocorreu um erro :(",
     "codigo-invalido-ou-expirado": "Código inválido ou expirado."
-
 }

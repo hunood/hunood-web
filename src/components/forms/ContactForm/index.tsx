@@ -51,7 +51,7 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
                                             fieldKey={[field.fieldKey, "contato"]}
                                             rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                                         >
-                                            <MaskedInput mask="(11) 1 1111-1111" placeholder={t('forms:contact.contato')} />
+                                            <MaskedInput mask="(11) 1111-11111"  placeholder={t('forms:contact.contato')} />
                                         </Form.Item>
                                     </Col>
                                     <Col flex="none" sm={4} xs={4}>

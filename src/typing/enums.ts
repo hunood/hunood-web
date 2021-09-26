@@ -4,6 +4,11 @@ enum Languages {
     Spanish = "es"
 }
 
+enum TipoUsuario {
+    ADMINISTRADOR = "Administrador",
+    COLABORADOR = "Colaborador"
+}
+
 enum Generos {
     MASCULINO = "Masculino",
     FEMININO = "Feminino",
@@ -53,4 +58,4 @@ enum Estados {
     TO = "Tocantins"
 }
 
-export { TiposTelefone, Estados, Generos, Languages, TratarComo };
+export { TipoUsuario, TiposTelefone, Estados, Generos, Languages, TratarComo };

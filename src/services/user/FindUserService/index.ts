@@ -6,8 +6,8 @@ class FindUserService extends ApiService<FindUserResponse, FindUserRequest> {
   constructor() {
     super({
       config: (request: FindUserRequest) => ({
-        url: `user/find/${request.id || request.cpf}`,
-        method: 'GET',
+        url: `user/find`,
+        method: 'POST',
         data: request,
       }),
       handleLoader: false,

@@ -40,11 +40,12 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
     return (
         <>
             <PageHeader
-                className={`page-header ${isMenuOpened ? 'page-header-longo' : 'page-header-curto'}`}
+                className={`page-header ${isMenuOpened ? "page-header-longo" : "page-header-curto"}`}
                 title={titulo || ''}
                 subTitle={subTitulo || ''}
                 footer={
-                    <Tabs defaultActiveKey="0"
+                    <Tabs
+                        defaultActiveKey="0"
                         tabPosition="top"
                         onChange={navegar}>
                         {tabs.map((tab: Tab, index: number) => {
@@ -56,7 +57,7 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
                 }
             >
             </PageHeader>
-            <div style={{ margin: '0 20px', marginTop: marginTopChildren }}>
+            <div className="page-header-content" style={{ marginTop: marginTopChildren }}>
                 {children}
             </div>
             <Footer className="footer-page-header">

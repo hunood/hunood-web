@@ -4,7 +4,7 @@ import { Modal, Form, Input, Button } from 'antd';
 import { t } from 'i18n';
 import './style.less';
 
-import { FindAuthService, UpdateEmailService } from 'services/authentication';
+import { ExistsAuthService, UpdateEmailService } from 'services/authentication';
 
 interface AlterEmailModalProps {
     visible: boolean,
@@ -16,7 +16,7 @@ const AlterEmailModal: FC<AlterEmailModalProps> = ({ visible, email, onChange })
     
     React.useEffect(() => {  return; });
     
-    const findAuthService = new FindAuthService().useAsHook();
+    const existsAuthService = new ExistsAuthService().useAsHook();
     const updateEmailService = new UpdateEmailService().useAsHook();
     
     const [form] = Form.useForm();
@@ -25,15 +25,15 @@ const AlterEmailModal: FC<AlterEmailModalProps> = ({ visible, email, onChange })
     
     const handleOk = (form: { username: string }) => {
         setNovoEmail(form.username);
-        findAuthService.send({ id: form.username });
+        existsAuthService.send({ idOuEmail: form.username });
     };
 
-    findAuthService.onSuccess(() => {
+    existsAuthService.onSuccess(() => {
         form.setFields([{ name: 'username', errors: [t('modals:alter-email.email-em-uso')] }]);
         onChange({ visible: true, email: undefined });
     });
 
-    findAuthService.onError(() => {
+    existsAuthService.onError(() => {
         if (novoEmail) {
             updateEmailService.send({ email, novoEmail })
         }

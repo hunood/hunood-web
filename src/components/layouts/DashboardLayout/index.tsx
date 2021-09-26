@@ -58,7 +58,7 @@ const DashboardLayout: FC = ({ children }) => {
             autoFocusButton: 'cancel',
             onOk: () => {
                 Modal.destroyAll()
-                setTimeout(handleLogout, 500);
+                setTimeout(() => handleLogout(), 500);
             },
             onCancel() {
                 setSelectedKeys(history.location.pathname)

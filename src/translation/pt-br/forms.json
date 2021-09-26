@@ -6,7 +6,11 @@
     "nome": "Nome completo",
     "data-nascimento": "Data de nascimento",
     "genero": "Gênero",
-    "tratar-como": "Refira-se a mim como"
+    "tratar-como": "Refira-se a mim como",
+    "email": "E-mail",
+    "exemplo-email": "exemplo@email.com",
+    "genero-personalizado": "Gênero personalizado",
+    "dd-mm-aaaa": "dd/mm/aaaa"
   },
   "contact" :{
       "numero-de-contato": "Número de contato ({{index}})",

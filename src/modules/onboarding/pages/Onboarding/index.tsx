@@ -34,7 +34,7 @@ const Onboarding: FC = () => {
     const steps = [
         {
             title: t('onboarding:dados-pessoais'),
-            content: <UserForm form={form} />,
+            content: <UserForm form={form} ehOnboarding />,
             onFinish: (values: User) => userService.send(Object.assign(values))
         },
         {
@@ -70,8 +70,12 @@ const Onboarding: FC = () => {
     businessStepService.onSuccess(next);
     verificationCodeService.onSuccess(done);
 
+    userService.onError(() => {
+        form.setFields([{ name: 'cpf', errors: [t('messages:cpf-ja-cadastrado')] }]);
+    });
+
     verificationCodeService.onError(() => {
-        form.setFields([{ name: 'codigo', errors: [t('messages:codigo-invalido-ou-expirado')] }])
+        form.setFields([{ name: 'codigo', errors: [t('messages:codigo-invalido-ou-expirado')] }]);
     });
 
     sendCodeService.onFinish(() => {
@@ -115,7 +119,7 @@ const Onboarding: FC = () => {
                             </Menu.Item>
                         </Menu>
                     </Header>
-                    <Content className="content">
+                    <Content className="content-onboarding">
                         <div className="steps-content">
                             <Steps direction="horizontal" current={current} className="steps">
                                 {steps.map(item => (
