@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { AuthenticateService, AuthenticateResponse, ForbidService } from 'services/authentication';
 import Connector from 'services/_config-services/connector';
 
-interface DataAuthentication extends AuthenticateResponse { }
+interface DataAuthentication extends AuthenticateResponse {
+    accessToken: string,
+    refreshToken: string
+}
 
 const useAuth = () => {
     const [authenticated, setAuthenticated] = useState(!!localStorage.getItem('@Auth:token'));
@@ -20,7 +23,7 @@ const useAuth = () => {
             const auth = await new AuthenticateService().execute({
                 email: login.username,
                 senha: login.password
-            });
+            }) as DataAuthentication;
 
             if (auth) {
                 localStorage.setItem('@Auth:token', auth.accessToken);
@@ -52,13 +55,8 @@ const useAuth = () => {
                 localStorage.removeItem('@Auth:refresh');
                 localStorage.removeItem('@Auth:auth');
             };
-
-            if (localStorage.hasItem('@Auth:token') && localStorage.hasItem('@Auth:refresh')) {
-                new ForbidService().execute().finally(cleanAuthStorage);
-            } else {
-                cleanAuthStorage();
-            }
-
+            
+            await new ForbidService().execute().finally(cleanAuthStorage);
             return Promise.resolve(true);
         }
         catch (err) {
@@ -67,9 +65,9 @@ const useAuth = () => {
 
     };
 
-    const updateAuth = ({ ...dataAuth }: Partial<DataAuthentication>) => {
+    const updateAuth = ({ ...data }: Partial<DataAuthentication>) => {
         const auth = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
-        const newAuth = Object.assign(auth, dataAuth);
+        const newAuth = Object.assign(auth, data);
         localStorage.setItem('@Auth:auth', JSON.stringify(newAuth));
     };
 
