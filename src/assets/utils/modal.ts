@@ -5,7 +5,7 @@ class Modal {
         type: 'info' | 'error' | 'success' | 'warning',
         title: string,
         message: string,
-        seconds: number = 60,
+        seconds: number = 5,
         onOk?: () => void,
         keyboard: boolean = true
     ) {
@@ -15,7 +15,7 @@ class Modal {
         const modal = (AntModal as any)[type]({
             title: `${title}`,
             content: message,
-            okText: `Ok (${secondsToGo})`,
+            okText: `Ok (${("0" + secondsToGo).slice(-2)})`,
             keyboard,
             onOk
         });
@@ -25,12 +25,12 @@ class Modal {
             if (secondsToGo > 0) modal.update({
                 okText: `Ok (${("0" + secondsToGo).slice(-2)})`
             });
-        }, 10000);
+        }, 1000);
 
         setTimeout(() => {
             clearInterval(timer);
             modal.destroy();
-        }, secondsToGo * 1000);
+        }, (secondsToGo) * 1000);
     }
 }
 
