@@ -36,7 +36,7 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
     const limiteIdade = new Date(`${hoje.getFullYear() - 18}/${hoje.getMonth() + 1}/${hoje.getDate() + 1}`);
 
     const opcoesTipoUsuario = Object.entries(TipoUsuario).map(([value, label]) => {
-        if (ehOnboarding && label !== TipoUsuario.ADMINISTRADOR) {
+        if (ehOnboarding && label.toLocaleLowerCase() !== TipoUsuario.ADMINISTRADOR.toLocaleLowerCase()) {
             return { value, label, disabled: true };
         }
         return { value, label, disabled: false };
@@ -71,11 +71,12 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
                 <Col sm={{ span: 12 }} xs={{ span: 24 }}>
                     <Form.Item
                         name="tipoUsuario"
+                        rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
+                        initialValue={tipoUsuario}
                     >
                         <Radio.Group
                             name="tipoUsuario"
                             defaultValue={tipoUsuario}
-                            // value={tipoUsuario}
                             options={opcoesTipoUsuario}
                             onChange={(event) => setTipoUsuario(event.target.value as TipoUsuario)}
                             optionType="button"
@@ -139,6 +140,7 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
                             <Form.Item
                                 label={t('forms:user.data-nascimento')}
                                 name="dataNascimento"
+                                initialValue={moment(limiteIdade, 'YYYY-MM-DD')}
                                 rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                             >
                                 <DatePicker

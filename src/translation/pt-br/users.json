@@ -9,7 +9,7 @@
     "cpf-email-cadastrados": "CPF e e-mail já cadastrados!",
     "msg-cpf-email-cadastrados": "Deseja associar esse usuário nessa empresa?",
     "cpf-cadastrado": "CPF já cadastrado!",
-    "msg-cpf-cadasrado": "Deseja cadastrar uma nova conta de e-mail e associar a esta empresa?",
+    "msg-cpf-cadastrado": "Deseja cadastrar uma nova conta de e-mail e associar a esta empresa?",
     "email-cadastrado": "E-mail já cadastrado em outro CPF!",
     "msg-email-cadastrado": "Por favor, escolha outro e-mail ou associe o CPF correto.",
     "sucesso-associacao": "Associação com sucesso",
