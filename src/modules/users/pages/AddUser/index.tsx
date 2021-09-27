@@ -16,7 +16,7 @@ const AddUser: FC = () => {
     const [form] = Form.useForm();
     const { auth } = useContext(AuthContext);
     const [ehNovoUsuario, setEhNovoUsuario] = useState(false);
-    const [exibirSucesso, setExibirSucesso] = useState(true);
+    const [exibirSucesso, setExibirSucesso] = useState(false);
     const [dadosUsuario, setDadosUsuario] = useState({} as User);
 
     const verifyAssociationUserService = new VerifyAssociationUserService().useAsHook();
