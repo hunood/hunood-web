@@ -32,15 +32,11 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
     const [genero, setGenero] = useState<Generos>();
     const [tipoUsuario, setTipoUsuario] = useState(Object.keys(TipoUsuario)[ehOnboarding ? 0 : 1] as TipoUsuario);
 
-    // console.log('<',Object.values(TipoUsuario)[ehOnboarding ? 0 : 1]);
     const hoje = new Date();
     const limiteIdade = new Date(`${hoje.getFullYear() - 18}/${hoje.getMonth() + 1}/${hoje.getDate() + 1}`);
 
-    // const limiteIdade = new Date(moment().subtract(18, 'years').format());
-
     const opcoesTipoUsuario = Object.entries(TipoUsuario).map(([value, label]) => {
         if (ehOnboarding && label !== TipoUsuario.ADMINISTRADOR) {
-            console.log('caiu dk >>', label)
             return { value, label, disabled: true };
         }
         return { value, label, disabled: false };
@@ -50,7 +46,6 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
     const submit_ = useMemo(() => form.submit, [form]);
 
     form.submit = () => {
-        console.log('submit aqui')
         form.validateFields()
         if (validarInputCpf()) {
             submit_();
