@@ -1,27 +1,30 @@
 import React, { FC, useContext, useState } from 'react';
-import { Form, Button, Layout, Modal } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { Form, Button, Layout, Modal, Result } from 'antd';
 import { UserForm, User } from 'components/forms';
 import { VerifyAssociationUserService, CreateAndAssociateUserService } from 'services/user';
 import { AuthContext } from 'assets/context/AuthContext';
+import { t } from 'i18n';
 import "./style.less"
 
 const { Footer } = Layout;
 
 const AddUser: FC = () => {
     React.useEffect(() => { return; });
+    const history = useHistory();
 
     const [form] = Form.useForm();
     const { auth } = useContext(AuthContext);
     const [ehNovoUsuario, setEhNovoUsuario] = useState(false);
+    const [exibirSucesso, setExibirSucesso] = useState(true);
     const [dadosUsuario, setDadosUsuario] = useState({} as User);
-    
+
     const verifyAssociationUserService = new VerifyAssociationUserService().useAsHook();
     const createAndAssociateUserService = new CreateAndAssociateUserService().useAsHook();
 
     const onFinish = async (user: User) => {
-        console.log(user);
         setDadosUsuario(user);
-        if(ehNovoUsuario) {
+        if (ehNovoUsuario) {
             criarAssociacao();
         }
         else {
@@ -34,8 +37,12 @@ const AddUser: FC = () => {
     }
 
     const criarAssociacao = () => {
-        createAndAssociateUserService.send({ idEmpresa: auth.empresas[0].id, ...dadosUsuario});
+        createAndAssociateUserService.send({ idEmpresa: auth.empresas[0].id, ...dadosUsuario });
     }
+
+    createAndAssociateUserService.onSuccess(() => {
+        setExibirSucesso(true);
+    });
 
     verifyAssociationUserService.onSuccess(() => {
         const res = verifyAssociationUserService.response;
@@ -45,35 +52,35 @@ const AddUser: FC = () => {
         }
         else if (res.associadoNaEmpresa) {
             Modal.info({
-                title: 'Usuário associado nessa empresa!',
-                content: 'Este usuário já está associado nessa empresa.',
-                okText: "Fechar"
+                title: t("users:usuario-associado"),
+                content: t("users:msg-usuario-associado"),
+                okText: t("users:fechar")
             });
 
         }
         else if (res.associacao) {
             Modal.confirm({
-                title: 'CPF e e-mail já cadastrados!',
-                content: 'Deseja associar esse usuário nessa empresa?',
-                okText: "Associar",
-                cancelText: "Cancelar",
+                title: t("users:cpf-email-cadastrados"),
+                content: t("users:msg-cpf-email-cadastrados"),
+                okText: t("users:associar"),
+                cancelText: t("users:cancelar"),
                 onOk: criarAssociacao
             });
         }
         else if (res.cpfCadastrado && !res.emailCadastrado) {
             Modal.confirm({
-                title: 'CPF já cadastrado!',
-                content: 'Deseja cadastrar uma nova conta de e-mail e associar a esta empresa?',
-                okText: "Cadastrar e Associar",
-                cancelText: "Cancelar",
+                title: t("users:cpf-cadastrado"),
+                content: t("users:msg-cpf-cadastrado"),
+                okText: t("users:cadastrar-associar"),
+                cancelText: t("users:cancelar"),
                 onOk: criarAssociacao
             });
         }
         else if (res.cpfCadastrado && res.emailCadastrado) {
             Modal.info({
-                title: 'E-mail já cadastrado em outro CPF!',
-                content: 'Por favor, escolha outro e-mail ou associe o CPF correto.',
-                okText: "Fechar"
+                title: t("users:email-cadastrado"),
+                content: t("users:msg-email-cadastrado"),
+                okText: t("users:fechar")
             });
         }
     });
@@ -81,6 +88,24 @@ const AddUser: FC = () => {
     const resetarForm = () => {
         setEhNovoUsuario(false);
     };
+
+    if (exibirSucesso) {
+        return (
+            <Result
+                status="success"
+                title={t("users:sucesso-associacao")}
+                subTitle={t("users:sucesso-usuario-associado", { email: dadosUsuario.email })}
+                extra={[
+                    <Button type="primary" key="associar" onClick={() => setExibirSucesso(false)}>
+                        {t("users:nova-associacao")}
+                    </Button>,
+                    <Button key="consultar" onClick={() => history.push('/users')}>
+                        {t("users:consultar-lista-associados")}
+                    </Button>
+                ]}
+            />
+        )
+    }
 
     return (
         <>
@@ -96,12 +121,12 @@ const AddUser: FC = () => {
                 <UserForm form={form} novoUsuario={ehNovoUsuario} />
                 <Footer className="addUser-footer">
                     <Button type="primary" htmlType="submit" className="addUser-btn-add">
-                        {'Adcionar'}
+                        {t("users:associar")}
                     </Button>
 
                     {ehNovoUsuario &&
                         <Button htmlType="reset" className="addUser-btn-add" onClick={resetarForm}>
-                            {'Resetar'}
+                            {t("users:resetar")}
                         </Button>
                     }
                 </Footer>
