@@ -1,19 +1,25 @@
 {
-    "fechar": "Fechar",
-    "associar": "Associar",
-    "resetar": "Resetar",
-    "cancelar": "Cancelar",
-    "cadastrar-associar": "Cadastrar e Asssociar",
-    "usuario-associado":"Usuário associado nessa empresa!",
-    "msg-usuario-associado": "Este usuário já está associado nessa empresa.",
-    "cpf-email-cadastrados": "CPF e e-mail já cadastrados!",
-    "msg-cpf-email-cadastrados": "Deseja associar esse usuário nessa empresa?",
-    "cpf-cadastrado": "CPF já cadastrado!",
-    "msg-cpf-cadastrado": "Deseja cadastrar uma nova conta de e-mail e associar a esta empresa?",
-    "email-cadastrado": "E-mail já cadastrado em outro CPF!",
-    "msg-email-cadastrado": "Por favor, escolha outro e-mail ou associe o CPF correto.",
-    "sucesso-associacao": "Associação com sucesso",
-    "sucesso-usuario-associado": "O usuário ({{email}}) foi associado à empresa com sucesso.",
-    "nova-associacao": "Nova associação",
-    "consultar-lista-associados": "Consultar lista de associados"
+    "tabs": {
+        "gestao-usuarios": "Gestão de usuários",
+        "associacao": "Associação"
+    },
+    "addUser": {
+        "fechar": "Fechar",
+        "associar": "Associar",
+        "resetar": "Resetar",
+        "cancelar": "Cancelar",
+        "cadastrar-associar": "Cadastrar e asssociar",
+        "usuario-associado":"Usuário associado nessa empresa!",
+        "msg-usuario-associado": "Este usuário já está associado nessa empresa.",
+        "cpf-email-cadastrados": "CPF e e-mail já cadastrados!",
+        "msg-cpf-email-cadastrados": "Deseja associar esse usuário nessa empresa?",
+        "cpf-cadastrado": "CPF já cadastrado!",
+        "msg-cpf-cadastrado": "Deseja cadastrar uma nova conta de e-mail e associar a esta empresa?",
+        "email-cadastrado": "E-mail já cadastrado em outro CPF!",
+        "msg-email-cadastrado": "Por favor, escolha outro e-mail ou associe o CPF correto.",
+        "sucesso-associacao": "Associação com sucesso",
+        "sucesso-usuario-associado": "O usuário ({{email}}) foi associado à empresa com sucesso.",
+        "nova-associacao": "Nova associação",
+        "consultar-lista-associados": "Consultar lista de associados"
+    }
 }

@@ -1,8 +1,12 @@
 import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// Routes
+// Pages
 import { Onboarding } from './pages/Onboarding';
+
+export const onboardingPaths = [
+  "/onboarding"
+];
 
 const OnboardingModule: FC = () => {
   return (

@@ -8,7 +8,8 @@ import {
     onboardingBR,
     formsBR,
     modalsBR,
-    usersBR
+    usersBR,
+    dashboardBR
 } from './translation';
 
 const options = {
@@ -24,7 +25,8 @@ const options = {
             onboarding: onboardingBR,
             forms: formsBR,
             modals: modalsBR,
-            users: usersBR
+            users: usersBR,
+            dashboard: dashboardBR
         }
     }
 };

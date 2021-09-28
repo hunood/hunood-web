@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useContext } from 'react';
+import React, { FC, useMemo, useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import { PageHeader, Tabs, Layout, BackTop } from 'antd';
 import { UpCircleOutlined } from '@ant-design/icons';
@@ -24,6 +24,9 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
     React.useEffect(() => { return; });
 
     const history = useHistory();
+    const tab = tabs.map(tab => tab.route).indexOf(history.location.pathname);
+
+    const [tabSelecionada, setTabSelecionada] = useState(tab.toString());
     const { isMenuOpened } = useContext(GlobalContext);
 
     const marginTopChildren = useMemo(() => {
@@ -34,6 +37,7 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
         if (onChangeTab) {
             onChangeTab({ tab: tabs[Number(key)], index: Number(key) });
         }
+        setTabSelecionada(Number(key).toString());
         history.push(tabs[Number(key)].route);
     };
 
@@ -45,9 +49,10 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
                 subTitle={subTitulo || ''}
                 footer={
                     <Tabs
-                        defaultActiveKey="0"
+                        defaultActiveKey={tabSelecionada}
                         tabPosition="top"
-                        onChange={navegar}>
+                        onChange={navegar}
+                    >
                         {tabs.map((tab: Tab, index: number) => {
                             return (
                                 <TabPane tab={tab.nome} key={index} />

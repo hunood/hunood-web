@@ -6,6 +6,7 @@ import { VerifyAssociationUserService, CreateAndAssociateUserService } from 'ser
 import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
 import "./style.less"
+import { TipoUsuario } from 'typing/enums';
 
 const { Footer } = Layout;
 
@@ -53,40 +54,44 @@ const AddUser: FC = () => {
         }
         else if (res.associadoNaEmpresa) {
             Modal.info({
-                title: t("users:usuario-associado"),
-                content: t("users:msg-usuario-associado"),
-                okText: t("users:fechar")
+                title: t("users:addUser.usuario-associado"),
+                content: t("users:addUser.msg-usuario-associado"),
+                okText: t("users:addUser.fechar")
             });
 
         }
         else if (res.associacao) {
             Modal.confirm({
-                title: t("users:cpf-email-cadastrados"),
-                content: t("users:msg-cpf-email-cadastrados"),
-                okText: t("users:associar"),
-                cancelText: t("users:cancelar"),
+                title: t("users:addUser.cpf-email-cadastrados"),
+                content: t("users:addUser.msg-cpf-email-cadastrados"),
+                okText: t("users:addUser.associar"),
+                cancelText: t("users:addUser.cancelar"),
                 onOk: criarAssociacao
             });
         }
         else if (res.cpfCadastrado && !res.emailCadastrado) {
             Modal.confirm({
-                title: t("users:cpf-cadastrado"),
-                content: t("users:msg-cpf-cadastrado"),
-                okText: t("users:cadastrar-associar"),
-                cancelText: t("users:cancelar"),
+                title: t("users:addUser.cpf-cadastrado"),
+                content: t("users:addUser.msg-cpf-cadastrado"),
+                okText: t("users:addUser.cadastrar-associar"),
+                cancelText: t("users:addUser.cancelar"),
                 onOk: criarAssociacao
             });
         }
         else if (res.cpfCadastrado && res.emailCadastrado) {
             Modal.info({
-                title: t("users:email-cadastrado"),
-                content: t("users:msg-email-cadastrado"),
-                okText: t("users:fechar")
+                title: t("users:addUser.email-cadastrado"),
+                content: t("users:addUser.msg-email-cadastrado"),
+                okText: t("users:addUser.fechar")
             });
         }
     });
 
     const resetarForm = () => {
+        form.resetFields();
+        form.setFieldsValue({
+            tipoUsuario: TipoUsuario.COLABORADOR.toUpperCase()
+        })
         setEhNovoUsuario(false);
     };
 
@@ -94,14 +99,14 @@ const AddUser: FC = () => {
         return (
             <Result
                 status="success"
-                title={t("users:sucesso-associacao")}
-                subTitle={t("users:sucesso-usuario-associado", { email: dadosUsuario.email })}
+                title={t("users:addUser.sucesso-associacao")}
+                subTitle={t("users:addUser.sucesso-usuario-associado", { email: dadosUsuario.email })}
                 extra={[
                     <Button type="primary" key="associar" onClick={() => setExibirSucesso(false)}>
-                        {t("users:nova-associacao")}
+                        {t("users:addUser.nova-associacao")}
                     </Button>,
                     <Button key="consultar" onClick={() => history.push('/users')}>
-                        {t("users:consultar-lista-associados")}
+                        {t("users:addUser.consultar-lista-associados")}
                     </Button>
                 ]}
             />
@@ -122,12 +127,12 @@ const AddUser: FC = () => {
                 <UserForm form={form} novoUsuario={ehNovoUsuario} />
                 <Footer className="addUser-footer">
                     <Button type="primary" htmlType="submit" className="addUser-btn-add">
-                        {t("users:associar")}
+                        {t("users:addUser.associar")}
                     </Button>
 
                     {ehNovoUsuario &&
                         <Button htmlType="reset" className="addUser-btn-add" onClick={resetarForm}>
-                            {t("users:resetar")}
+                            {t("users:addUser.resetar")}
                         </Button>
                     }
                 </Footer>

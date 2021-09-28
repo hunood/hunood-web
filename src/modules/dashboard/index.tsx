@@ -2,8 +2,12 @@ import { DashboardLayout } from 'components/layouts';
 import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// Routes
+// Pages
 import Welcome from './pages/Welcome';
+
+export const dashboardPaths = [
+  "/dashboard"
+];
 
 const DashboardModule: FC = () => {
   return (

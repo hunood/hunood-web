@@ -9,5 +9,10 @@
     "esqueci-minha-senha": "Esqueci minha senha",
     "entrar": "Entrar",
     "iniciar": "Iniciar"
+  },
+  "page404": {
+    "pagina-nao-encontrada": "404 - Página não encontrada",
+    "msg-pagina-nao-encontrada": "Você será redirecionado automaticamente em alguns segundos.",
+    "ir-para-inicio": "Ir para o início"
   }
 }

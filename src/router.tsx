@@ -1,8 +1,9 @@
-import { AuthContext } from 'assets/context/AuthContext';
-import useLoader from 'assets/hooks/useLoader';
-import { SpinAnimation } from 'components/animations';
 import { FC, lazy, Suspense, useContext } from 'react';
 import { BrowserRouter, Redirect, Route, RouteProps } from 'react-router-dom';
+import { AuthContext } from 'assets/context/AuthContext';
+import { SpinAnimation } from 'components/animations';
+import { routerPaths } from 'modules/paths';
+import useLoader from 'assets/hooks/useLoader';
 
 export const base = {
     url: '/'
@@ -28,7 +29,9 @@ const RootRouter: FC = () => {
                     <CustomRoute isPrivate path="/onboarding" component={OnboardingModule} />
                     <CustomRoute isPrivate path="/dashboard" component={DashboardModule} />
                     <CustomRoute isPrivate path="/users" component={UsersModule} />
-                    <Redirect to='/' />
+                    <Route path="*" children={({ match }) => {
+                        return (routerPaths.indexOf(match?.url || '') === -1) && <Redirect to='/404' />
+                    }} />
                 </SpinAnimation>
             </BrowserRouter>
         </Suspense>

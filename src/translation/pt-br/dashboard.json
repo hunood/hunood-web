@@ -1,0 +1,13 @@
+{
+  "menu": {
+    "dashboard": "Dashboard",
+    "usuarios": "Usuários"
+  },
+  "layout": {
+    "sim": "Sim",
+    "cancelar": "Cancelar",
+    "sair": "Sair",
+    "tem-certeza-sair": "Tem certeza que deseja sair?",
+    "selecione-sim-sair": "Selecione Sim para sair ou Cancelar para permanecer logado no sistema."
+  }
+}

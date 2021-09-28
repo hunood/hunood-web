@@ -4,6 +4,7 @@ import onboardingBR from './pt-br/onboarding.json';
 import formsBR from './pt-br/forms.json';
 import modalsBR from './pt-br/modals.json';
 import usersBR from './pt-br/users.json';
+import dashboardBR from './pt-br/dashboard.json';
 
 export {
     openedAreaBR,
@@ -11,5 +12,6 @@ export {
     onboardingBR,
     formsBR,
     modalsBR,
-    usersBR
+    usersBR,
+    dashboardBR
 };

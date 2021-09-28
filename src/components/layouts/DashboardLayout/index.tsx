@@ -22,10 +22,11 @@ type MenuType = MenuOption & {
 
 const DashboardLayout: FC = ({ children }) => {
     const history = useHistory();
+    const pathname = '/' + history.location.pathname.split('/')[1];
+    const [selectedKeys, setSelectedKeys] = useState(pathname);
+
     const { handleLogout } = useContext(AuthContext);
     const { toggleMenuDashboard, isMenuOpened } = useContext(GlobalContext);
-
-    const [selectedKeys, setSelectedKeys] = useState(history.location.pathname);
 
     const navegar = (route: string) => {
         setSelectedKeys(route);
@@ -34,13 +35,13 @@ const DashboardLayout: FC = ({ children }) => {
 
     const menus: MenuType[] = useMemo(() => [
         {
-            name: 'Dashboard',
+            name: t("dashboard:menu.dashboard"),
             route: '/dashboard',
             icon: <AppstoreOutlined />,
             sub: []
         },
         {
-            name: 'Usuários',
+            name: t("dashboard:menu.usuarios"),
             route: '/users',
             icon: <TeamOutlined />,
             sub: []
@@ -50,25 +51,25 @@ const DashboardLayout: FC = ({ children }) => {
     const confirmarLogout = () => {
         setSelectedKeys('sair');
         confirm({
-            title: 'Tem certeza que deseja sair?',
+            title: t("dashboard:layout.tem-certeza-sair"),
             icon: <ExclamationCircleOutlined />,
-            okText: 'Sim',
-            cancelText: 'Cancelar',
-            content: 'Selecione Sim para sair ou Cancelar para permanecer logado no sistema.',
+            okText: t("dashboard:layout.sim"),
+            cancelText: t("dashboard:layout.cancelar"),
+            content: t("dashboard:layout.selecione-sim-sair"),
             autoFocusButton: 'cancel',
             onOk: () => {
                 Modal.destroyAll()
                 setTimeout(() => handleLogout(), 500);
             },
             onCancel() {
-                setSelectedKeys(history.location.pathname)
+                setSelectedKeys(pathname);
             }
         });
     }
 
     React.useEffect(() => {
-        setSelectedKeys(history.location.pathname);
-    }, [history]);
+        setSelectedKeys(pathname);
+    }, [pathname]);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -87,7 +88,7 @@ const DashboardLayout: FC = ({ children }) => {
 
                         })}
                         <Menu.Item key='sair' onClick={confirmarLogout} icon={<LogoutOutlined />}>
-                            {t('onboarding:sair')}
+                            {t('dashboard:layout.sair')}
                         </Menu.Item>
                     </Menu>
                 </div>
