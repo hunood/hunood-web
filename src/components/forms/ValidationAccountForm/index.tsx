@@ -105,6 +105,7 @@ const ValidationAccountForm: FC<ValidationAccountFormProps> = ({ email, timerRes
                             enterButton={counter > 0 ? t('onboarding:aguarde', { segundos: ("0" + counter).slice(-2) })
                                 : t('onboarding:reenviar')} style={{ height: 50 }} loading={counter > 0}
                             onSearch={resend}
+                            className="btn-reenviar"
                         />
                     </Form.Item>
                 </Col>
