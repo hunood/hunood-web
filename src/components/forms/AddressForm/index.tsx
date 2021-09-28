@@ -14,13 +14,13 @@ interface AddressFormProps {
     form: FormInstance
 }
 export interface Address {
-    cep_logradouro: string;
-    nome_logradouro: string;
-    numero_logradouro: string;
-    complemento_logradouro?: string;
-    bairro_logradouro: string;
-    cidade_logradouro: string;
-    estado_logradouro: string;
+    cepLogradouro: string;
+    nomeLogradouro: string;
+    numeroLogradouro: string;
+    complementoLogradouro?: string;
+    bairroLogradouro: string;
+    cidadeLogradouro: string;
+    estadoLogradouro: string;
 }
 
 const AddressForm: FC<AddressFormProps> = ({ form }) => {
@@ -31,24 +31,24 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
 
         if (response) {
             form.setFieldsValue({
-                nome_logradouro: response.logradouro,
-                bairro_logradouro: response.bairro,
-                cidade_logradouro: response.localidade,
-                estado_logradouro: response.uf
+                nomeLogradouro: response.logradouro,
+                bairroLogradouro: response.bairro,
+                cidadeLogradouro: response.localidade,
+                estadoLogradouro: response.uf
             });
         }
     })
 
     cepService.onError(() => {
         form.setFieldsValue({
-            nome_logradouro: null,
-            bairro_logradouro: null,
-            cidade_logradouro: null,
-            estado_logradouro: null,
+            nomeLogradouro: null,
+            bairroLogradouro: null,
+            cidadeLogradouro: null,
+            estadoLogradouro: null,
         });
         
         form.setFields([{
-            name: 'cep_logradouro',
+            name: 'cepLogradouro',
             errors: [t('messages:cep-invalido')]
         }])
     })
@@ -70,7 +70,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
 
                     <Form.Item
                         label={t('forms:address.CEP')}
-                        name="cep_logradouro"
+                        name="cepLogradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <MaskedInput mask="11111-111" placeholder='000000-000' onChange={(event) => findCEP(event.target.value)} />
@@ -82,7 +82,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                 <Col sm={{ span: 12 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:address.logradouro')}
-                        name="nome_logradouro"
+                        name="nomeLogradouro"
                         tooltip={{ title: t('forms:address.logradouro-descricao'), icon: <InfoCircleOutlined /> }}
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
@@ -92,7 +92,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                 <Col sm={{ span: 5 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:address.numero')}
-                        name="numero_logradouro"
+                        name="numeroLogradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <InputNumber min={0} style={{ width: '100%' }} />
@@ -101,7 +101,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                 <Col sm={{ span: 7 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:address.complemento')}
-                        name="complemento_logradouro"
+                        name="complementoLogradouro"
                         rules={[{ required: false }]}
                     >
                         <Input />
@@ -113,7 +113,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                 <Col sm={{ span: 10 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:address.bairro')}
-                        name="bairro_logradouro"
+                        name="bairroLogradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <Input />
@@ -122,7 +122,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                 <Col sm={{ span: 8 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:address.cidade')}
-                        name="cidade_logradouro"
+                        name="cidadeLogradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
                         <Input />
@@ -131,10 +131,10 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                 <Col sm={{ span: 6 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('forms:address.estado')}
-                        name="estado_logradouro"
+                        name="estadoLogradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <Select id="address_estado_logradouro" allowClear>
+                        <Select id="address_estadoLogradouro" allowClear>
                             {Object.entries(Estados).map(([value, text]) => {
                                 return <Select.Option key={value} value={value}>{text}</Select.Option>;
                             })}
