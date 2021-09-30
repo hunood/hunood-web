@@ -45,6 +45,12 @@ const DashboardLayout: FC = ({ children }) => {
             route: '/users',
             icon: <TeamOutlined />,
             sub: []
+        },
+        {
+            name: t("alterar-empresa"),
+            route: '/business/select',
+            icon: <TeamOutlined />,
+            sub: []
         }
     ], []);
 

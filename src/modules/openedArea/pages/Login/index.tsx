@@ -18,7 +18,6 @@ const LoginSignUp: FC = () => {
 
     type TabsKey = 'login' | 'signup';
     const [tab, setTab] = useState<TabsKey>('login');
-    const [finish, setFinish] = useState<boolean>(false);
 
     const login = async (values: Login) => {
         const login = await handleLogin(values) as any;
@@ -32,7 +31,6 @@ const LoginSignUp: FC = () => {
         }
 
         form.setFields([{ name: 'username', errors: [''] }]);
-        setFinish(true);
     };
 
     const signup = async (values: Signup) => {
@@ -45,7 +43,6 @@ const LoginSignUp: FC = () => {
                 password: values.newPassword,
                 remember: false
             });
-            setFinish(true);
         }).catch((_) => {
             form.setFields([{ name: 'newUsername', errors: [t('onboarding:email-ja-registrado')] }]);
         });
@@ -55,8 +52,16 @@ const LoginSignUp: FC = () => {
         tab === 'login' ? login(values) : signup(values);
     };
 
-    if (authenticated && (auth.id || finish)) {
-        return auth.etapaOnboarding >= 3 ? <Redirect to='/dashboard' /> : <Redirect to='/onboarding' />;
+    if (authenticated && auth.id) {
+        if (auth.etapaOnboarding >= 3 && auth.empresas.length > 1) {
+            return <Redirect to='/business/select' />;
+        }
+        else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1) {
+            return <Redirect to='/dashboard' />;
+        }
+        else {
+            return <Redirect to='/onboarding' />;
+        }
     };
 
     return (

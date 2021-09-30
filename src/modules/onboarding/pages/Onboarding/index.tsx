@@ -25,7 +25,7 @@ const Onboarding: FC = () => {
     const sendCodeService = new SendCodeService().useAsHook();
     const verificationCodeService = new VerificationCodeService().useAsHook();
 
-    const [current, setCurrent] = useState<number>(0);
+    const [current, setCurrent] = useState<number>(auth.etapaOnboarding);
     const [timerResendEmail, setTimerResendEmail] = useState<number>(0);
     const [redirectDashboard, setRedirectDashboard] = useState<boolean>(false);
     const [form] = Form.useForm();
@@ -85,11 +85,6 @@ const Onboarding: FC = () => {
     React.useEffect(() => {
         updateAuth({ etapaOnboarding: current });
     }, [current, updateAuth]);
-
-    React.useEffect(() => {
-        setCurrent(auth?.etapaOnboarding || 0);
-        return;
-    }, [auth]);
 
     if (redirectDashboard) {
         return <Redirect to='/dashboard' />;

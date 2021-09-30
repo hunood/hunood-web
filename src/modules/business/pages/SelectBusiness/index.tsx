@@ -15,9 +15,10 @@ const SelectBusiness: FC = () => {
     const empresas = auth.empresas.slice().sort(dynamicSort('nomeFantasia'));
 
     const atualizarEmpresa = (empresa: Empresa) => {
-        empresas.splice(empresas.indexOf(empresa), 1);
-        empresas.unshift(empresa);
-        updateAuth({ empresas });
+        const novaOrdem = auth.empresas.slice();
+        novaOrdem.splice(novaOrdem.indexOf(empresa), 1);
+        novaOrdem.unshift(empresa);
+        updateAuth({ empresas: novaOrdem });
         history.push('/dashboard');
     }
 

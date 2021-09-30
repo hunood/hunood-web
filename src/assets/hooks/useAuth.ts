@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AuthenticateService, AuthenticateResponse, ForbidService } from 'services/authentication';
 import Connector from 'services/_config-services/connector';
+import { BehaviorSubject } from 'rxjs';
 
 interface DataAuthentication extends AuthenticateResponse {
     accessToken: string,
@@ -9,14 +10,32 @@ interface DataAuthentication extends AuthenticateResponse {
 
 const useAuth = () => {
     const [authenticated, setAuthenticated] = useState(!!localStorage.getItem('@Auth:token'));
+    const [auth, setAuth] = useState({} as DataAuthentication);
+    const observableAuth = new BehaviorSubject<DataAuthentication>(auth).asObservable();
+
+    const getAuth = () => {
+        const auth_ = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
+        auth_.accessToken = localStorage.getItem('@Auth:token') || '';
+        auth_.refreshToken = localStorage.getItem('@Auth:refresh') || '';
+        return auth_;
+    };
 
     useEffect(() => {
-        const token = localStorage.getItem('@Auth:token');
+        const subscription = observableAuth.subscribe(setAuth);
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [observableAuth]);
 
-        if (token) {
+    useEffect(() => {
+        const auth_ = getAuth();
+        setAuth(getAuth());
+
+        if (auth_.accessToken) {
             setAuthenticated(true);
         }
     }, []);
+
 
     const handleLogin = async (login: { username: string, password: string, remember: boolean }) => {
         try {
@@ -29,9 +48,10 @@ const useAuth = () => {
                 localStorage.setItem('@Auth:token', auth.accessToken);
                 localStorage.setItem('@Auth:refresh', auth.refreshToken);
                 localStorage.setItem('@Auth:auth', JSON.stringify(auth));
+                setAuth(auth);
+                setAuthenticated(true);
             }
 
-            setAuthenticated(true);
 
             Connector
                 .getInstance()
@@ -55,7 +75,7 @@ const useAuth = () => {
                 localStorage.removeItem('@Auth:refresh');
                 localStorage.removeItem('@Auth:auth');
             };
-            
+
             await new ForbidService().execute().finally(cleanAuthStorage);
             return Promise.resolve(true);
         }
@@ -69,14 +89,9 @@ const useAuth = () => {
         const auth = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
         const newAuth = Object.assign(auth, data);
         localStorage.setItem('@Auth:auth', JSON.stringify(newAuth));
+        setAuth(getAuth());
     };
 
-    const auth = (() => {
-        const auth_ = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
-        auth_.accessToken = localStorage.getItem('@Auth:token') || '';
-        auth_.refreshToken = localStorage.getItem('@Auth:refresh') || '';
-        return auth_;
-    })();
 
     return { authenticated, auth, handleLogin, handleLogout, updateAuth };
 }

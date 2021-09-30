@@ -4,20 +4,17 @@ import { Switch, Route } from 'react-router-dom';
 
 // Pages
 import Dashboard from './pages/Dashboard';
-import SelectBusiness from './pages/SelectBusiness';
 
 export const dashboardPaths = [
-  "/dashboard",
-  "/entering"
+  "/dashboard"
 ];
 
 const DashboardModule: FC = () => {
   return (
     <>
       <Switch>
-        <Route exact path="/entering" component={SelectBusiness} />
         <DashboardLayout>
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path={dashboardPaths[0]} component={Dashboard} />
         </DashboardLayout>
       </Switch>
     </>

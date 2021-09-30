@@ -11,7 +11,7 @@ function useMenuDashboard() {
 
     const toggleMenuDashboard = () => {
         localStorage.setItem('@CollapsedMenu', String(!collapsedMenu));
-        setIsMenuOpened(!collapsedMenu)       
+        setIsMenuOpened(!collapsedMenu);    
     };
     
     useEffect(() => {
