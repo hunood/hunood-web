@@ -74,4 +74,4 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
     )
 };
 
-export { PageHeaderLayout };
+export default PageHeaderLayout;

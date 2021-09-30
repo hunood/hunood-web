@@ -1,7 +1,6 @@
 import React, { FC, useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Form, Steps, Layout, Menu } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import { Button, Form, Steps, Layout } from 'antd';
 import { t } from 'i18n';
 import './style.less';
 
@@ -13,18 +12,18 @@ import {
 
 import { UserStepService, BusinessStepService, SendCodeService, VerificationCodeService } from 'services/onboarding';
 import { AuthContext } from 'assets/context/AuthContext';
+import { SimpleHeaderLayout } from 'components/layouts';
+
+const { Step } = Steps;
+const { Content, Footer } = Layout;
 
 const Onboarding: FC = () => {
-
-    const { handleLogout, updateAuth, auth, authenticated } = useContext(AuthContext);
+    const { updateAuth, auth, authenticated } = useContext(AuthContext);
 
     const userService = new UserStepService().useAsHook();
     const businessStepService = new BusinessStepService().useAsHook();
     const sendCodeService = new SendCodeService().useAsHook();
     const verificationCodeService = new VerificationCodeService().useAsHook();
-
-    const { Step } = Steps;
-    const { Header, Content, Footer } = Layout;
 
     const [current, setCurrent] = useState<number>(0);
     const [timerResendEmail, setTimerResendEmail] = useState<number>(0);
@@ -111,14 +110,7 @@ const Onboarding: FC = () => {
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
             >
-                <Layout className="layout-100 box">
-                    <Header className="site-layout-background header-logout">
-                        <Menu theme='dark'>
-                            <Menu.Item key="1" onClick={handleLogout}>
-                                {t('onboarding:sair')} &nbsp;<LogoutOutlined />
-                            </Menu.Item>
-                        </Menu>
-                    </Header>
+                <SimpleHeaderLayout>
                     <Content className="content-onboarding">
                         <div className="steps-content">
                             <Steps direction="horizontal" current={current} className="steps">
@@ -134,7 +126,7 @@ const Onboarding: FC = () => {
                             {current < steps.length - 1 ? t('onboarding:proximo') : t('onboarding:finalizar')}
                         </Button>
                     </Footer>
-                </Layout>
+                </SimpleHeaderLayout>
             </Form>
         </>
     );

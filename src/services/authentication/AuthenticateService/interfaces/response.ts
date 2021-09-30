@@ -3,6 +3,7 @@ import { Enums } from "typing"
 
 export type Empresa = {
   id: string,
+  nomeFantasia: string,
   tipoUsuario: keyof typeof Enums.TipoUsuario
 }
 

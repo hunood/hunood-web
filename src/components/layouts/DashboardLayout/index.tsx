@@ -104,4 +104,4 @@ const DashboardLayout: FC = ({ children }) => {
     );
 
 }
-export { DashboardLayout };
+export default DashboardLayout;
