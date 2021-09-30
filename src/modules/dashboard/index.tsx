@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // Pages
-import Welcome from './pages/Welcome';
+import Dashboard from './pages/Dashboard';
 import SelectBusiness from './pages/SelectBusiness';
 
 export const dashboardPaths = [
@@ -17,7 +17,7 @@ const DashboardModule: FC = () => {
       <Switch>
         <Route exact path="/entering" component={SelectBusiness} />
         <DashboardLayout>
-          <Route exact path="/dashboard" component={Welcome} />
+          <Route exact path="/dashboard" component={Dashboard} />
         </DashboardLayout>
       </Switch>
     </>

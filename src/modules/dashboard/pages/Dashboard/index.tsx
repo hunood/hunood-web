@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Empty } from 'antd';
 import "./style.less";
 
-const Welcome: FC = () => {
+const Dashboard: FC = () => {
     React.useEffect(() => { return; });
 
     return (
@@ -14,4 +14,4 @@ const Welcome: FC = () => {
     );
 
 }
-export default Welcome;
+export default Dashboard;
