@@ -33,8 +33,6 @@ const SelectBusiness: FC = () => {
         }
     };
 
-    console.log()
-
     return (
         <SimpleHeaderLayout>
             <div className="site-card-wrapper" style={{ margin: 20 }}>

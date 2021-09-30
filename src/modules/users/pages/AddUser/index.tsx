@@ -24,7 +24,6 @@ const AddUser: FC = () => {
     const createAndAssociateUserService = new CreateAndAssociateUserService().useAsHook();
 
     const onFinish = async (user: User) => {
-        console.log(user);
         setDadosUsuario(user);
         if (ehNovoUsuario) {
             criarAssociacao();
