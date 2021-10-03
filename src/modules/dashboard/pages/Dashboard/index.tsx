@@ -4,14 +4,9 @@ import { AuthContext } from 'assets/context/AuthContext';
 import "./style.less";
 
 const Dashboard: FC = () => {
+    React.useEffect(() => { return; });
+
     const { auth } = useContext(AuthContext);
-    // const [nomeEmpresa, setNomeEmpresa] = React.useState(auth2().empresas[0].nomeFantasia);
-    React.useEffect(() => { 
-        // setNomeEmpresa(auth2().empresas[0].nomeFantasia);
-        
-    },[]);
-    
-    console.log(auth);
 
     return (
         <Empty

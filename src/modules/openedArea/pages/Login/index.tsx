@@ -20,13 +20,13 @@ const LoginSignUp: FC = () => {
     const [tab, setTab] = useState<TabsKey>('login');
 
     const login = async (values: Login) => {
-        const login = await handleLogin(values) as any;
+        const login = await handleLogin(values);
 
         if (!login) {
             form.setFields([{ name: 'password', errors: [t('onboarding:falha-autenticacao')] }]);
         }
 
-        if (login?.message) {
+        if ((login as any)?.message) {
             form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
         }
 
@@ -53,7 +53,7 @@ const LoginSignUp: FC = () => {
     };
 
     if (authenticated && auth.id) {
-        if (auth.etapaOnboarding >= 3 && auth.empresas.length > 1) {
+        if (auth?.etapaOnboarding >= 3 && auth?.empresas.length > 1) {
             return <Redirect to='/business/select' />;
         }
         else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1) {

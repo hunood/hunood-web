@@ -40,6 +40,10 @@ export default (() => {
         }
 
         Storage.prototype.hasItem = function (key: string): boolean {
+            if (key.includes('@Auth:')) {
+                return _getItem.apply(this, [key]) !== null;
+            }
+
             const id = JSON.parse(localStorage.getItem('@Auth:auth') || '{}').id || '';
             return _getItem.apply(this, [`${id}_${key}`]) !== null;
         }

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { AuthenticateService, AuthenticateResponse, ForbidService } from 'services/authentication';
-import Connector from 'services/_config-services/connector';
 import { BehaviorSubject } from 'rxjs';
+import { AuthenticateService, AuthenticateResponse, ForbidService } from 'services/authentication';
+import { Usuario } from 'services/authentication/AuthenticateService/interfaces/response';
+import Connector from 'services/_config-services/connector';
 
 interface DataAuthentication extends AuthenticateResponse {
     accessToken: string,
@@ -9,8 +10,19 @@ interface DataAuthentication extends AuthenticateResponse {
 }
 
 const useAuth = () => {
-    const [authenticated, setAuthenticated] = useState(!!localStorage.getItem('@Auth:token'));
-    const [auth, setAuth] = useState({} as DataAuthentication);
+    const initialAuth: DataAuthentication = {
+        accessToken: '',
+        refreshToken: '',
+        id: '',
+        email: '',
+        emailValido: false,
+        etapaOnboarding: 0,
+        empresas: [],
+        usuario: {} as Usuario,
+    };
+
+    const [authenticated, setAuthenticated] = useState<boolean>(localStorage.hasItem('@Auth:token'));
+    const [auth, setAuth] = useState<DataAuthentication>(initialAuth);
     const observableAuth = new BehaviorSubject<DataAuthentication>(auth).asObservable();
 
     const getAuth = () => {
@@ -22,20 +34,24 @@ const useAuth = () => {
 
     useEffect(() => {
         const subscription = observableAuth.subscribe(setAuth);
+
+        if (Boolean(auth.accessToken) !== authenticated) {
+            setAuthenticated(Boolean(auth.accessToken));
+        }
+
         return () => {
             subscription.unsubscribe();
         };
-    }, [observableAuth]);
+    }, [observableAuth, authenticated, auth.accessToken]);
 
     useEffect(() => {
         const auth_ = getAuth();
         setAuth(getAuth());
-
+        
         if (auth_.accessToken) {
             setAuthenticated(true);
         }
     }, []);
-
 
     const handleLogin = async (login: { username: string, password: string, remember: boolean }) => {
         try {
@@ -49,9 +65,7 @@ const useAuth = () => {
                 localStorage.setItem('@Auth:refresh', auth.refreshToken);
                 localStorage.setItem('@Auth:auth', JSON.stringify(auth));
                 setAuth(auth);
-                setAuthenticated(true);
             }
-
 
             Connector
                 .getInstance()
@@ -70,10 +84,10 @@ const useAuth = () => {
     const handleLogout = async () => {
         try {
             const cleanAuthStorage = () => {
-                setAuthenticated(false);
                 localStorage.removeItem('@Auth:token');
                 localStorage.removeItem('@Auth:refresh');
                 localStorage.removeItem('@Auth:auth');
+                setAuth(initialAuth);
             };
 
             await new ForbidService().execute().finally(cleanAuthStorage);
@@ -91,7 +105,6 @@ const useAuth = () => {
         localStorage.setItem('@Auth:auth', JSON.stringify(newAuth));
         setAuth(getAuth());
     };
-
 
     return { authenticated, auth, handleLogin, handleLogout, updateAuth };
 }
