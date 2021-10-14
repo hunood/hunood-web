@@ -1,7 +1,10 @@
 import React, { FC, useMemo, useContext, useState } from 'react';
 import { useHistory } from 'react-router';
-import { PageHeader, Tabs, Layout, BackTop } from 'antd';
-import { UpCircleOutlined } from '@ant-design/icons';
+import {
+    PageHeader, Tabs, Layout,
+    //  BackTop 
+} from 'antd';
+// import { UpCircleOutlined } from '@ant-design/icons';
 import { GlobalContext } from 'assets/context/GlobalContext';
 import './style.less';
 
@@ -66,9 +69,9 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
                 {children}
             </div>
             <Footer className="footer-page-header">
-                <BackTop className="back-top" visibilityHeight={50}>
+                {/* <BackTop className="back-top" visibilityHeight={50}>
                     <div><UpCircleOutlined /></div>
-                </BackTop>
+                </BackTop> */}
             </Footer>
         </>
     )
