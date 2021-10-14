@@ -9,6 +9,11 @@ enum TipoUsuario {
     COLABORADOR = "Colaborador"
 }
 
+enum SituacaoUsuario {
+    ATIVO = "Ativo",
+    INATIVO = "Inativo"
+}
+
 enum Generos {
     MASCULINO = "Masculino",
     FEMININO = "Feminino",
@@ -58,4 +63,12 @@ enum Estados {
     TO = "Tocantins"
 }
 
-export { TipoUsuario, TiposTelefone, Estados, Generos, Languages, TratarComo };
+export {
+    TipoUsuario,
+    TiposTelefone,
+    Estados,
+    Generos,
+    Languages,
+    TratarComo,
+    SituacaoUsuario
+};
