@@ -1,12 +1,12 @@
 import React, { FC, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Button, Layout, Modal, Result } from 'antd';
-import { UserForm, User } from 'components/forms';
 import { VerifyAssociationUserService, CreateAndAssociateUserService } from 'services/user';
+import { UserForm, User } from 'components/forms';
+import { TipoUsuario } from 'typing/enums';
 import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
 import "./style.less"
-import { TipoUsuario } from 'typing/enums';
 
 const { Footer } = Layout;
 
@@ -23,10 +23,18 @@ const AddUser: FC = () => {
     const verifyAssociationUserService = new VerifyAssociationUserService().useAsHook();
     const createAndAssociateUserService = new CreateAndAssociateUserService().useAsHook();
 
+    const resetarForm = () => {
+        form.resetFields();
+        form.setFieldsValue({
+            tipoUsuario: TipoUsuario.COLABORADOR.toUpperCase()
+        })
+        setEhNovoUsuario(false);
+    };
+
     const onFinish = async (user: User) => {
-        setDadosUsuario(user);
+        setDadosUsuario({ ...user });
         if (ehNovoUsuario) {
-            criarAssociacao();
+            criarAssociacao(user);
         }
         else {
             verifyAssociationUserService.send({
@@ -37,11 +45,12 @@ const AddUser: FC = () => {
         }
     }
 
-    const criarAssociacao = () => {
-        createAndAssociateUserService.send({ idEmpresa: auth.empresas[0].id, ...dadosUsuario });
+    const criarAssociacao = (user?: User) => {
+        createAndAssociateUserService.send({ idEmpresa: auth.empresas[0].id, ...(user || dadosUsuario) });
     }
 
     createAndAssociateUserService.onSuccess(() => {
+        resetarForm();
         setExibirSucesso(true);
     });
 
@@ -65,7 +74,7 @@ const AddUser: FC = () => {
                 content: t("users:addUser.msg-cpf-email-cadastrados"),
                 okText: t("users:addUser.associar"),
                 cancelText: t("users:addUser.cancelar"),
-                onOk: criarAssociacao
+                onOk: () => criarAssociacao()
             });
         }
         else if (res.cpfCadastrado && !res.emailCadastrado) {
@@ -74,7 +83,7 @@ const AddUser: FC = () => {
                 content: t("users:addUser.msg-cpf-cadastrado"),
                 okText: t("users:addUser.cadastrar-associar"),
                 cancelText: t("users:addUser.cancelar"),
-                onOk: criarAssociacao
+                onOk: () => criarAssociacao()
             });
         }
         else if (res.cpfCadastrado && res.emailCadastrado) {
@@ -85,14 +94,6 @@ const AddUser: FC = () => {
             });
         }
     });
-
-    const resetarForm = () => {
-        form.resetFields();
-        form.setFieldsValue({
-            tipoUsuario: TipoUsuario.COLABORADOR.toUpperCase()
-        })
-        setEhNovoUsuario(false);
-    };
 
     if (exibirSucesso) {
         return (

@@ -1,16 +1,19 @@
-import { Generos } from "typing/enums";
+import { Generos, TipoUsuario, TratarComo } from "typing/enums";
 
-export default interface FindUserResponse {
-  usuarios: {
-    id: string;
-    id_autenticacao: string;
-    cpf: string;
-    nome: string;
-    data_nascimento: Date;
-    genero: typeof Generos,
-    genero_personalizado: string;
-    tratar_por: string;
-    readonly createdAt: Date;
-    readonly updatedAt: Date;
-  }[]
+export interface Usuario {
+  id: string;
+  id_autenticacao: string;
+  cpf: string;
+  nome: string;
+  nomeUsuario: string;
+  usuarioAtivo: boolean;
+  dataNascimento: Date;
+  genero: keyof Generos,
+  generoPersonalizado: string;
+  tratarPor: keyof TratarComo;
+  tipoUsuario: keyof TipoUsuario;
+  ultimaAtualizacaoAssociacao: Date;
+}
+export default interface FindByBusinessResponse {
+  usuarios: Usuario[]
 }
