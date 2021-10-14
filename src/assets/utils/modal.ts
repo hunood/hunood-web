@@ -1,11 +1,12 @@
 import { Modal as AntModal } from 'antd';
+import { config } from "config";
 
 class Modal {
     static async openTimerModal(
         type: 'info' | 'error' | 'success' | 'warning',
         title: string,
         message: string,
-        seconds: number = 5,
+        seconds: number = (config.timeoutModalGeneric / 1000),
         onOk?: () => void,
         keyboard: boolean = true
     ) {

@@ -7,5 +7,6 @@ export const config: Config = {
     appName: 'Hunood Web',
     baseUrl: 'https://hunood-web.herokuapp.com/',
     backendUrl: 'https://hunood-backend.herokuapp.com/',
-    timeout: 5000
+    timeout: 5000,
+    timeoutModalGeneric: 30000
 };
