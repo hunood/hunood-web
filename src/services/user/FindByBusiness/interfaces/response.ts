@@ -2,7 +2,7 @@ import { Generos, TipoUsuario, TratarComo } from "typing/enums";
 
 export interface Usuario {
   id: string;
-  id_autenticacao: string;
+  idAutenticacao: string;
   cpf: string;
   nome: string;
   nomeUsuario: string;

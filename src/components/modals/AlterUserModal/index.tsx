@@ -7,33 +7,47 @@ import { invertEnum } from 'assets/utils/general';
 import moment from 'moment';
 import './style.less';
 
+export type EventSave = {
+    tipoUsuario: keyof TipoUsuario,
+    usuarioAtivo: boolean,
+
+};
+
 interface AlterUserModalProps {
     user: Usuario,
     visible: boolean,
-    onCancelar: () => void,
-    onSalvar?: () => void,
+    onCancel: () => void,
+    onSave: (event: EventSave, user: Usuario) => void,
 }
 
-const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancelar, onSalvar }) => {
-
-    const TipoUsuarioInvert = invertEnum<typeof TipoUsuario>(TipoUsuario);
-    const SituacaoUsuarioInvert = invertEnum<typeof SituacaoUsuario>(SituacaoUsuario);
-
-    const [tipoUsuario, setTipoUsuario] = useState<keyof TipoUsuario>(user.tipoUsuario);
-    const [situacaoUsuario, setSituacaoUsuario] = useState<keyof SituacaoUsuario>(SituacaoUsuarioInvert.Ativo as keyof SituacaoUsuario);
+const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSave }) => {
 
     React.useEffect(() => { return; });
+
+    const TipoUsuarioInvert = invertEnum<typeof TipoUsuario>(TipoUsuario);
+    // const SituacaoUsuarioInvert = invertEnum<typeof SituacaoUsuario>(SituacaoUsuario);
+
+    const [tipoUsuario, setTipoUsuario] = useState<keyof TipoUsuario>(user.tipoUsuario);
+    const [usuarioAtivo, setUsuarioAtivo] = useState<boolean>(user.usuarioAtivo);
+
+    const ok = () => {
+        onSave({ tipoUsuario, usuarioAtivo }, user);
+    };
+
+    const cancel = () => {
+        onCancel();
+    };
 
     return (
         <>
             <Modal
                 visible={visible}
                 title={"Detalhes do usuário"}
-                onCancel={onCancelar}
-                onOk={onSalvar}
+                onCancel={cancel}
+                onOk={ok}
                 okText="Salvar"
                 okButtonProps={{
-                    disabled: user.tipoUsuario === tipoUsuario && (SituacaoUsuarioInvert.Ativo as any) === situacaoUsuario,
+                    disabled: user.tipoUsuario === tipoUsuario && user.usuarioAtivo === usuarioAtivo,
                 }}
             >
                 <Descriptions bordered>
@@ -74,15 +88,14 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancelar, on
                         />
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Tipo usuário" span={4}>
+                    <Descriptions.Item label="Situação usuário" span={4}>
                         <Switch
                             style={{ width: "100%", height: 22 }}
                             checkedChildren={SituacaoUsuario.ATIVO}
                             unCheckedChildren={SituacaoUsuario.INATIVO}
-                            defaultChecked={(SituacaoUsuario as any)[situacaoUsuario] === SituacaoUsuario.ATIVO}
+                            defaultChecked={usuarioAtivo}
                             onChange={(checked: boolean) => {
-                                console.log((SituacaoUsuarioInvert[checked ? SituacaoUsuario.ATIVO : SituacaoUsuario.INATIVO]));
-                                setSituacaoUsuario((SituacaoUsuarioInvert[checked ? SituacaoUsuario.ATIVO : SituacaoUsuario.INATIVO]) as keyof SituacaoUsuario);
+                                setUsuarioAtivo(checked);
                             }}
 
                         />

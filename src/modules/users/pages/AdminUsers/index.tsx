@@ -2,7 +2,9 @@ import React, { FC, useContext, useState } from 'react';
 import { Table } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { FindByBusinessService } from 'services/user';
+import { UpdateAssociationService } from 'services/association';
 import { Usuario } from 'services/user/FindByBusiness/interfaces/response';
+import { EventSave } from 'components/modals/AlterUserModal';
 import { AuthContext } from 'assets/context/AuthContext';
 import { TipoUsuario } from 'typing/enums';
 import { AlterUserModal } from 'components/modals';
@@ -10,24 +12,57 @@ import "./style.less";
 
 const AdminUsers: FC = () => {
 
-    const [users, setUsers] = useState<Usuario[]>();
+    const { auth } = useContext(AuthContext);
+
+    const [users, setUsers] = useState<Usuario[]>([]);
     const [usuarioSelecionado, setUsuarioSelecionado] = useState({} as Usuario);
     const [visible, setVisible] = useState<boolean>(false);
+
     const findByBusinessService = new FindByBusinessService().useAsHook();
-    const { auth } = useContext(AuthContext);
+    const updateAssociationService = new UpdateAssociationService().useAsHook();
 
     React.useEffect(() => {
         findByBusinessService.send({ idEmpresa: auth.empresas[0].id }); // eslint-disable-next-line
     }, []);
 
     findByBusinessService.onSuccess(() => {
-        setUsers(findByBusinessService.response?.usuarios);
+        const usuarios = findByBusinessService.response?.usuarios || [];
+        usuarios.sort(function (a, b) {
+            return a.nomeUsuario.localeCompare(b.nomeUsuario, undefined, { ignorePunctuation: true, numeric: true });
+        });
+
+        const index = usuarios.findIndex(user => user.nomeUsuario.toLowerCase() === "master");
+
+        if (index > -1) {
+            usuarios.unshift(usuarios.splice(index, 1)[0]);
+        }
+
+        setUsers(usuarios);
     });
 
     const detalharUsuario = (usuario: Usuario) => {
         setUsuarioSelecionado(usuario);
         setVisible(true);
     };
+
+    const salvar = (event: EventSave, user: Usuario) => {
+        updateAssociationService.send({
+            idEmpresa: auth.empresas[0].id,
+            idAutenticacao: user.idAutenticacao,
+            dados: { ...event }
+        });
+        setVisible(false);
+    };
+
+    updateAssociationService.onSuccess(() => {
+        const res = updateAssociationService.response;
+        const index = users.findIndex(user => user.idAutenticacao === res?.idAutenticacao);
+
+        if (index > -1) {
+            users[index] = Object.assign(users[index], { ...res });
+            setUsers(users.slice());
+        }
+    });
 
     const columns = [
         { title: 'Nome', dataIndex: 'nome', key: 'nome' },
@@ -44,7 +79,7 @@ const AdminUsers: FC = () => {
                 pagination={false}
                 dataSource={users?.map((usuario: Usuario, key: number) => {
                     return {
-                        key: 1,
+                        key,
                         nome: usuario.nome,
                         tipousuario: (TipoUsuario as any)[usuario.tipoUsuario.toString()],
                         usuario: usuario.nomeUsuario.toLowerCase(),
@@ -62,14 +97,8 @@ const AdminUsers: FC = () => {
                     <AlterUserModal
                         user={{ ...usuarioSelecionado }}
                         visible={visible}
-                        onCancelar={() => {
-                            setVisible(false);
-                            console.log('Cancelar');
-                        }}
-                        onSalvar={() => {
-                            setVisible(false)
-                            console.log('Salvar');
-                        }}
+                        onCancel={() => { setVisible(false); }}
+                        onSave={salvar}
                     />
                 )
             }
