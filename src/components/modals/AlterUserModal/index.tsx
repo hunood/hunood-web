@@ -25,10 +25,9 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
     React.useEffect(() => { return; });
 
     const TipoUsuarioInvert = invertEnum<typeof TipoUsuario>(TipoUsuario);
-    // const SituacaoUsuarioInvert = invertEnum<typeof SituacaoUsuario>(SituacaoUsuario);
-
     const [tipoUsuario, setTipoUsuario] = useState<keyof TipoUsuario>(user.tipoUsuario);
     const [usuarioAtivo, setUsuarioAtivo] = useState<boolean>(user.usuarioAtivo);
+    const ehMaster = user.nomeUsuario.toLowerCase() === "master";
 
     const ok = () => {
         onSave({ tipoUsuario, usuarioAtivo }, user);
@@ -76,29 +75,47 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                     </Descriptions.Item>
 
                     <Descriptions.Item label="Tipo usuário" span={4}>
-                        <Switch
-                            style={{ width: "100%", height: 22 }}
-                            checkedChildren={TipoUsuario.ADMINISTRADOR}
-                            unCheckedChildren={TipoUsuario.COLABORADOR}
-                            defaultChecked={(TipoUsuario as any)[user.tipoUsuario] === TipoUsuario.ADMINISTRADOR}
-                            onChange={(checked: boolean) => {
-                                setTipoUsuario((TipoUsuarioInvert[checked ? TipoUsuario.ADMINISTRADOR : TipoUsuario.COLABORADOR]) as keyof TipoUsuario);
-                            }}
-
-                        />
+                        {
+                            ehMaster ? (
+                                <Switch
+                                    style={{ width: "100%", height: 22 }}
+                                    checkedChildren={TipoUsuario.ADMINISTRADOR}
+                                    checked={true}
+                                />
+                            ) : (
+                                <Switch
+                                    style={{ width: "100%", height: 22 }}
+                                    checkedChildren={TipoUsuario.ADMINISTRADOR}
+                                    unCheckedChildren={TipoUsuario.COLABORADOR}
+                                    defaultChecked={(TipoUsuario as any)[user.tipoUsuario] === TipoUsuario.ADMINISTRADOR}
+                                    onChange={(checked: boolean) => {
+                                        setTipoUsuario((TipoUsuarioInvert[checked ? TipoUsuario.ADMINISTRADOR : TipoUsuario.COLABORADOR]) as keyof TipoUsuario);
+                                    }}
+                                />
+                            )
+                        }
                     </Descriptions.Item>
 
                     <Descriptions.Item label="Situação usuário" span={4}>
-                        <Switch
-                            style={{ width: "100%", height: 22 }}
-                            checkedChildren={SituacaoUsuario.ATIVO}
-                            unCheckedChildren={SituacaoUsuario.INATIVO}
-                            defaultChecked={usuarioAtivo}
-                            onChange={(checked: boolean) => {
-                                setUsuarioAtivo(checked);
-                            }}
-
-                        />
+                        {
+                            ehMaster ? (
+                                <Switch
+                                    style={{ width: "100%", height: 22 }}
+                                    checkedChildren={SituacaoUsuario.ATIVO}
+                                    checked={true}
+                                />
+                            ) : (
+                                <Switch
+                                    style={{ width: "100%", height: 22 }}
+                                    checkedChildren={SituacaoUsuario.ATIVO}
+                                    unCheckedChildren={SituacaoUsuario.INATIVO}
+                                    defaultChecked={usuarioAtivo}
+                                    onChange={(checked: boolean) => {
+                                        setUsuarioAtivo(checked);
+                                    }}
+                                />
+                            )
+                        }
                     </Descriptions.Item>
 
                     <Descriptions.Item label="Última modificação" span={4}>
