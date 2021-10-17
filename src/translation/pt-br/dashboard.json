@@ -1,7 +1,8 @@
 {
   "menu": {
     "dashboard": "Dashboard",
-    "usuarios": "Usuários"
+    "usuarios": "Usuários",
+    "alterar-empresa": "Alternar empresa"
   },
   "layout": {
     "sim": "Sim",

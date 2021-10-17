@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
 import { GlobalContext } from 'assets/context/GlobalContext';
 import { Layout, Menu, Modal } from 'antd';
-import { TeamOutlined, LogoutOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { TeamOutlined, LogoutOutlined, SwapOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
 import './style.less';
 
@@ -47,9 +47,9 @@ const DashboardLayout: FC = ({ children }) => {
             sub: []
         },
         {
-            name: t("alterar-empresa"),
+            name: t("dashboard:menu.alterar-empresa"),
             route: '/business/select',
-            icon: <TeamOutlined />,
+            icon: <SwapOutlined />,
             sub: []
         }
     ], []);
