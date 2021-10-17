@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { BehaviorSubject } from 'rxjs';
-import { AuthenticateService, AuthenticateResponse, ForbidService } from 'services/authentication';
-import { Usuario } from 'services/authentication/AuthenticateService/interfaces/response';
-import Connector from 'services/_config-services/connector';
+import { useState, useEffect } from "react";
+import { BehaviorSubject } from "rxjs";
+import { AuthenticateService, AuthenticateResponse, ForbidService } from "services/authentication";
+import { Empresa, Usuario } from "services/authentication/AuthenticateService/interfaces/response";
+import Connector from "services/_config-services/connector";
 
 interface DataAuthentication extends AuthenticateResponse {
     accessToken: string,
@@ -11,24 +11,24 @@ interface DataAuthentication extends AuthenticateResponse {
 
 const useAuth = () => {
     const initialAuth: DataAuthentication = {
-        accessToken: '',
-        refreshToken: '',
-        id: '',
-        email: '',
+        accessToken: "",
+        refreshToken: "",
+        id: "",
+        email: "",
         emailValido: false,
         etapaOnboarding: 0,
-        empresas: [],
+        empresas: [{} as Empresa],
         usuario: {} as Usuario,
     };
 
-    const [authenticated, setAuthenticated] = useState<boolean>(localStorage.hasItem('@Auth:token'));
+    const [authenticated, setAuthenticated] = useState<boolean>(localStorage.hasItem("@Auth:token"));
     const [auth, setAuth] = useState<DataAuthentication>(initialAuth);
     const observableAuth = new BehaviorSubject<DataAuthentication>(auth).asObservable();
 
     const getAuth = () => {
-        const auth_ = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
-        auth_.accessToken = localStorage.getItem('@Auth:token') || '';
-        auth_.refreshToken = localStorage.getItem('@Auth:refresh') || '';
+        const auth_ = JSON.parse(localStorage.getItem("@Auth:auth") || "{}") as DataAuthentication;
+        auth_.accessToken = localStorage.getItem("@Auth:token") || "";
+        auth_.refreshToken = localStorage.getItem("@Auth:refresh") || "";
         return auth_;
     };
 
@@ -61,17 +61,17 @@ const useAuth = () => {
             }) as DataAuthentication;
 
             if (auth) {
-                localStorage.setItem('@Auth:token', auth.accessToken);
-                localStorage.setItem('@Auth:refresh', auth.refreshToken);
-                localStorage.setItem('@Auth:auth', JSON.stringify(auth));
+                localStorage.setItem("@Auth:token", auth.accessToken);
+                localStorage.setItem("@Auth:refresh", auth.refreshToken);
+                localStorage.setItem("@Auth:auth", JSON.stringify(auth));
                 setAuth(auth);
             }
 
             Connector
                 .getInstance()
                 .axios.defaults.headers.common = {
-                'Authorization': auth.accessToken,
-                'Refresh-Authorization': auth.refreshToken
+                "Authorization": auth.accessToken,
+                "Refresh-Authorization": auth.refreshToken
             };
 
             return Promise.resolve(auth);
@@ -84,9 +84,9 @@ const useAuth = () => {
     const handleLogout = async () => {
         try {
             const cleanAuthStorage = () => {
-                localStorage.removeItem('@Auth:token');
-                localStorage.removeItem('@Auth:refresh');
-                localStorage.removeItem('@Auth:auth');
+                localStorage.removeItem("@Auth:token");
+                localStorage.removeItem("@Auth:refresh");
+                localStorage.removeItem("@Auth:auth");
                 setAuth(initialAuth);
             };
 
@@ -100,9 +100,9 @@ const useAuth = () => {
     };
 
     const updateAuth = ({ ...data }: Partial<DataAuthentication>) => {
-        const auth = JSON.parse(localStorage.getItem('@Auth:auth') || '{}') as DataAuthentication;
+        const auth = JSON.parse(localStorage.getItem("@Auth:auth") || "{}") as DataAuthentication;
         const newAuth = Object.assign(auth, data);
-        localStorage.setItem('@Auth:auth', JSON.stringify(newAuth));
+        localStorage.setItem("@Auth:auth", JSON.stringify(newAuth));
         setAuth(getAuth());
     };
 
