@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useContext } from 'react';
 import { Modal, Descriptions, Switch } from 'antd';
 import { Usuario } from 'services/user/FindByBusiness/interfaces/response';
 import { SituacaoUsuario, TipoUsuario, TratarComo } from 'typing/enums';
-import { useState } from 'react';
 import { invertEnum } from 'assets/utils/general';
+import { AuthContext } from 'assets/context/AuthContext';
 import moment from 'moment';
 import './style.less';
 
@@ -24,10 +24,14 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
 
     React.useEffect(() => { return; });
 
+    const { auth } = useContext(AuthContext);
+
     const TipoUsuarioInvert = invertEnum<typeof TipoUsuario>(TipoUsuario);
     const [tipoUsuario, setTipoUsuario] = useState<keyof TipoUsuario>(user.tipoUsuario);
     const [usuarioAtivo, setUsuarioAtivo] = useState<boolean>(user.usuarioAtivo);
+    
     const ehMaster = user.nomeUsuario.toLowerCase() === "master";
+    const proprioUsuario = auth.id === user.idAutenticacao;
 
     const ok = () => {
         onSave({ tipoUsuario, usuarioAtivo }, user);
@@ -76,7 +80,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
 
                     <Descriptions.Item label="Tipo usuário" span={4}>
                         {
-                            ehMaster ? (
+                            (ehMaster || proprioUsuario) ? (
                                 <Switch
                                     style={{ width: "100%", height: 22 }}
                                     checkedChildren={TipoUsuario.ADMINISTRADOR}
@@ -98,7 +102,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
 
                     <Descriptions.Item label="Situação usuário" span={4}>
                         {
-                            ehMaster ? (
+                            (ehMaster || proprioUsuario) ? (
                                 <Switch
                                     style={{ width: "100%", height: 22 }}
                                     checkedChildren={SituacaoUsuario.ATIVO}
