@@ -60,15 +60,14 @@ const AddUser: FC = () => {
         if (!res?.cpfCadastrado && !res?.emailCadastrado) {
             setEhNovoUsuario(true);
         }
-        else if (res.associadoNaEmpresa) {
+        else if (res.associadoNaEmpresa) { // CPF associado nessa empresa
             Modal.info({
                 title: t("users:addUser.usuario-associado"),
                 content: t("users:addUser.msg-usuario-associado"),
                 okText: t("users:addUser.fechar")
             });
-
         }
-        else if (res.associacao) {
+        else if (res.associacao) { // CPF e e-mail associado entre si mas não associado à empresa
             Modal.confirm({
                 title: t("users:addUser.cpf-email-cadastrados"),
                 content: t("users:addUser.msg-cpf-email-cadastrados"),
@@ -77,7 +76,7 @@ const AddUser: FC = () => {
                 onOk: () => criarAssociacao()
             });
         }
-        else if (res.cpfCadastrado && !res.emailCadastrado) {
+        else if (res.cpfCadastrado && !res.emailCadastrado) { // CPF existe e e-mail não
             Modal.confirm({
                 title: t("users:addUser.cpf-cadastrado"),
                 content: t("users:addUser.msg-cpf-cadastrado"),
@@ -86,7 +85,10 @@ const AddUser: FC = () => {
                 onOk: () => criarAssociacao()
             });
         }
-        else if (res.cpfCadastrado && res.emailCadastrado) {
+        else if (
+            (!res.cpfCadastrado && res.emailCadastrado) || 
+            (res.cpfCadastrado && res.emailCadastrado && !res.associacao)
+        ) {
             Modal.info({
                 title: t("users:addUser.email-cadastrado"),
                 content: t("users:addUser.msg-email-cadastrado"),
