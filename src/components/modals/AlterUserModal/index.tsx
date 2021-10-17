@@ -6,6 +6,7 @@ import { invertEnum } from 'assets/utils/general';
 import { AuthContext } from 'assets/context/AuthContext';
 import moment from 'moment';
 import './style.less';
+import { t } from 'i18n';
 
 export type EventSave = {
     tipoUsuario: keyof TipoUsuario,
@@ -45,40 +46,37 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
         <>
             <Modal
                 visible={visible}
-                title={"Detalhes do usuário"}
+                title={t('modals:detalhes-usuario')}
                 onCancel={cancel}
                 onOk={ok}
-                okText="Salvar"
+                okText={t('modals:salvar')}
+                cancelText={t('modals:cancelar')}
                 okButtonProps={{
                     disabled: user.tipoUsuario === tipoUsuario && user.usuarioAtivo === usuarioAtivo,
                 }}
             >
                 <Descriptions bordered>
-                    <Descriptions.Item label="Nome completo" span={4}>
+                    <Descriptions.Item label={t('modals:nome-completo')} span={4}>
                         {user.nome}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Usuário" span={4}>
+                    <Descriptions.Item label={t('modals:usuario')} span={4}>
                         {user.nomeUsuario}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Data nascimento" span={4}>
+                    <Descriptions.Item label={t('modals:data-nascimento')} span={4}>
                         {moment(user.dataNascimento).format("DD/MM/YYYY").toString()}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="CPF" span={4}>
+                    <Descriptions.Item label={t('modals:cpf')} span={4}>
                         {user.cpf}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Tratar como" span={4}>
+                    <Descriptions.Item label={t('modals:tratar-como')} span={4}>
                         {(TratarComo as any)[(user?.tratarPor || "").toString()]}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Tratar como" span={4}>
-                        {(TipoUsuario as any)[(user?.tipoUsuario || "").toString()]}
-                    </Descriptions.Item>
-
-                    <Descriptions.Item label="Tipo usuário" span={4}>
+                    <Descriptions.Item label={t('modals:tipo-usuario')} span={4}>
                         {
                             (ehMaster || proprioUsuario) ? (
                                 <Switch
@@ -100,7 +98,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Situação usuário" span={4}>
+                    <Descriptions.Item label={t('modals:status-usuario')} span={4}>
                         {
                             (ehMaster || proprioUsuario) ? (
                                 <Switch
@@ -122,7 +120,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item label="Última modificação" span={4}>
+                    <Descriptions.Item label={t('modals:ultima-modificacao')} span={4}>
                         {moment(user.ultimaAtualizacaoAssociacao).format("DD/MM/YYYY HH:MM:ss A").toString()}
                     </Descriptions.Item>
                 </Descriptions>

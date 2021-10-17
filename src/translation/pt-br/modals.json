@@ -5,5 +5,18 @@
     "alteracao-permanente": "A alteração de e-mail é permanente e refletirá no modo de entrar no site. O e-mail substituido não será mais acessível na aplicação.",
     "alterar-email": "Alterar e-mail",
     "email": "Novo e-mail"
+  },
+  "alter-user": {
+    "salvar": "Salvar",
+    "cancelar": "Cancelar",
+    "detalhes-usuario": "Detalhes do usuário",
+    "nome-completo": "Nome completo",
+    "usuario": "Usuário",
+    "data-nascimento": "Data nascimento",
+    "cpf": "CPF",
+    "tratar-como": "Tratar como",
+    "tipo-usuario": "Tipo usuário",
+    "status-usuario": "Status usuário",
+    "ultima-modificacao": "Última modificação"
   }
 }
