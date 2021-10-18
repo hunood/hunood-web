@@ -4,14 +4,13 @@ import { Usuario } from 'services/user/FindByBusiness/interfaces/response';
 import { SituacaoUsuario, TipoUsuario, TratarComo } from 'typing/enums';
 import { invertEnum } from 'assets/utils/general';
 import { AuthContext } from 'assets/context/AuthContext';
+import { t } from 'i18n';
 import moment from 'moment';
 import './style.less';
-import { t } from 'i18n';
 
 export type EventSave = {
     tipoUsuario: keyof TipoUsuario,
-    usuarioAtivo: boolean,
-
+    usuarioAtivo: boolean
 };
 
 interface AlterUserModalProps {

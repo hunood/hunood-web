@@ -9,7 +9,8 @@ import {
     formsBR,
     modalsBR,
     usersBR,
-    dashboardBR
+    dashboardBR,
+    businessBR
 } from './translation';
 
 const options = {
@@ -26,7 +27,8 @@ const options = {
             forms: formsBR,
             modals: modalsBR,
             users: usersBR,
-            dashboard: dashboardBR
+            dashboard: dashboardBR,
+            business: businessBR
         }
     }
 };

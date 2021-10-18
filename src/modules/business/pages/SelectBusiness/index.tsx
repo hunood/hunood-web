@@ -1,9 +1,11 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect, useState} from 'react';
 import { useHistory } from 'react-router';
 import { Card, Col, Row } from 'antd';
 import { SimpleHeaderLayout } from 'components/layouts';
 import { AuthContext } from 'assets/context/AuthContext';
-import { Empresa } from 'services/authentication/AuthenticateService/interfaces/response';
+import { FindByUserService } from 'services/business';
+import { UsuarioEmpresa } from 'services/business/FindByUserService/interfaces/response';
+import { t } from 'i18n';
 import "./style.less";
 
 const { Meta } = Card;
@@ -12,12 +14,23 @@ const SelectBusiness: FC = () => {
     const history = useHistory();
 
     const { auth, updateAuth } = useContext(AuthContext);
-    const empresas = auth.empresas.slice().sort(dynamicSort('nomeFantasia'));
+    const findByUserService = new FindByUserService().useAsHook();
+    const [empresas, setEmpresas] = useState<UsuarioEmpresa[]>([])
+    
+    useEffect(() => {
+        findByUserService.send({ idAutenticacao: auth.id }); // eslint-disable-next-line
+    }, []);
 
-    const atualizarEmpresa = (empresa: Empresa) => {
+    findByUserService.onSuccess(() => {
+        const emp = findByUserService.response?.empresas || [];
+        emp.sort(dynamicSort('nomeFantasia'));
+        setEmpresas(emp);
+    });
+
+    const atualizarEmpresa = (empresa: UsuarioEmpresa) => {
         const novaOrdem = auth.empresas.slice();
-        novaOrdem.splice(novaOrdem.indexOf(empresa), 1);
-        novaOrdem.unshift(empresa);
+        const index = novaOrdem.findIndex(emp => emp.id === empresa.id);
+        novaOrdem.unshift(novaOrdem.splice(index, 1)[0]);
         updateAuth({ empresas: novaOrdem });
         history.push('/dashboard');
     }
@@ -40,10 +53,10 @@ const SelectBusiness: FC = () => {
                 <Row gutter={[24, 12]} >
                     {
                         empresas.map((empresa) => (
-                            <Col span={12} key={empresa.id}>
+                            <Col span={12} sm={12} xs={24} key={empresa.id}>
                                 <Card bordered={true}
                                     actions={[
-                                        <p onClick={() => atualizarEmpresa(empresa)}>Entrar</p>
+                                        <p onClick={() => atualizarEmpresa(empresa)}>{t('business:select-business.entrar')}</p>
                                     ]}>
                                     <Meta
                                         title={empresa.nomeFantasia}

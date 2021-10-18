@@ -6,7 +6,7 @@ class FindByBusinessService extends ApiService<FindByBusinessResponse, FindByBus
   constructor() {
     super({
       config: (request: FindByBusinessRequest) => ({
-        url: `user/findByBusiness`,
+        url: `user/find-by-business`,
         method: 'POST',
         data: request,
       }),
