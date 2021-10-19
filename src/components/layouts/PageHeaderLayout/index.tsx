@@ -1,10 +1,6 @@
 import React, { FC, useMemo, useContext, useState } from 'react';
 import { useHistory } from 'react-router';
-import {
-    PageHeader, Tabs, Layout,
-    //  BackTop 
-} from 'antd';
-// import { UpCircleOutlined } from '@ant-design/icons';
+import { PageHeader, Tabs, Layout } from 'antd';
 import { GlobalContext } from 'assets/context/GlobalContext';
 import './style.less';
 
@@ -24,12 +20,9 @@ interface PageHeaderLayoutProps {
 }
 
 const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, onChangeTab, children }) => {
-    React.useEffect(() => { return; });
-
     const history = useHistory();
-    const tab = tabs.map(tab => tab.route).indexOf(history.location.pathname);
 
-    const [tabSelecionada, setTabSelecionada] = useState(tab.toString());
+    const [tabSelecionada, setTabSelecionada] = useState("0");
     const { isMenuOpened } = useContext(GlobalContext);
 
     const marginTopChildren = useMemo(() => {
@@ -44,6 +37,11 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
         history.push(tabs[Number(key)].route);
     };
 
+    React.useEffect(() => {
+        const tab = tabs.map(tab => tab.route).indexOf(history.location.pathname);
+        setTabSelecionada(tab.toString());
+    }, [history.location.pathname, tabs]);
+
     return (
         <>
             <PageHeader
@@ -52,7 +50,7 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
                 subTitle={subTitulo || ''}
                 footer={
                     <Tabs
-                        defaultActiveKey={tabSelecionada}
+                        activeKey={tabSelecionada}
                         tabPosition="top"
                         onChange={navegar}
                     >
@@ -68,11 +66,7 @@ const PageHeaderLayout: FC<PageHeaderLayoutProps> = ({ titulo, subTitulo, tabs, 
             <div className="page-header-content" style={{ marginTop: marginTopChildren }}>
                 {children}
             </div>
-            <Footer className="footer-page-header">
-                {/* <BackTop className="back-top" visibilityHeight={50}>
-                    <div><UpCircleOutlined /></div>
-                </BackTop> */}
-            </Footer>
+            <Footer className="footer-page-header" />
         </>
     )
 };

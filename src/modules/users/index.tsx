@@ -1,6 +1,6 @@
-import { DashboardLayout, PageHeaderLayout } from 'components/layouts';
 import { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { DashboardLayout, PageHeaderLayout } from 'components/layouts';
 import { t } from 'i18n';
 
 // Pages
