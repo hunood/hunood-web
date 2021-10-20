@@ -6,6 +6,7 @@ import modalsBR from './pt-br/modals.json';
 import usersBR from './pt-br/users.json';
 import dashboardBR from './pt-br/dashboard.json';
 import businessBR from './pt-br/business.json';
+import stockBR from './pt-br/stock.json';
 
 export {
     openedAreaBR,
@@ -15,5 +16,6 @@ export {
     modalsBR,
     usersBR,
     dashboardBR,
-    businessBR
+    businessBR,
+    stockBR
 };

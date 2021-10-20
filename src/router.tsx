@@ -14,6 +14,7 @@ const OnboardingModule = lazy(() => import('./modules/onboarding'));
 const DashboardModule = lazy(() => import('./modules/dashboard'));
 const UsersModule = lazy(() => import('./modules/users'));
 const BusinessModule = lazy(() => import('./modules/business'));
+const StockModule = lazy(() => import('./modules/stock'));
 
 const RootRouter: FC = () => {
     const { isLoading } = useLoader();
@@ -31,6 +32,7 @@ const RootRouter: FC = () => {
                     <CustomRoute isPrivate path="/dashboard" component={DashboardModule} />
                     <CustomRoute isPrivate path="/users" component={UsersModule} />
                     <CustomRoute isPrivate path="/business" component={BusinessModule} />
+                    <CustomRoute isPrivate path="/stock" component={StockModule} />
                     <Route path="*" children={({ match }) => {
                         return (routerPaths.indexOf(match?.url || '') === -1) && <Redirect to='/404' />
                     }} />

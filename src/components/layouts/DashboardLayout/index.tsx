@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
 import { GlobalContext } from 'assets/context/GlobalContext';
 import { Layout, Menu, Modal } from 'antd';
-import { TeamOutlined, LogoutOutlined, SwapOutlined, AppstoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { TeamOutlined, LogoutOutlined, SwapOutlined, AppstoreOutlined, FundOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
 import './style.less';
 
@@ -37,6 +37,12 @@ const DashboardLayout: FC = ({ children }) => {
         {
             name: t("dashboard:menu.dashboard"),
             route: '/dashboard',
+            icon: <FundOutlined />,
+            sub: []
+        },
+        {
+            name: t("dashboard:menu.estoque"),
+            route: '/stock',
             icon: <AppstoreOutlined />,
             sub: []
         },

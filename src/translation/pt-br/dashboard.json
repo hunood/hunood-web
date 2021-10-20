@@ -2,6 +2,7 @@
   "menu": {
     "dashboard": "Dashboard",
     "usuarios": "Usuários",
+    "estoque": "Estoque",
     "alterar-empresa": "Alternar empresa"
   },
   "layout": {

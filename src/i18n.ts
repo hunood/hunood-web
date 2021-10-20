@@ -10,7 +10,8 @@ import {
     modalsBR,
     usersBR,
     dashboardBR,
-    businessBR
+    businessBR,
+    stockBR
 } from './translation';
 
 const options = {
@@ -28,7 +29,8 @@ const options = {
             modals: modalsBR,
             users: usersBR,
             dashboard: dashboardBR,
-            business: businessBR
+            business: businessBR,
+            stock: stockBR
         }
     }
 };
