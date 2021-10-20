@@ -13,7 +13,7 @@ export const stockPaths = [
 ];
 
 const tabs = [
-  { nome: t("stock:tabs.consultar-inventario"), route: '/stock' },
+  { nome: t("stock:tabs.consultar-estoque"), route: '/stock' },
   { nome: t("stock:tabs.entrada"), route: '/stock/add' }
 ];
 
