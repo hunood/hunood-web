@@ -11,13 +11,12 @@ import './style.less'
 interface SupplierFormProps {
     form: FormInstance
 }
-export interface Supplier {
+export interface Supplier extends Address {
     cnpj?: string;
     razaoSocial?: string;
     nomeFantasia: string;
     observacoes: string;
-    endereco: Address,
-    constatos: Contact[]
+    contatos: Contact[]
 }
 
 const SupplierForm: FC<SupplierFormProps> = ({ form }) => {

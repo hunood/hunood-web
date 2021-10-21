@@ -1,19 +1,22 @@
-import { Supplier, SupplierForm } from 'components/forms';
+import React, { FC, useContext } from 'react';
 import { Form, Button, Layout } from 'antd';
-import React, { FC } from 'react';
-import "./style.less"
+import { AddSupplierService } from 'services/supplier';
+import { Supplier, SupplierForm } from 'components/forms';
+import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
+import "./style.less"
 
 const { Footer } = Layout;
 
 const AddSupplier: FC = () => {
-
     React.useEffect(() => { return; });
 
+    const { auth } = useContext(AuthContext);
     const [form] = Form.useForm();
+    const addSupplierService = new AddSupplierService().useAsHook();
 
     const onFinish = (fornecedor: Supplier) => {
-        console.log(fornecedor);
+        addSupplierService.send({ ...fornecedor, idEmpresa: auth.empresas[0].id });
     };
 
     const resetarForm = () => {
