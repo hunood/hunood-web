@@ -7,6 +7,7 @@ import usersBR from './pt-br/users.json';
 import dashboardBR from './pt-br/dashboard.json';
 import businessBR from './pt-br/business.json';
 import stockBR from './pt-br/stock.json';
+import supplierBR from './pt-br/supplier.json';
 
 export {
     openedAreaBR,
@@ -17,5 +18,6 @@ export {
     usersBR,
     dashboardBR,
     businessBR,
-    stockBR
+    stockBR,
+    supplierBR
 };

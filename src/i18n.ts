@@ -11,7 +11,8 @@ import {
     usersBR,
     dashboardBR,
     businessBR,
-    stockBR
+    stockBR,
+    supplierBR
 } from './translation';
 
 const options = {
@@ -30,7 +31,8 @@ const options = {
             users: usersBR,
             dashboard: dashboardBR,
             business: businessBR,
-            stock: stockBR
+            stock: stockBR,
+            supplier: supplierBR
         }
     }
 };

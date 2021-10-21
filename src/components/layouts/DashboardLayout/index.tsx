@@ -1,9 +1,17 @@
-import React, { FC, useContext, useState, useMemo } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
+import {
+    AppstoreOutlined,
+    ExclamationCircleOutlined,
+    FundOutlined,
+    LogoutOutlined,
+    ShopOutlined,
+    SwapOutlined,
+    TeamOutlined
+} from '@ant-design/icons';
+import { Layout, Menu, Modal } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from 'assets/context/AuthContext';
 import { GlobalContext } from 'assets/context/GlobalContext';
-import { Layout, Menu, Modal } from 'antd';
-import { TeamOutlined, LogoutOutlined, SwapOutlined, AppstoreOutlined, FundOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
 import './style.less';
 
@@ -44,6 +52,12 @@ const DashboardLayout: FC = ({ children }) => {
             name: t("dashboard:menu.estoque"),
             route: '/stock',
             icon: <AppstoreOutlined />,
+            sub: []
+        },
+        {
+            name: t("dashboard:menu.fornecedor"),
+            route: '/supplier',
+            icon: <ShopOutlined />,
             sub: []
         },
         {

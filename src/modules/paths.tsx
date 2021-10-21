@@ -4,6 +4,7 @@ import { dashboardPaths } from "./dashboard";
 import { userPaths } from "./users";
 import { businessPaths } from "./business";
 import { stockPaths } from "./stock";
+import { supplierPaths } from "./supplier";
 
 const routerPaths: string[] = ['/']
 .concat(openedAreaPaths)
@@ -11,6 +12,7 @@ const routerPaths: string[] = ['/']
 .concat(dashboardPaths)
 .concat(userPaths)
 .concat(businessPaths)
-.concat(stockPaths);
+.concat(stockPaths)
+.concat(supplierPaths);
 
 export { routerPaths };
