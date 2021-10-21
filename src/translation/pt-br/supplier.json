@@ -2,5 +2,9 @@
     "tabs": {
         "consultar-fornecedor": "Consultar fornecedor",
         "cadastrar-fornecedor": "Cadastrar"
+    },
+    "addSupplier": {
+        "cadastrar": "Cadastrar",
+        "resetar": "Resetar"
     }
 }

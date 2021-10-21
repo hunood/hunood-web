@@ -5,6 +5,7 @@ import { ContactForm, Contact } from './ContactForm';
 import { ValidationAccountForm, ValidationAccount } from './ValidationAccountForm';
 import { LoginForm, Login } from './LoginForm';
 import { SignupForm, Signup } from './SignupForm';
+import { SupplierForm, Supplier } from './SupplierForm';
 
 export {
     UserForm,
@@ -13,7 +14,8 @@ export {
     ContactForm,
     ValidationAccountForm,
     LoginForm,
-    SignupForm
+    SignupForm,
+    SupplierForm
 }
 
 export type {
@@ -23,5 +25,6 @@ export type {
     Contact,
     ValidationAccount,
     Login,
-    Signup
+    Signup,
+    Supplier
 }
