@@ -24,7 +24,7 @@ const SupplierModule: FC = () => {
         <DashboardLayout>
           <PageHeaderLayout tabs={tabs}>
             <Route exact path={supplierPaths[0]} component={AdminSupplier} />
-            <Route exact path={supplierPaths[2]} component={AddSupplier} />
+            <Route exact path={supplierPaths[1]} component={AddSupplier} />
           </PageHeaderLayout>
         </DashboardLayout>
       </Switch>
