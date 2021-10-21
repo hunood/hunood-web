@@ -5,16 +5,19 @@ import { t } from 'i18n';
 
 // Pages
 import AdminStock from './pages/AdminStock';
-import AddStock from './pages/AddStock';
+import AddProductStock from './pages/AddProductStock';
+import EntryExitStock from './pages/EntryExitStock';
 
 export const stockPaths = [
   "/stock",
-  "/stock/add"
+  "/stock/entry-exit",
+  "/stock/add-product"
 ];
 
 const tabs = [
-  { nome: t("stock:tabs.consultar-estoque"), route: '/stock' },
-  { nome: t("stock:tabs.entrada"), route: '/stock/add' }
+  { nome: t("stock:tabs.consultar-estoque"), route: stockPaths[0] },
+  { nome: t("stock:tabs.entrada-saida"), route: stockPaths[1] },
+  { nome: t("stock:tabs.cadastro-produto"), route: stockPaths[2] }
 ];
 
 const StockModule: FC = () => {
@@ -23,8 +26,9 @@ const StockModule: FC = () => {
       <Switch>
         <DashboardLayout>
           <PageHeaderLayout tabs={tabs}>
-            <Route exact path="/stock" component={AdminStock} />
-            <Route exact path="/stock/add" component={AddStock} />
+            <Route exact path={stockPaths[0]} component={AdminStock} />
+            <Route exact path={stockPaths[1]} component={EntryExitStock} />
+            <Route exact path={stockPaths[2]} component={AddProductStock} />
           </PageHeaderLayout>
         </DashboardLayout>
       </Switch>

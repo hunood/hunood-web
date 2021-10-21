@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import "./style.less"
 
-const AddStock: FC = () => {
+const AddProductStock: FC = () => {
     
     React.useEffect(() => { return; });
 
     return (
-        <>{"AddStock"}</>
+        <>{"AddProductStock"}</>
     );
 
 }
 
-export default AddStock;
+export default AddProductStock;

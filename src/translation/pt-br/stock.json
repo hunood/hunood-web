@@ -1,6 +1,7 @@
 {
     "tabs": {
         "consultar-estoque": "Consultar estoque",
-        "entrada": "Entrada"
+        "entrada-saida": "Entrada/Saída",
+        "cadastro-produto": "Cadastrar produto"
     }
 }

@@ -13,8 +13,8 @@ export const userPaths = [
 ];
 
 const tabs = [
-  { nome: t("users:tabs.gestao-usuarios"), route: '/users' },
-  { nome: t("users:tabs.associacao"), route: '/users/add' }
+  { nome: t("users:tabs.gestao-usuarios"), route: userPaths[0] },
+  { nome: t("users:tabs.associacao"), route: userPaths[1] }
 ];
 
 const UsersModule: FC = () => {
@@ -23,8 +23,8 @@ const UsersModule: FC = () => {
       <Switch>
         <DashboardLayout>
           <PageHeaderLayout tabs={tabs}>
-            <Route exact path="/users" component={AdminUsers} />
-            <Route exact path="/users/add" component={AddUser} />
+            <Route exact path={userPaths[0]} component={AdminUsers} />
+            <Route exact path={userPaths[1]} component={AddUser} />
           </PageHeaderLayout>
         </DashboardLayout>
       </Switch>
