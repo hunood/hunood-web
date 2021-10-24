@@ -7,7 +7,8 @@ import './style.less'
 
 export interface Signup {
     newUsername: string,
-    newPassword: string
+    newPassword: string,
+    oauth: boolean
 }
 
 interface SignupFormProps {

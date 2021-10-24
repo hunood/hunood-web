@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState, useContext } from 'react';
 import MaskedInput from 'antd-mask-input';
 import { Form, Input, DatePicker, Select, Row, Col, Radio } from 'antd';
 import { FormInstance } from 'antd/lib/form';
@@ -6,6 +6,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Generos, TratarComo, TipoUsuario } from 'typing/enums';
 import { ContactForm, Contact } from 'components/forms';
 import { cpf as validatorCPF } from 'cpf-cnpj-validator';
+import { AuthContext } from 'assets/context/AuthContext';
 import { t } from 'i18n';
 import moment from 'moment';
 import './style.less';
@@ -29,6 +30,8 @@ export interface User {
 }
 
 const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario = false }) => {
+    const { auth } = useContext(AuthContext);
+
     const [genero, setGenero] = useState<Generos>();
     const [tipoUsuario, setTipoUsuario] = useState(Object.keys(TipoUsuario)[ehOnboarding ? 0 : 1] as TipoUsuario);
 
@@ -41,7 +44,6 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
         }
         return { value, label, disabled: false };
     });
-
 
     const submit_ = useMemo(() => form.submit, [form]);
 
@@ -84,10 +86,17 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
                         />
                     </Form.Item>
                 </Col>
+
+                <Col sm={{ span: 12 }} xs={{ span: 24 }} style={{ minWidth: 238 }}>
+                    <Form.Item>
+                        <Input defaultValue={auth.email} id="user-form-email" disabled={true} />
+                    </Form.Item>
+                </Col>
             </Row>
 
             <h1>{t('forms:user.dados-pessoais')}</h1>
             <Row gutter={[16, 8]}>
+
                 <Col sm={{ span: 8 }} xs={{ span: 24 }} style={{ minWidth: 238 }}>
                     <Form.Item
                         label={t('forms:user.cpf')}
@@ -102,6 +111,7 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
                         />
                     </Form.Item>
                 </Col>
+
 
                 {!ehOnboarding && (
                     <Col sm={{ span: 8 }} xs={{ span: 24 }}>

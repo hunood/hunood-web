@@ -3,6 +3,14 @@ enum Languages {
     English = "en",
     Spanish = "es"
 }
+enum EtapaOnboarding {
+    CADASTRO_USUARIO = 0,
+    CADASTRO_EMPRESA = 1,
+    VERIFICACAO_CODIGO_EMAIL = 2,
+    COMPLETO = 3,
+    ALTERACAO_SENHA_NOVO_USUARIO = 4,
+    VALIDACAO_DADOS_NOVO_USUARIO = 5,
+}
 
 enum TipoUsuario {
     ADMINISTRADOR = "Administrador",
@@ -65,6 +73,7 @@ enum Estados {
 
 export {
     TipoUsuario,
+    EtapaOnboarding,
     TiposTelefone,
     Estados,
     Generos,

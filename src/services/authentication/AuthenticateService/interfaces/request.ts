@@ -1,4 +1,5 @@
 export default interface AuthentecateRequest {
   email: string,
-  senha: string
+  senha: string,
+  oauth: boolean
 }

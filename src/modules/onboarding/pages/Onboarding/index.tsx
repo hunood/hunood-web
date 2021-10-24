@@ -1,26 +1,21 @@
 import React, { FC, useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Button, Form, Steps, Layout } from 'antd';
-import { t } from 'i18n';
-import './style.less';
-
-import {
-    User, UserForm,
-    Business, BusinessForm,
-    ValidationAccount, ValidationAccountForm,
-} from 'components/forms';
-
+import { SimpleHeaderLayout } from 'components/layouts';
+import { User, UserForm, Business, BusinessForm, ValidationAccount, ValidationAccountForm } from 'components/forms';
 import { UserStepService, BusinessStepService, SendCodeService, VerificationCodeService } from 'services/onboarding';
 import { AuthContext } from 'assets/context/AuthContext';
-import { SimpleHeaderLayout } from 'components/layouts';
+import { EtapaOnboarding } from 'typing/enums';
+import { t } from 'i18n';
+import './style.less';
 
 const { Step } = Steps;
 const { Content, Footer } = Layout;
 
 const Onboarding: FC = () => {
-    const { updateAuth, auth, authenticated } = useContext(AuthContext);
+    const { auth, authenticated, updateAuth } = useContext(AuthContext);
 
-    const userService = new UserStepService().useAsHook();
+    const userStepService = new UserStepService().useAsHook();
     const businessStepService = new BusinessStepService().useAsHook();
     const sendCodeService = new SendCodeService().useAsHook();
     const verificationCodeService = new VerificationCodeService().useAsHook();
@@ -34,7 +29,7 @@ const Onboarding: FC = () => {
         {
             title: t('onboarding:dados-pessoais'),
             content: <UserForm form={form} ehOnboarding />,
-            onFinish: (values: User) => userService.send(Object.assign(values))
+            onFinish: (values: User) => userStepService.send(Object.assign(values))
         },
         {
             title: t('onboarding:sua-empresa'),
@@ -48,8 +43,12 @@ const Onboarding: FC = () => {
         }
     ];
 
+    if (auth.googleId) {
+        steps.pop();
+    }
+
     const next = () => {
-        if (current === 1) {
+        if (current === EtapaOnboarding.CADASTRO_EMPRESA) {
             sendCodeService.send({ email: auth.email });
             return;
         }
@@ -65,11 +64,30 @@ const Onboarding: FC = () => {
         steps[current].onFinish(values);
     };
 
-    userService.onSuccess(next);
-    businessStepService.onSuccess(next);
-    verificationCodeService.onSuccess(done);
+    // On Success
+    userStepService.onSuccess(() => {
+        updateAuth({
+            empresas: [businessStepService.response || {}]
+        });
+        next();
+    });
 
-    userService.onError(() => {
+    businessStepService.onSuccess(() => {
+        updateAuth({
+            empresas: [businessStepService.response || {}]
+        });
+        Boolean(auth.googleId) ? done() : next();
+    });
+
+    verificationCodeService.onSuccess(() => {
+        updateAuth({
+            emailValido: verificationCodeService.response?.emailConfirmado || false
+        });
+        done();
+    });
+
+    // On Error
+    userStepService.onError(() => {
         form.setFields([{ name: 'cpf', errors: [t('messages:cpf-ja-cadastrado')] }]);
     });
 
@@ -77,6 +95,7 @@ const Onboarding: FC = () => {
         form.setFields([{ name: 'codigo', errors: [t('messages:codigo-invalido-ou-expirado')] }]);
     });
 
+    // On Finish
     sendCodeService.onFinish(() => {
         setTimerResendEmail(60);
         setCurrent(current + 1);
@@ -85,6 +104,14 @@ const Onboarding: FC = () => {
     React.useEffect(() => {
         updateAuth({ etapaOnboarding: current });
     }, [current, updateAuth]);
+
+    React.useEffect(() => {
+        if (auth.googleId && current === EtapaOnboarding.CADASTRO_USUARIO) {
+            form.setFieldsValue({
+                nome: auth.usuario.nome
+            });
+        }
+    }, [current, auth, form]);
 
     if (redirectDashboard) {
         return <Redirect to='/dashboard' />;

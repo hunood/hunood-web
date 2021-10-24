@@ -5,19 +5,49 @@ import { SquareAnimation } from 'components/animations';
 import { LoginForm, Login, SignupForm, Signup } from 'components/forms';
 import { AuthContext } from 'assets/context/AuthContext';
 import { SignupService } from 'services/authentication'
+import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import { t } from 'i18n';
 import Logo from "assets/img/logo.png";
 import "./style.less";
 
 const LoginSignUp: FC = () => {
     React.useEffect(() => { return; }, []);
-    const { auth, authenticated, handleLogin } = useContext(AuthContext);
+    const { auth, authenticated, handleLogin, updateAuth } = useContext(AuthContext);
 
     const { TabPane } = Tabs;
     const [form] = Form.useForm();
 
     type TabsKey = 'login' | 'signup';
     const [tab, setTab] = useState<TabsKey>('login');
+
+    const responseGoogle = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+        const googleLogin = (response as GoogleLoginResponse).profileObj;
+
+        if (Boolean(googleLogin)) {
+            const newGoogleObj = {
+                googleId: googleLogin.googleId,
+                email: googleLogin.email,
+                usuario: { nome: googleLogin.name }
+            };
+
+            const login = await handleLogin({
+                username: googleLogin.email,
+                password: googleLogin.googleId,
+                remember: false,
+                oauth: true
+            });
+
+            updateAuth({ ...newGoogleObj });
+
+            if (login && (login as any)?.status === 404) {
+                signup({
+                    newUsername: googleLogin.email,
+                    newPassword: googleLogin.googleId,
+                    oauth: true
+                }, newGoogleObj);
+            }
+        }
+    };
 
     const login = async (values: Login) => {
         const login = await handleLogin(values);
@@ -26,23 +56,27 @@ const LoginSignUp: FC = () => {
             form.setFields([{ name: 'password', errors: [t('onboarding:falha-autenticacao')] }]);
         }
 
-        if ((login as any)?.message) {
+        if ((login as any).message) {
             form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
         }
 
         form.setFields([{ name: 'username', errors: [''] }]);
     };
 
-    const signup = async (values: Signup) => {
+    const signup = async (values: Signup, googleObj?: any) => {
         await new SignupService().execute({
             email: values.newUsername,
-            senha: values.newPassword
+            senha: values.newPassword,
+            oauth: !!values.oauth
         }).then(async () => {
             await handleLogin({
                 username: values.newUsername,
                 password: values.newPassword,
                 remember: false
+            }).finally(() => {
+                updateAuth({ ...googleObj });
             });
+
         }).catch((_) => {
             form.setFields([{ name: 'newUsername', errors: [t('onboarding:email-ja-registrado')] }]);
         });
@@ -81,10 +115,19 @@ const LoginSignUp: FC = () => {
                     >
                         <TabPane tab={t('openedArea:login.entrar')} key="login">
                             {tab === 'login' && <LoginForm />}
+                            <GoogleLogin
+                                clientId="1021946640152-9akcglmplcn5jvg7buqcv3jemtnq2vl0.apps.googleusercontent.com"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={'single_host_origin'}
+                                icon={true}
+                                buttonText={'Entrar com Google'}
+                            />
                         </TabPane>
                         <TabPane tab={t('openedArea:login.registre-se')} key="signup">
                             {tab === 'signup' && <SignupForm />}
                         </TabPane>
+
                     </Tabs>
                 </Form>
             </Layout>

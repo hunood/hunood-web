@@ -8,7 +8,8 @@ import './style.less'
 export interface Login {
     username: string,
     password: string,
-    remember: boolean
+    remember: boolean,
+    oauth: boolean
 }
 
 interface LoginFormProps {

@@ -4,15 +4,24 @@ import { AuthenticateService, AuthenticateResponse, ForbidService } from "servic
 import { Empresa, Usuario } from "services/authentication/AuthenticateService/interfaces/response";
 import Connector from "services/_config-services/connector";
 
+type RecursivePartial<T> = {
+    [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
+
 interface DataAuthentication extends AuthenticateResponse {
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    googleId: string
 }
 
 const useAuth = () => {
     const initialAuth: DataAuthentication = {
         accessToken: "",
         refreshToken: "",
+        googleId: "",
         id: "",
         email: "",
         emailValido: false,
@@ -47,17 +56,26 @@ const useAuth = () => {
     useEffect(() => {
         const auth_ = getAuth();
         setAuth(getAuth());
-        
+
         if (auth_.accessToken) {
             setAuthenticated(true);
         }
     }, []);
 
-    const handleLogin = async (login: { username: string, password: string, remember: boolean }) => {
+    const clearAuth = () => {
+        localStorage.removeItem("@Auth:token");
+        localStorage.removeItem("@Auth:refresh");
+        localStorage.removeItem("@Auth:auth");
+        setAuth(initialAuth);
+    };
+
+    const handleLogin = async (login: { username: string, password: string, remember: boolean, oauth?: boolean }) => {
         try {
+            // clearAuth();
             const auth = await new AuthenticateService().execute({
                 email: login.username,
-                senha: login.password
+                senha: login.password,
+                oauth: !!login.oauth
             }) as DataAuthentication;
 
             if (auth) {
@@ -77,20 +95,13 @@ const useAuth = () => {
             return Promise.resolve(auth);
         }
         catch (err) {
-            return Promise.resolve(err as { message: string, error: boolean });
+            return Promise.resolve(err as { message: string, status: number, error: boolean });
         }
     };
 
     const handleLogout = async () => {
         try {
-            const cleanAuthStorage = () => {
-                localStorage.removeItem("@Auth:token");
-                localStorage.removeItem("@Auth:refresh");
-                localStorage.removeItem("@Auth:auth");
-                setAuth(initialAuth);
-            };
-
-            await new ForbidService().execute().finally(cleanAuthStorage);
+            await new ForbidService().execute().finally(clearAuth);
             return Promise.resolve(true);
         }
         catch (err) {
@@ -99,14 +110,14 @@ const useAuth = () => {
 
     };
 
-    const updateAuth = ({ ...data }: Partial<DataAuthentication>) => {
+    const updateAuth = ({ ...data }: RecursivePartial<DataAuthentication>) => {
         const auth = JSON.parse(localStorage.getItem("@Auth:auth") || "{}") as DataAuthentication;
         const newAuth = Object.assign(auth, data);
         localStorage.setItem("@Auth:auth", JSON.stringify(newAuth));
         setAuth(getAuth());
     };
 
-    return { authenticated, auth, handleLogin, handleLogout, updateAuth };
+    return { authenticated, auth, handleLogin, handleLogout, updateAuth, clearAuth };
 }
 
 type Auth = ReturnType<typeof useAuth>
