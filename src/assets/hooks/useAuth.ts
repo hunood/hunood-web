@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
 import { AuthenticateService, AuthenticateResponse, ForbidService } from "services/authentication";
-import { Empresa, Usuario } from "services/authentication/AuthenticateService/interfaces/response";
+import { UsuarioEmpresa, Usuario } from "services/authentication/AuthenticateService/interfaces/response";
 import Connector from "services/_config-services/connector";
 
 type RecursivePartial<T> = {
@@ -26,7 +26,7 @@ const useAuth = () => {
         email: "",
         emailValido: false,
         etapaOnboarding: 0,
-        empresas: [{} as Empresa],
+        empresas: [{} as UsuarioEmpresa],
         usuario: {} as Usuario,
     };
 

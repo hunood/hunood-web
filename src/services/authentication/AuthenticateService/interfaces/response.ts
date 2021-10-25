@@ -1,10 +1,10 @@
 import { Moment } from "moment"
-import { Enums } from "typing"
+import { Generos, TipoUsuario, TratarComo } from "typing/enums"
 
-export type Empresa = {
+export type UsuarioEmpresa = {
   id: string,
-  nomeFantasia: string,
-  tipoUsuario: keyof typeof Enums.TipoUsuario
+  tipoUsuario: keyof TipoUsuario,
+  nomeFantasia: string
 }
 
 export type Usuario = {
@@ -12,9 +12,9 @@ export type Usuario = {
   cpf: string,
   nome: string,
   dataNascimento: Moment,
-  genero: keyof typeof Enums.Generos,
+  genero: keyof typeof Generos,
   generoPersonalizado: string | null,
-  tratarPor: keyof typeof Enums.TratarComo
+  tratarPor: keyof typeof TratarComo
 }
 
 export default interface AuthentecateResponse {
@@ -22,7 +22,7 @@ export default interface AuthentecateResponse {
   email: string,
   emailValido: boolean,
   etapaOnboarding: number,
-  empresas: Empresa[],
+  empresas: UsuarioEmpresa[],
   usuario: Usuario
 }
 
