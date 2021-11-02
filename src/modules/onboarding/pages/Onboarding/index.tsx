@@ -67,14 +67,14 @@ const Onboarding: FC = () => {
     // On Success
     userStepService.onSuccess(() => {
         updateAuth({
-            empresas: [businessStepService.response || {}]
+            usuario: Object(userStepService.response || {})
         });
         next();
     });
 
     businessStepService.onSuccess(() => {
         updateAuth({
-            empresas: [businessStepService.response || {}]
+            empresas: Array(1).fill(businessStepService.response || {})
         });
         Boolean(auth.googleId) ? done() : next();
     });
