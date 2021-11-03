@@ -87,11 +87,13 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
                     </Form.Item>
                 </Col>
 
-                <Col sm={{ span: 12 }} xs={{ span: 24 }} style={{ minWidth: 238 }}>
-                    <Form.Item>
-                        <Input defaultValue={auth.email} id="user-form-email" disabled={true} />
-                    </Form.Item>
-                </Col>
+                {ehOnboarding &&
+                    <Col sm={{ span: 12 }} xs={{ span: 24 }} style={{ minWidth: 238 }}>
+                        <Form.Item>
+                            <Input defaultValue={auth.email} id="user-form-email" disabled={true} />
+                        </Form.Item>
+                    </Col>
+                }
             </Row>
 
             <h1>{t('forms:user.dados-pessoais')}</h1>

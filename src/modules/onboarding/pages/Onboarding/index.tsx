@@ -43,7 +43,7 @@ const Onboarding: FC = () => {
         }
     ];
 
-    if (auth.googleId) {
+    if (auth.emailValido) {
         steps.pop();
     }
 
@@ -76,7 +76,7 @@ const Onboarding: FC = () => {
         updateAuth({
             empresas: Array(1).fill(businessStepService.response || {})
         });
-        Boolean(auth.googleId) ? done() : next();
+        Boolean(auth.emailValido) ? done() : next();
     });
 
     verificationCodeService.onSuccess(() => {
@@ -106,7 +106,7 @@ const Onboarding: FC = () => {
     }, [current, updateAuth]);
 
     React.useEffect(() => {
-        if (auth.googleId && current === EtapaOnboarding.CADASTRO_USUARIO) {
+        if (auth.emailValido && current === EtapaOnboarding.CADASTRO_USUARIO) {
             form.setFieldsValue({
                 nome: auth.usuario.nome
             });

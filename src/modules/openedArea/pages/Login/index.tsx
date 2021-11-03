@@ -56,7 +56,7 @@ const LoginSignUp: FC = () => {
             form.setFields([{ name: 'password', errors: [t('onboarding:falha-autenticacao')] }]);
         }
 
-        if ((login as any).message) {
+        if ((login as any)?.message) {
             form.setFields([{ name: 'password', errors: [t('onboarding:autenticacao-invalida')] }]);
         }
 
