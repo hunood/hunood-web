@@ -8,6 +8,7 @@ import { EventSave } from 'components/modals/AlterUserModal';
 import { AuthContext } from 'assets/context/AuthContext';
 import { TipoUsuario } from 'typing/enums';
 import { AlterUserModal } from 'components/modals';
+import { t } from 'i18n';
 import "./style.less";
 
 const AdminUsers: FC = () => {
@@ -65,11 +66,11 @@ const AdminUsers: FC = () => {
     });
 
     const columns = [
-        { title: 'Nome', dataIndex: 'nome', key: 'nome' },
-        { title: 'Tipo usuário', dataIndex: 'tipousuario', key: 'tipousuario' },
-        { title: 'Usuário', dataIndex: 'usuario', key: 'usuario' },
-        { title: 'Ativo', dataIndex: 'ativo', key: 'ativo' },
-        { title: 'Ação', dataIndex: 'acao', key: 'acao' },
+        { title: t("users:adminUser.nome"), dataIndex: 'nome', key: 'nome' },
+        { title: t("users:adminUser.tipo-usuario"), dataIndex: 'tipousuario', key: 'tipousuario' },
+        { title: t("users:adminUser.usuario"), dataIndex: 'usuario', key: 'usuario' },
+        { title: t("users:adminUser.ativo"), dataIndex: 'ativo', key: 'ativo' },
+        { title: t("users:adminUser.acao"), dataIndex: 'acao', key: 'acao' },
     ];
 
     return (
@@ -77,6 +78,7 @@ const AdminUsers: FC = () => {
             <Table
                 columns={columns}
                 pagination={false}
+                scroll={{ x: true }}
                 dataSource={users?.map((usuario: Usuario, key: number) => {
                     return {
                         key,
@@ -86,7 +88,7 @@ const AdminUsers: FC = () => {
                         acao: <a href="Detalhar" onClick={(event) => {
                             event.preventDefault();
                             detalharUsuario(usuario)
-                        }}>Detalhar</a>,
+                        }}>{t("users:adminUser.detalhar")}</a>,
                         ativo: usuario.usuarioAtivo ? <CheckOutlined style={{ color: "#52c41a" }} /> : <CloseOutlined style={{ color: "#eb2f2f" }} />
                     }
                 })}

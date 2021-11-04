@@ -45,37 +45,37 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
         <>
             <Modal
                 visible={visible}
-                title={t('modals:detalhes-usuario')}
+                title={t('modals:alter-user.detalhes-usuario')}
                 onCancel={cancel}
                 onOk={ok}
-                okText={t('modals:salvar')}
-                cancelText={t('modals:cancelar')}
+                okText={t('modals:alter-user.salvar')}
+                cancelText={t('modals:alter-user.cancelar')}
                 okButtonProps={{
                     disabled: user.tipoUsuario === tipoUsuario && user.usuarioAtivo === usuarioAtivo,
                 }}
             >
                 <Descriptions bordered>
-                    <Descriptions.Item label={t('modals:nome-completo')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.nome-completo')} span={4}>
                         {user.nome}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:usuario')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.usuario')} span={4}>
                         {user.nomeUsuario}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:data-nascimento')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.data-nascimento')} span={4}>
                         {moment(user.dataNascimento).format("DD/MM/YYYY").toString()}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:cpf')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.cpf')} span={4}>
                         {user.cpf}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:tratar-como')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.tratar-como')} span={4}>
                         {(TratarComo as any)[(user?.tratarPor || "").toString()]}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:tipo-usuario')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.tipo-usuario')} span={4}>
                         {
                             (ehMaster || proprioUsuario) ? (
                                 <Switch
@@ -97,7 +97,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:status-usuario')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.status-usuario')} span={4}>
                         {
                             (ehMaster || proprioUsuario) ? (
                                 <Switch
@@ -119,7 +119,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:ultima-modificacao')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.ultima-modificacao')} span={4}>
                         {moment(user.ultimaAtualizacaoAssociacao).format("DD/MM/YYYY HH:MM:ss A").toString()}
                     </Descriptions.Item>
                 </Descriptions>

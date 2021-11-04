@@ -21,5 +21,13 @@
         "sucesso-usuario-associado": "O usuário ({{email}}) foi associado à empresa com sucesso.",
         "nova-associacao": "Nova associação",
         "consultar-lista-associados": "Consultar lista de associados"
+    },
+    "adminUser": {
+        "nome": "Nome",
+        "tipo-usuario": "Tipo usuário",
+        "usuario": "Usuário",
+        "ativo": "Ativo",
+        "acao": "Ação",
+        "detalhar": "Detalhar"
     }
 }
