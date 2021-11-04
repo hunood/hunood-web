@@ -1,9 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
+import { FindByBusinessService } from 'services/supplier';
+import { AuthContext } from 'assets/context/AuthContext';
 import "./style.less";
 
 const AdminSupplier: FC = () => {
-    
-    React.useEffect(() => { return; });
+
+    const { auth } = useContext(AuthContext);
+    const findByBusinessService = new FindByBusinessService().useAsHook();
+
+    React.useEffect(() => {
+        findByBusinessService.send({ idEmpresa: auth.empresas[0].id });  // eslint-disable-next-line
+    }, []);
 
     return (
         <>{"AdminSupplier"}</>
