@@ -2,16 +2,16 @@ import { Contact } from "components/forms";
 
 export default interface AddSupplierRequest {
   idEmpresa: string;
-  cnpj: string | null;
-  razaoSocial: string | null;
+  cnpj?: string;
+  razaoSocial?: string;
   nomeFantasia: string;
   cepLogradouro: string;
   nomeLogradouro: string;
   numeroLogradouro: string;
-  complementoLogradouro: string | null;
+  complementoLogradouro?: string;
   bairroLogradouro: string;
   cidadeLogradouro: string;
   estadoLogradouro: string;
-  observacoes: string | null;
-  contatos: Contact[],
+  observacoes?: string;
+  contatos: Contact[]
 }
