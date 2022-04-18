@@ -5,7 +5,14 @@
     },
     "addSupplier": {
         "cadastrar": "Cadastrar",
-        "resetar": "Resetar"
+        "resetar": "Resetar",
+        "fechar": "Fechar",
+        "fornecedor-erro": "Não foi possível cadastrar esse fornecedor",
+        "msg-fornecedor-erro": "Ocorreu um erro, tente novamente mais tarde!",
+        "sucesso-cadastro": "Cadastro com sucesso",
+        "sucesso-fornecedor-cadastrado": "O fornecedor ({{fornecedor}}) foi cadastrado com sucesso.",
+        "novo-cadastro": "Novo cadastro",
+        "consultar-lista-fornecedores": "Consultar lista de fornecedores"
     },
     "adminSupplier": {
         "nome-fantasia": "Nome fantasia",

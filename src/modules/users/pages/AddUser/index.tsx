@@ -86,7 +86,7 @@ const AddUser: FC = () => {
             });
         }
         else if (
-            (!res.cpfCadastrado && res.emailCadastrado) || 
+            (!res.cpfCadastrado && res.emailCadastrado) ||
             (res.cpfCadastrado && res.emailCadastrado && !res.associacao)
         ) {
             Modal.info({
@@ -104,7 +104,7 @@ const AddUser: FC = () => {
                 title={t("users:addUser.sucesso-associacao")}
                 subTitle={t("users:addUser.sucesso-usuario-associado", { email: dadosUsuario.email })}
                 extra={[
-                    <Button type="primary" key="associar" onClick={() => setExibirSucesso(false)}>
+                    <Button type="primary" key="associar" onClick={() => { form.resetFields(); setExibirSucesso(false) }}>
                         {t("users:addUser.nova-associacao")}
                     </Button>,
                     <Button key="consultar" onClick={() => history.push('/users')}>
