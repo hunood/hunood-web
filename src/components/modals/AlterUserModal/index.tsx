@@ -54,28 +54,28 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                     disabled: user.tipoUsuario === tipoUsuario && user.usuarioAtivo === usuarioAtivo,
                 }}
             >
-                <Descriptions bordered>
-                    <Descriptions.Item label={t('modals:alter-user.nome-completo')} span={4}>
+                <Descriptions bordered column={2}>
+                    <Descriptions.Item label={t('modals:alter-user.nome-completo')} span={2}>
                         {user.nome}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.usuario')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.usuario')} span={2}>
                         {user.nomeUsuario}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.data-nascimento')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.data-nascimento')} span={2}>
                         {moment(user.dataNascimento).format("DD/MM/YYYY").toString()}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.cpf')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.cpf')} span={2}>
                         {user.cpf}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.tratar-como')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.tratar-como')} span={2}>
                         {(TratarComo as any)[(user?.tratarPor || "").toString()]}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.tipo-usuario')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.tipo-usuario')} span={2}>
                         {
                             (ehMaster || proprioUsuario) ? (
                                 <Switch
@@ -97,7 +97,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.status-usuario')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.status-usuario')} span={2}>
                         {
                             (ehMaster || proprioUsuario) ? (
                                 <Switch
@@ -119,7 +119,7 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ user, visible, onCancel, onSa
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item label={t('modals:alter-user.ultima-modificacao')} span={4}>
+                    <Descriptions.Item label={t('modals:alter-user.ultima-modificacao')} span={2}>
                         {moment(user.ultimaAtualizacaoAssociacao).format("DD/MM/YYYY HH:MM:ss A").toString()}
                     </Descriptions.Item>
                 </Descriptions>

@@ -4,7 +4,7 @@ export type Fornecedor = {
   idEmpresa: string;
   cnpj?: string;
   razaoSocial?: string;
-  nomeFantasia: boolean;
+  nomeFantasia: string;
   cepLogradouro: string;
   nomeLogradouro: string;
   numeroLogradouro: number;

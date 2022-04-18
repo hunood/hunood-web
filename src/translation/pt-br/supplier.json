@@ -6,5 +6,13 @@
     "addSupplier": {
         "cadastrar": "Cadastrar",
         "resetar": "Resetar"
+    },
+    "adminSupplier": {
+        "nome-fantasia": "Nome fantasia",
+        "cnpj": "CNPJ",
+        "telefone": "Telefone",
+        "detalhar": "Detalhar",
+        "pesquisa": "Pesquisa por Nome Fantasia ou CNPJ",
+        "observacoes": "Observações"
     }
 }
