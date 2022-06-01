@@ -13,16 +13,16 @@ interface AlterEmailModalProps {
 }
 
 const AlterEmailModal: FC<AlterEmailModalProps> = ({ visible, email, onChange }) => {
-    
-    React.useEffect(() => {  return; });
-    
+
+    React.useEffect(() => { return; });
+
     const existsAuthService = new ExistsAuthService().useAsHook();
     const updateEmailService = new UpdateEmailService().useAsHook();
-    
+
     const [form] = Form.useForm();
     const [isVisible, setIsVisible] = useState<boolean>(visible);
     const [novoEmail, setNovoEmail] = useState<string>();
-    
+
     const handleOk = (form: { username: string }) => {
         setNovoEmail(form.username);
         existsAuthService.send({ idOuEmail: form.username });
@@ -89,7 +89,9 @@ const AlterEmailModal: FC<AlterEmailModalProps> = ({ visible, email, onChange })
                     </Form>
                 ]}
             >
-                {t('modals:alter-email.alteracao-permanente')}
+                <div className="titulo-modal">
+                    {t('modals:alter-email.alteracao-permanente')}
+                </div>
             </Modal>
         </>
     )
