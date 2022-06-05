@@ -108,7 +108,7 @@ const Onboarding: FC = () => {
     React.useEffect(() => {
         if (auth.emailValido && current === EtapaOnboarding.CADASTRO_USUARIO) {
             form.setFieldsValue({
-                nome: auth.usuario.nome
+                nome: auth?.usuario?.nome || ''
             });
         }
     }, [current, auth, form]);
