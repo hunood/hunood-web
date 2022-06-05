@@ -10,7 +10,7 @@
         "cancelar": "Cancelar",
         "cadastrar-associar": "Cadastrar e asssociar",
         "usuario-associado":"Usuário associado nessa empresa!",
-        "msg-usuario-associado": "Este usuário já está associado nessa empresa.",
+        "msg-usuario-associado": "Este usuário já está associado nessa empresa, verifique o e-mail na guia \"Gestão de usuários\".",
         "cpf-email-cadastrados": "CPF e e-mail já cadastrados!",
         "msg-cpf-email-cadastrados": "Deseja associar o usuário nessa empresa?",
         "cpf-cadastrado": "CPF já cadastrado!",

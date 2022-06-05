@@ -12,7 +12,9 @@ import {
     dashboardBR,
     businessBR,
     stockBR,
-    supplierBR
+    supplierBR,
+    batchBR,
+    productBR
 } from './translation';
 
 const options = {
@@ -32,7 +34,9 @@ const options = {
             dashboard: dashboardBR,
             business: businessBR,
             stock: stockBR,
-            supplier: supplierBR
+            supplier: supplierBR,
+            batch: batchBR,
+            product: productBR
         }
     }
 };

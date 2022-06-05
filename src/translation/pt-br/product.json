@@ -1,0 +1,30 @@
+{
+    "addProduct": {
+        "fornecedor": "Fornecedor",
+        "tipo-produto": "Tipo de produto",
+        "nome": "Nome/Identificação",
+        "unidade-medida": "Unidade de medida",
+        "unidade-medida-novo": "Nova medida",
+        "quantidade": "Quantidade",
+        "preco-unidade": "Preço unitário (R$)",
+        "marca": "Categorização",
+        "observacao-marca": "Identificação de categoria do produto, como Marca, Tipo ou Raça",
+        "codigo": "Código do produto",
+        "observacao-codigo": "Código do produto, pode ser uma identificação interna tal como o próprio código de barras.",
+        "perecivel": "Produto perecível",
+        "tangivel-descricao": "Tangível e intangível são, linguisticamente, termos que se referem a elementos que podem ou não ser tocados.",
+        "perecivel-descricao": "Produtos perecíveis são aqueles que perdem sua qualidade ou valor após determinado tempo, independentemente dos processos realizados para sua conservação.",
+        "sucesso-cadastro": "Cadastro com sucesso",
+        "sucesso-produto-cadastrado": "O produto ({{produto}}) foi cadastrado com sucesso.",
+        "novo-cadastro": "Novo cadastro",
+        "consultar-lista-produtos": "Consultar lista de produtos",
+        "fechar": "Fechar",
+        "produto-erro": "Não foi possível cadastrar esse produto",
+        "msg-produto-erro": "Ocorreu um erro, tente novamente mais tarde!"
+    },
+    "entryExit": {
+        "acao": "Ação",
+        "entrada": "Efetuar Entrada",
+        "saida": "Efetuar Saída"
+    }
+}

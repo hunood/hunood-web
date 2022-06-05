@@ -8,6 +8,8 @@ import dashboardBR from './pt-br/dashboard.json';
 import businessBR from './pt-br/business.json';
 import stockBR from './pt-br/stock.json';
 import supplierBR from './pt-br/supplier.json';
+import batchBR from './pt-br/batch.json';
+import productBR from './pt-br/product.json';
 
 export {
     openedAreaBR,
@@ -19,5 +21,7 @@ export {
     dashboardBR,
     businessBR,
     stockBR,
-    supplierBR
+    supplierBR,
+    batchBR,
+    productBR
 };
