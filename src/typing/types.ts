@@ -6,4 +6,10 @@ type Invert<T extends Record<PropertyKey, PropertyKey>> = {
     [V in T[keyof T]]: KeyFromValue<V, T>
 };
 
-export type { KeyFromValue, Invert };
+type ErrorService = {
+    message: string,
+    status: number,
+    error: boolean
+};
+
+export type { KeyFromValue, Invert, ErrorService };
