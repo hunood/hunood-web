@@ -37,7 +37,7 @@ const BusinessForm: FC<BusinessFormProps> = ({ form }) => {
                 name="cnpj"
                 rules={[{ required: false }]}
             >
-                <MaskedInput mask="11.111.111/1111-11" placeholder='00.000.000/0000-00' onBlur={onBlurCnpj} />
+                <MaskedInput mask="00.000.000/0000-00" placeholder='00.000.000/0000-00' onBlur={onBlurCnpj} />
             </Form.Item>
 
             <Form.Item

@@ -74,7 +74,7 @@ const AddressForm: FC<AddressFormProps> = ({ form }) => {
                         name="cepLogradouro"
                         rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                     >
-                        <MaskedInput mask="11111-111" placeholder='000000-000' onChange={(event) => findCEP(event.target.value)} />
+                        <MaskedInput mask="00000-000" placeholder='000000-000' onChange={(event) => findCEP(event.target.value)} />
                     </Form.Item>
                 </Col>
             </Row>

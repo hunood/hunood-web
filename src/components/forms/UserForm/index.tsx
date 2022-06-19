@@ -106,7 +106,8 @@ const UserForm: FC<UserFormProps> = ({ form, ehOnboarding = false, novoUsuario =
                         tooltip={{ title: t('forms:user.cpf-descricao'), icon: <InfoCircleOutlined /> }}
                     >
                         <MaskedInput
-                            mask="111.111.111-11"
+                            type="text"
+                            mask="000.000.000-00"
                             placeholder="000.000.000-00"
                             onChange={() => validarInputCpf()}
                             disabled={novoUsuario}

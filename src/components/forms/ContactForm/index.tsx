@@ -49,7 +49,7 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
                                             name={[field.name, "contato"]}
                                             rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                                         >
-                                            <MaskedInput mask="(11) 1111-11111"  placeholder={t('forms:contact.contato')} />
+                                            <MaskedInput mask="(00) 0000-00000"  placeholder={t('forms:contact.contato')} />
                                         </Form.Item>
                                     </Col>
                                     <Col flex="none" sm={4} xs={4}>

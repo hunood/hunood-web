@@ -21,7 +21,7 @@
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "antd": "^4.21.3",
-    "antd-mask-input": "^0.1.14",
+    "antd-mask-input": "^2.0.7",
     "axios": "^0.21.1",
     "cpf-cnpj-validator": "^1.0.3",
     "craco-alias": "^2.1.1",
