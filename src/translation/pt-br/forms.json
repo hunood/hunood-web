@@ -49,7 +49,8 @@
   },
   "batch": {
     "lote": "Lote do produto",
-    "codigo": "Código do estoque",
+    "infoAdicionaisLote": "Informações adicionais do lote",
+    "codigoLote": "Código do lote",
     "identificacao": "Identificação",
     "data-fabricacao": "Data de fabricação",
     "data-validade": "Data de validade",
