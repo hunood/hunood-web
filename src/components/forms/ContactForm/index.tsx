@@ -35,7 +35,6 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
                                     <Col sm={10} xs={20}>
                                         <Form.Item shouldUpdate
                                             name={[field.name, "tipoContato"]}
-                                            fieldKey={[field.fieldKey, "tipoContato"]}
                                             rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                                         >
                                             <Select placeholder={t('forms:contact.tipo-contato')} allowClear>
@@ -48,7 +47,6 @@ const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
                                     <Col sm={10} xs={20}>
                                         <Form.Item shouldUpdate
                                             name={[field.name, "contato"]}
-                                            fieldKey={[field.fieldKey, "contato"]}
                                             rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                                         >
                                             <MaskedInput mask="(11) 1111-11111"  placeholder={t('forms:contact.contato')} />

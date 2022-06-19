@@ -173,13 +173,16 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                     allowClear
                                     placeholder="Produto"
                                     optionFilterProp="children"
-                                    filterOption={(input, option) =>
-                                        option?.children.props.children[0].props.children.toLowerCase().indexOf(input?.toLowerCase()) >= 0 ||
-                                        option?.children.props.children[1].props.children.props.children[1].toLowerCase().indexOf(input?.toLowerCase()) >= 0
-                                    }
-                                    filterSort={(optionA, optionB) =>
-                                        optionA?.children.props.children[0].props.children.toLowerCase().localeCompare(optionB?.children.props.children[0].props.children.toLowerCase())
-                                    }
+                                    filterOption={(input, option) =>{
+                                        const opt = option as any
+                                        return opt?.children.props.children[0].props.children.toLowerCase().indexOf(input?.toLowerCase()) >= 0 ||
+                                        opt?.children.props.children[1].props.children.props.children[1].toLowerCase().indexOf(input?.toLowerCase()) >= 0
+                                    }}
+                                    filterSort={(optionA, optionB) =>{
+                                        const optA = optionA as any
+                                        const optB = optionB as any
+                                        return optA?.children.props.children[0].props.children.toLowerCase().localeCompare(optB?.children.props.children[0].props.children.toLowerCase())
+                                    }}
                                     onChange={(e: string) => { console.log(e); setIdProduto(e) }}
                                 >
                                     {
