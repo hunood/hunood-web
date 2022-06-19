@@ -6,6 +6,8 @@ import { ValidationAccountForm, ValidationAccount } from './ValidationAccountFor
 import { LoginForm, Login } from './LoginForm';
 import { SignupForm, Signup } from './SignupForm';
 import { SupplierForm, Supplier } from './SupplierForm';
+import { BatchForm, Batch } from './BatchForm';
+import { ProductForm, Product } from './ProductForm';
 
 export {
     UserForm,
@@ -15,7 +17,9 @@ export {
     ValidationAccountForm,
     LoginForm,
     SignupForm,
-    SupplierForm
+    SupplierForm,
+    BatchForm,
+    ProductForm
 }
 
 export type {
@@ -26,5 +30,7 @@ export type {
     ValidationAccount,
     Login,
     Signup,
-    Supplier
+    Supplier,
+    Batch,
+    Product
 }
