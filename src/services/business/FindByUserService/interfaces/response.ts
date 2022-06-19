@@ -1,4 +1,4 @@
-import { Generos, TipoUsuario } from "typing/enums";
+import { TipoUsuario } from "typing/enums";
 
 export type UsuarioEmpresa = {
   id: string,
