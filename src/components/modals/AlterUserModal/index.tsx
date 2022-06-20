@@ -21,8 +21,7 @@ interface AlterUserModalProps {
     onSave: (event: EventSave, user: Usuario) => void,
 }
 
-const AlterUserModal: FC<AlterUserModalProps> = ({ visible: visible_, user, onCancel, onSave }) => {
-    const [visible, setVisible] = useState(visible_);
+const AlterUserModal: FC<AlterUserModalProps> = ({ visible, user, onCancel, onSave }) => {
 
     const { auth } = useContext(AuthContext);
     const ehMaster = user.nomeUsuario.toLowerCase() === "master";
@@ -41,18 +40,17 @@ const AlterUserModal: FC<AlterUserModalProps> = ({ visible: visible_, user, onCa
     return (
         <>
             <Drawer
-                title={
-                    <Space>
-                        <Button onClick={onCancel}>Cancelar</Button>
-                        <Button onClick={salvar} type="primary">Salvar</Button>
-                    </Space>
-
-                }
                 width={window.width < 700 ? "100%" : 700}
                 onClose={onCancel}
                 visible={visible}
                 bodyStyle={{ paddingBottom: 80 }}
                 placement={'right'}
+                extra= {
+                    <Space>
+                        <Button onClick={onCancel}>Cancelar</Button>
+                        <Button onClick={salvar} type="primary">Salvar</Button>
+                    </Space>
+                }
             >
                 <Form layout="vertical" hideRequiredMark>
                     <Descriptions bordered column={2}>
