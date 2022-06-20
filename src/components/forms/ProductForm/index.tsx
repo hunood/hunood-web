@@ -6,6 +6,7 @@ import { gerarDeCodigo } from 'assets/utils/general';
 import { Batch, BatchForm } from '../BatchForm';
 import { t } from 'i18n';
 import './style.less'
+import { TipoProduto } from 'typing/enums';
 
 const { Option } = Select;
 
@@ -21,7 +22,6 @@ export interface Product extends Batch {
     precoUnidade: number;
     marca: string;
     codigo: string;
-    perecivel: boolean;
 }
 
 const ProductForm: FC<ProductFormProps> = ({ form }) => {
@@ -54,15 +54,9 @@ const ProductForm: FC<ProductFormProps> = ({ form }) => {
         });
     };
 
-
-    const optionsPerecivel = [
-        { label: 'Sim', value: true },
-        { label: 'Não', value: false }
-    ];
-
     const optionsTipoProduto = [
-        { label: 'Tangível', value: 1 },
-        { label: 'Intangível', value: 2 }
+        { label: TipoProduto.PERECIVEL, value: 1 },
+        { label: TipoProduto.IMPERECIVEL, value: 2 }
     ];
 
     const submit_ = React.useMemo(() => form.submit, [form]);
@@ -70,10 +64,9 @@ const ProductForm: FC<ProductFormProps> = ({ form }) => {
     form.submit = () => {
         form.validateFields().then(() => {
             const dados = form.getFieldValue(undefined as any);
-            let { idTipoProduto, perecivel, marca = "" } = dados;
-            idTipoProduto = idTipoProduto === "Tangível" ? 1 : 2;
-            perecivel = perecivel === "Sim" ? true : false;
-            form.setFieldsValue({ ...dados, ...{ idTipoProduto, perecivel, marca } });
+            let { idTipoProduto, marca = "" } = dados;
+            idTipoProduto = idTipoProduto === TipoProduto.PERECIVEL ? 1 : 2;
+            form.setFieldsValue({ ...dados, ...{ idTipoProduto, marca } });
             submit_();
         });
     }
@@ -165,29 +158,12 @@ const ProductForm: FC<ProductFormProps> = ({ form }) => {
             </Row>
 
             <Row gutter={[16, 0]}>
-                
-
                 <Col sm={{ span: 12 }} xs={{ span: 24 }}>
                     <Form.Item
                         label={t('product:addProduct.perecivel')}
-                        name="perecivel"
-                        initialValue={optionsPerecivel[0].label}
-                        tooltip={{ title: t('product:addProduct.perecivel-descricao'), icon: <InfoCircleOutlined /> }}
-                    >
-                        <Radio.Group
-                            name="perecivel"
-                            options={[optionsPerecivel[0].label, optionsPerecivel[1].label]}
-                            optionType="button"
-                            buttonStyle="solid"
-                        />
-                    </Form.Item>
-                </Col>
-                <Col sm={{ span: 12 }} xs={{ span: 24 }}>
-                    <Form.Item
-                        label={t('product:addProduct.tangivel')}
                         name="idTipoProduto"
                         initialValue={optionsTipoProduto[0].label}
-                        tooltip={{ title: t('product:addProduct.tangivel-descricao'), icon: <InfoCircleOutlined /> }}
+                        tooltip={{ title: t('product:addProduct.perecivel-descricao'), icon: <InfoCircleOutlined /> }}
                     >
                         <Radio.Group
                             name="idTipoProduto"

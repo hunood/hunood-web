@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 import { AuthContext } from 'assets/context/AuthContext';
 import { gerarDeCodigo } from 'assets/utils/general';
+import { Acao } from 'typing/enums';
 import { t } from 'i18n';
 import './style.less'
 
@@ -37,9 +38,8 @@ interface BatchFormProps {
 
 export interface Batch {
     identificacao: string,
-    dataValidadeIndeterminada: boolean,
-    dataFabricacao?: Date;
-    dataValidade?: Date;
+    dataFabricacao?: Date | null;
+    dataValidade?: Date | null;
     observacoes?: string;
     codigoLote: string;
     quantidade: number;
@@ -49,22 +49,24 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
 
     const { auth } = useContext(AuthContext);
     const getAllProductsService = new GetAllProductsService().useAsHook();
-
+    
+    const [acao, setAcao] = useState<string>(Acao.ENTRADA);
+    const [lotes, setLotes] = useState<Lote[]>([]);
     const [produtos, setProdutos] = useState<Produto[]>([]);
     const [idProduto, setIdProduto] = useState<string>("");
     const [idLote, setIdLote] = useState<string>("");
-    const [acao, setAcao] = useState<string>("");
+    const [novoLote, setNovoLote] = useState<string>("");
+    const [quantidade, setQuantidade] = useState<number>(0);
     const [ehLoteNovo, setEhLoteNovo] = useState<boolean>(false);
     const [dtFabIndeterminada, setDtFabIndeterminada] = useState<boolean>(false);
     const [dtValIndeterminada, setDtValIndeterminada] = useState<boolean>(false);
     const [dtFabricacao, setDtFabricacao] = useState<Date>();
-    const [lotes, setLotes] = useState<Lote[]>([]);
 
     const refInputLote = useRef<any>(null);
 
     const optionsAcao = [
-        { label: 'Entrada', value: true },
-        { label: 'Saída', value: false }
+        { label: Acao.ENTRADA, value: true },
+        { label: Acao.SAIDA, value: false }
     ];
 
     React.useEffect(() => {
@@ -92,18 +94,22 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
     }, [idProduto]); // eslint-disable-line
 
     React.useEffect(() => {
-        if(lotes.length > 0) {
-            const existeLote = lotes.some(l => l.id === idLote);
+        if (lotes.length > 0) {
+            const existeLote = lotes.find(l => l.id === idLote);
+            const qtd = acao === "Entrada" ? Infinity : existeLote?.quantidadeProdutos || 0.01;
+            setQuantidade(qtd);
             setEhLoteNovo(!existeLote);
         }
     }, [idLote]); // eslint-disable-line
-    
+
     React.useEffect(() => {
-        if(onClickAcao) {
+        if (onClickAcao) {
             onClickAcao(acao);
         }
+        const existeLote = lotes.find(l => l.id === idLote);
+            const qtd = acao === "Entrada" ? Infinity : existeLote?.quantidadeProdutos || 0.01;
+            setQuantidade(qtd);
         console.log(acao);
-        
     }, [acao]); // eslint-disable-line
 
     getAllProductsService.onSuccess(() => {
@@ -117,16 +123,15 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
         form.validateFields().then(() => {
             const dados = form.getFieldValue(undefined as any);
 
-            const lote = lotes.find(l => l.id === dados.codigoLote) || {} as Lote;
+            const lote = lotes.find(l => l.id === (dados.codigoLote || dados.codigoLote2)) || {} as Lote;
             const ehLoteNovo = !lote.id;
-            
+
             const loteNovo = {
                 id: null,
-                dataValidadeIndeterminada: dados.dataValidadeIndeterminada,
-                dataFabricacao: dados.dataFabricacaoIndeterminada,
-                dataValidade: dados.dataValidade,
+                dataFabricacao: dados.dataFabricacao || null,
+                dataValidade: dados.dataValidade || null,
                 observacoes: dados.observacoes,
-                codigo: dados.codigoLote,
+                codigo: dados.codigoLote || dados.codigoLote2,
                 quantidadeProdutos: dados.quantidade,
             };
 
@@ -140,7 +145,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
         const lote = refInputLote.current.input.value;
         setLotes((lotes: Lote[]) => {
             if (lote.trim()) {
-                refInputLote.current.state.value = "";
+                setNovoLote("");
                 refInputLote.current!.focus({ cursor: 'start' });
                 return [...lotes, ({ id: null, codigo: lote } as unknown as Lote)];
             }
@@ -173,15 +178,10 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                     allowClear
                                     placeholder="Produto"
                                     optionFilterProp="children"
-                                    filterOption={(input, option) =>{
-                                        const opt = option as any
-                                        return opt?.children.props.children[0].props.children.toLowerCase().indexOf(input?.toLowerCase()) >= 0 ||
-                                        opt?.children.props.children[1].props.children.props.children[1].toLowerCase().indexOf(input?.toLowerCase()) >= 0
-                                    }}
-                                    filterSort={(optionA, optionB) =>{
-                                        const optA = optionA as any
-                                        const optB = optionB as any
-                                        return optA?.children.props.children[0].props.children.toLowerCase().localeCompare(optB?.children.props.children[0].props.children.toLowerCase())
+                                    filterOption={(input, option) => {
+                                        const produto = ((option!.children as any)?.props?.titulo)?.toLowerCase() || "";
+                                        const codigo = ((option!.children as any)?.props?.codigo)?.toLowerCase() || "";
+                                        return produto.includes(input.toLowerCase()) || codigo.includes(input.toLocaleLowerCase());
                                     }}
                                     onChange={(e: string) => { console.log(e); setIdProduto(e) }}
                                 >
@@ -208,19 +208,19 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                     allowClear
                                     placeholder={t('product:entryExit.selecioneLote')}
                                     disabled={!idProduto}
+                                    onChange={(e: string) => { console.log(e); setIdLote(e) }}
                                     dropdownRender={menu => (
                                         <>
                                             {menu}
                                             <Divider style={{ margin: '8px 0' }} />
                                             <Space align="center" style={{ padding: '0 8px 4px' }}>
-                                                <Input placeholder={t('product:entryExit.adicioneLote')} ref={refInputLote} />
+                                                <Input placeholder={t('product:entryExit.adicioneLote')} ref={refInputLote} value={novoLote} onChange={(e) => setNovoLote(e.target.value)} />
                                                 <Typography.Link onClick={adicionarLote} style={{ whiteSpace: 'nowrap' }}>
                                                     <PlusOutlined />&nbsp;Novo
                                                 </Typography.Link>
                                             </Space>
                                         </>
                                     )}
-                                    onChange={(e: string) => { console.log(e); setIdLote(e) }}
                                 >
                                     {
                                         lotes.map((lote: Lote, index: number) => {
@@ -263,16 +263,16 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                 label={t('product:addProduct.quantidade')}
                                 name="quantidade"
                                 initialValue={0}
-                                rules={[{ required: true, message: t('product:addProduct.quantidade') }]}
+                                rules={[{ required: true, message: t('messages:campo-obrigatorio') }]}
                             >
-                                <InputNumber min={0} style={{ width: '100%' }} step={0.01} decimalSeparator={','} />
+                                <InputNumber min={0} max={quantidade} style={{ width: '100%' }} step={0.01} decimalSeparator={','} />
                             </Form.Item>
                         </Col>
                     </Row>
                 </>
             }
 
-            {((ehLoteNovo && acao) || ehInclusaoProduto) &&
+            {((ehLoteNovo && idLote && acao === Acao.ENTRADA) || ehInclusaoProduto) &&
                 <>
                     {!ehInclusaoProduto && <h1>{t('forms:batch.infoAdicionaisLote')}</h1>}
                     <Row gutter={[16, 0]}>
@@ -301,7 +301,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                     format="DD/MM/YYYY \à\s HH:mm"
                                     placeholder={t('forms:user.dd-mm-aaaa')}
                                     showToday={true}
-                                    // disabled={dtFabIndeterminada || !!produtos.find(p => p.id === idProduto)}
+                                    disabled={dtFabIndeterminada}
                                     disabledDate={date => !date || date.isAfter(moment().toDate())}
                                     onChange={(date) => setDtFabricacao(moment(date).toDate())}
                                 />
@@ -353,8 +353,8 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                             <Col sm={{ span: 12 }} xs={{ span: 24 }}>
                                 <Form.Item
                                     label={t('forms:batch.codigoLote')}
-                                    initialValue={gerarDeCodigo()}
-                                    name="codigoLote"
+                                    name="codigoLote2"
+                                    initialValue ={gerarDeCodigo()}
                                 >
                                     <Input />
                                 </Form.Item>
