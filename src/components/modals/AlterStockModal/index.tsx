@@ -11,24 +11,41 @@ interface AlterStockModalProps {
     produto: Produto,
     visible: boolean,
     onCancel: () => void,
-    onSave: (produto: Produto) => void,
+    onSaveProduct: (produto: Produto) => void,
+    onSaveBatch: (lote: Lote) => void,
 }
 
-const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel, onSave }) => {
+const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel, onSaveProduct, onSaveBatch }) => {
 
     const [tipoProduto, setTipoProduto] = useState<boolean>(produto.idTipoProduto === 1);
     const [visibleLote, setVisibleLote] = useState<boolean>(false);
     const [lote, setLote] = useState({} as Lote);
+    const [lotes, setLotes] = useState(produto.lotes as Lote[]);
 
     produto.precoUnidade = Number(produto.precoUnidade).toFixed(2) as any
-    const [productoAtualizado, setProdutoAtualizado] = useState(produto as Produto);
+    const [produtoAtualizado, setProdutoAtualizado] = useState(produto as Produto);
 
     const produto_ = useMemo(() => produto, [produto]);
     const window = useWindowSize();
 
-    const salvar = () => {
-        console.log(productoAtualizado)
-        onSave(productoAtualizado);
+    useEffect(() => {
+        setProdutoAtualizado((prod) => { return { ...prod, idTipoProduto: (tipoProduto ? 1 : 2) } });
+    }, [tipoProduto]);
+
+    const salvarProduto = () => {
+        onSaveProduct(produtoAtualizado);
+    };
+
+    const salvarLote = (lote: Lote) => {
+        onSaveBatch(lote);
+        setVisibleLote(false);
+        setLotes((lotes_) => {
+            const lotesMapeados = lotes_.map((lt) => {
+                if(lt.id === lote.id) lt = lote
+                return lt;
+            });
+            return lotesMapeados;
+        })
     };
 
     const recuperarStatusLote = (lote: Lote) => {
@@ -41,13 +58,12 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
     }
 
     const detalharLote = (lote: Lote) => {
-        
         setLote(lote);
         setVisibleLote(true);
     }
 
     const defensivaNulo = (nomeCampo: string) => {
-        if ((productoAtualizado as any)[nomeCampo].trim() === "") {
+        if ((produtoAtualizado as any)[nomeCampo].trim() === "") {
             setProdutoAtualizado(prod => { return { ...prod, [nomeCampo]: (produto_ as any)[nomeCampo] } });
         }
     }
@@ -55,11 +71,6 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
     const atualizaValor = (event: any, nomeCampo: string) => {
         setProdutoAtualizado((prod) => { return { ...prod, [nomeCampo]: event.target.value } });
     }
-
-    useEffect(() => {
-        setProdutoAtualizado((prod) => { return { ...prod, idTipoProduto: (tipoProduto ? 1 : 2) } });
-    }, [tipoProduto]);
-
 
     return (
         <>
@@ -73,18 +84,18 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                     extra={
                         <Space>
                             <Button onClick={onCancel}>Cancelar</Button>
-                            <Button onClick={salvar} type="primary">Salvar</Button>
+                            <Button onClick={salvarProduto} type="primary">Salvar</Button>
                         </Space>
                     }
                 >
 
                     <Descriptions bordered column={2}>
                         <Descriptions.Item label={t('Identificação')} span={2}>
-                            <Input className="alter" value={productoAtualizado.nome} onChange={(e) => atualizaValor(e, "nome")} onBlur={() => defensivaNulo("nome")} />
+                            <Input className="alter" value={produtoAtualizado.nome} onChange={(e) => atualizaValor(e, "nome")} onBlur={() => defensivaNulo("nome")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Unidade de medida')} span={2}>
-                            <Input className="alter" value={productoAtualizado.unidadeMedida} onChange={(e) => atualizaValor(e, "unidadeMedida")} onBlur={() => defensivaNulo("unidadeMedida")} />
+                            <Input className="alter" value={produtoAtualizado.unidadeMedida} onChange={(e) => atualizaValor(e, "unidadeMedida")} onBlur={() => defensivaNulo("unidadeMedida")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Preço')} span={2}>
@@ -92,23 +103,23 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                                 type="number"
                                 prefix={"R$"}
                                 step={"0.01"}
-                                value={productoAtualizado.precoUnidade}
+                                value={produtoAtualizado.precoUnidade}
                                 onChange={(e) => setProdutoAtualizado((l) => {
                                     return { ...l, precoUnidade: Number(e.target.value.toString()) }
                                 })}
 
                                 onBlur={() => setProdutoAtualizado((l) => {
-                                    return { ...l, precoUnidade: Number(productoAtualizado.precoUnidade).toFixed(2) } as any
+                                    return { ...l, precoUnidade: Number(produtoAtualizado.precoUnidade).toFixed(2) } as any
                                 })}
                             />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Categorização')} span={2}>
-                            <Input className="alter" value={productoAtualizado.marca} onChange={(e) => atualizaValor(e, "marca")} onBlur={() => defensivaNulo("marca")} />
+                            <Input className="alter" value={produtoAtualizado.marca} onChange={(e) => atualizaValor(e, "marca")} onBlur={() => defensivaNulo("marca")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Código')} span={2}>
-                            <Input className="alter" value={productoAtualizado.codigo} onChange={(e) => atualizaValor(e, "codigo")} onBlur={() => defensivaNulo("codigo")} />
+                            <Input className="alter" value={produtoAtualizado.codigo} onChange={(e) => atualizaValor(e, "codigo")} onBlur={() => defensivaNulo("codigo")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Perecível')} span={2}>
@@ -126,16 +137,16 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
 
                     <Divider>LOTES</Divider>
                     <div style={{ textAlign: "center", fontSize: 10, marginTop: -20, marginBottom: 10, paddingBottom: 10, borderBottom: "1px solid rgba(0, 0, 0, 0.06)" }}>
-                        {produto.lotes.length > 0 && (
+                        {lotes.length > 0 && (
                             <>
                                 <span style={{ marginRight: 20 }}><Badge status="success" /> Produtos dentro da validade</span>
                                 <span><Badge status="error" /> Possui produto com validade vencida</span>
                             </>
                         )}
-                        {produto.lotes.length === 0 && <span style={{ display: "inline-block", marginTop: 10 }}>Este produto não possui lote.</span>}
+                        {lotes.length === 0 && <span style={{ display: "inline-block", marginTop: 10 }}>Este produto não possui lote.</span>}
                     </div>
                     {
-                        produto.lotes.map((lote, index) => {
+                        lotes.map((lote, index) => {
                             return (
                                 <React.Fragment key={index}>
                                     <Descriptions bordered size={"small"} column={2}>
@@ -152,8 +163,8 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                                             {lote.dataFabricacao !== null && moment(lote.dataFabricacao).format("DD/MM/YYYY - HH:mm:ss A")}
                                         </Descriptions.Item>
                                         <Descriptions.Item label="Validade">
-                                            {lote.dataFabricacao === null && "Indeterminada"}
-                                            {lote.dataFabricacao !== null && moment(lote.dataValidade).format("DD/MM/YYYY - HH:mm:ss A")}
+                                            {lote.dataValidade === null && "Indeterminada"}
+                                            {lote.dataValidade !== null && moment(lote.dataValidade).format("DD/MM/YYYY - HH:mm:ss A")}
                                         </Descriptions.Item>
                                     </Descriptions>
                                     <br />
@@ -162,8 +173,12 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                         })
                     }
 
-                    {visibleLote && <AlterBatchModal lote={lote} visible={visibleLote} onCancel={() => {setVisibleLote(false); setLote({} as Lote)}} onSave={() => null} />}
                 </Drawer>
+                {visibleLote && <AlterBatchModal
+                    lote={lote}
+                    visible={visibleLote}
+                    onCancel={() => { setVisibleLote(false); setLote({} as Lote) }}
+                    onSave={salvarLote} />}
             </Form>
         </>
     );

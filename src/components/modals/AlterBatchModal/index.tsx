@@ -7,19 +7,14 @@ import moment from 'moment';
 import './style.less';
 import Input from 'antd/lib/input/Input';
 
-export type EventSave = {
-    lote: Lote
-};
-
 interface AlterBatchModalProps {
     lote: Lote,
     visible: boolean,
     onCancel: () => void,
-    onSave: (event: EventSave, lote: Lote) => void,
+    onSave: (lote: Lote) => void,
 }
 
 const AlterBatchModal: FC<AlterBatchModalProps> = ({ visible, lote, onCancel, onSave }) => {
-
 
     const lote_ = useMemo(() => lote, [lote]);
     const [loteAtualizado, setLoteAtualizado] = useState(lote as Lote);
@@ -27,8 +22,7 @@ const AlterBatchModal: FC<AlterBatchModalProps> = ({ visible, lote, onCancel, on
     const window = useWindowSize();
 
     const salvar = () => {
-        console.log(loteAtualizado)
-        // onSave({ produto }, produto);
+        onSave(loteAtualizado);
     };
 
     const recuperarStatusLote = (lote: Lote) => {

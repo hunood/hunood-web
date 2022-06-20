@@ -3,11 +3,12 @@ import { Table, Input, Badge } from 'antd';
 import { AuthContext } from 'assets/context/AuthContext';
 import { AlterStockModal } from 'components/modals';
 import { GetAllProductsService, UpdateProductService } from 'services/product';
-import { Produto } from 'services/product/GetAllProductsService/interfaces/response';
+import { UpdateBatchService } from 'services/batch';
+import { Lote, Produto } from 'services/product/GetAllProductsService/interfaces/response';
 import { formatCurrency } from 'assets/utils/format';
 import { t } from 'i18n';
-import "./style.less";
 import moment from 'moment';
+import "./style.less";
 
 const AdminStock: FC = () => {
 
@@ -20,14 +21,37 @@ const AdminStock: FC = () => {
 
     const getAllProductsService = new GetAllProductsService().useAsHook();
     const updateProductService = new UpdateProductService().useAsHook();
+    const updateBatchService = new UpdateBatchService().useAsHook();
 
     React.useEffect(() => {
         getAllProductsService.send({ idEmpresa: auth.empresas[0].id });  // eslint-disable-next-line
-    }, []);
-
+    }, [visible]);
 
     getAllProductsService.onSuccess(() => {
-        setProdutos(getAllProductsService.response?.produtos || []);
+        const produtos = getAllProductsService.response?.produtos || [];
+
+        const compareLote = (a: Lote, b: Lote) => {
+            if (a.id < b.id)
+                return -1;
+            if (a.id > b.id)
+                return 1;
+            return 0;
+        }
+        const compareProduto = (a: Produto, b: Produto) => {
+            if (a.nome < b.nome)
+                return -1;
+            if (a.nome > b.nome)
+                return 1;
+            return 0;
+        }
+
+        produtos.sort(compareProduto);
+
+        produtos.forEach((prod) => {
+            prod.lotes.sort(compareLote)
+        });
+
+        setProdutos(produtos);
     });
 
     const detalharProduto = (produto: Produto) => {
@@ -35,12 +59,19 @@ const AdminStock: FC = () => {
         setVisible(true);
     }
 
-    const salvar = (produto: Produto) => {
-        updateProductService.send(produto)
+    const salvarProduto = (produto: Produto) => {
+        updateProductService.send(produto);
+        setVisible(false)
+    }
+
+    const salvarLote = (lote: Lote) => {
+        
+
+        updateBatchService.send(lote);
     }
 
     const recuperarStatus = (produto: Produto) => {
-        const temProdutoVencido = produto.lotes.some(p =>{
+        const temProdutoVencido = produto.lotes.some(p => {
             return p.dataValidade != null && moment(p.dataValidade).isBefore(new Date()) && p.quantidadeProdutos > 0
         });
 
@@ -100,7 +131,8 @@ const AdminStock: FC = () => {
                         produto={{ ...produtoSelecionado }}
                         visible={visible}
                         onCancel={() => { setVisible(false); }}
-                        onSave={salvar}
+                        onSaveProduct={salvarProduto}
+                        onSaveBatch={salvarLote}
                     />
                 )
             }
