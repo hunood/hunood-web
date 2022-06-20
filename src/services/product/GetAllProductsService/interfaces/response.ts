@@ -1,13 +1,14 @@
+import { Acao } from "typing/enums"
+
 export type Lote = {
   id: string,
-  dataFabricacao: Date
-  dataValidade: Date
-  dataValidadeIndeterminada: boolean
+  dataFabricacao: Date | null,
+  dataValidade: Date | null,
   observacoes: string,
   quantidadeProdutos: number,
   codigo: string,
   idProduto: string,
-  tipoAcao: string, // ENTRADA SAIDA
+  tipoAcao: keyof typeof Acao,
   dataAcao: Date,
   idAutenticacao: string,
   readonly createdAt: Date;
@@ -23,8 +24,6 @@ export type Produto = {
   quantidade: number,
   precoUnidade: number,
   marca: string,
-  perecivel: boolean,
-  tangivel: boolean,
   codigo: string,
   lotes: Lote[],
   readonly createdAt: Date;

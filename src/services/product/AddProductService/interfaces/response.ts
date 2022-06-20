@@ -7,7 +7,6 @@ export default interface AddProductResponse extends ErrorService {
   quantidade: number,
   precoUnidade: number
   marca: string,
-  perecivel: boolean
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }

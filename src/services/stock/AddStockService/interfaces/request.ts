@@ -1,9 +1,8 @@
 type Lote = {
   id: string | null;
   ehLoteNovo: boolean;
-  dataValidadeIndeterminada: boolean;
-  dataFabricacao: Date;
-  dataValidade: Date;
+  dataFabricacao: Date | null;
+  dataValidade: Date | null;
   observacoes: string;
   codigo: string;
   quantidadeProdutos: number;

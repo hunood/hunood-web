@@ -1,9 +1,8 @@
 export default interface AddBatchRequest {
   idEmpresa: string,
   identificacao: string,
-  dataValidadeIndeterminada: boolean,
-  dataFabricacao?: Date;
-  dataValidade?: Date;
+  dataFabricacao?: Date | null;
+  dataValidade?: Date | null;
   observacoes?: string;
   codigoLote: string
 }

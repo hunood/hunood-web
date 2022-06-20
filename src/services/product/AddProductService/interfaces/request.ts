@@ -8,6 +8,5 @@ export default interface AddProductRequest extends Partial<AddBatchRequest> {
   quantidade: number,
   precoUnidade: number
   marca: string,
-  codigo: string,
-  perecivel: boolean
+  codigo: string
 }
