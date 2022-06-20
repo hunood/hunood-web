@@ -5,6 +5,7 @@
     "minimo-letra-maiuscula": "Mínimo de 1 letra maiuscula.",
     "minimo-letra-minuscula": "Mínimo de 1 letra minuscula.",
     "minimo-numero": "Mínimo de 1 número.",
+    "valor-minimo": "Valor mínimo ({{numero}}).",
     "campo-obrigatorio": "Campo obrigatório.",
     "senhas-nao-coincidem": "Os campos de senha não coincidem.",
     "email-invalido": "E-mail inválido.",

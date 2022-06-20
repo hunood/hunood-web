@@ -12,8 +12,6 @@
         "codigo": "Código do produto",
         "observacao-codigo": "Código do produto, pode ser uma identificação interna tal como o próprio código de barras.",
         "perecivel": "Produto perecível",
-        "tangivel": "Produto tangível",
-        "tangivel-descricao": "Tangível e intangível são, linguisticamente, termos que se referem a elementos que podem ou não ser tocados.",
         "perecivel-descricao": "Produtos perecíveis são aqueles que perdem sua qualidade ou valor após determinado tempo, independentemente dos processos realizados para sua conservação.",
         "sucesso-cadastro": "Cadastro com sucesso",
         "sucesso-produto-cadastrado": "O produto ({{produto}}) foi cadastrado com sucesso.",
@@ -30,6 +28,10 @@
         "lote": "Lote",
         "loteDescricao": "Selecione um lote para remover ou cadastrar produtos, caso seja um lote, coloque o código identificador e clique em \"novo\"",
         "selecioneLote": "Selecione o lote",
-        "adicioneLote": "Adicione um novo lote"
+        "adicioneLote": "Adicione um novo lote",
+        "sucesso-cadastro": "Sucesso",
+        "sucesso-entrada-saida": "A ação de {{}} foi executada.",
+        "nova-entrada-saida": "Efetuar outra ação",
+        "consultar-lista-produtos": "Consultar lista de produtos"
     }
 }

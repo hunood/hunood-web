@@ -71,6 +71,16 @@ enum Estados {
     TO = "Tocantins"
 }
 
+enum TipoProduto {
+    PERECIVEL = "Perecível",
+    IMPERECIVEL = "Imperecível"
+}
+
+enum Acao {
+    ENTRADA = "Entrada",
+    SAIDA = "Saída"
+}
+
 export {
     TipoUsuario,
     EtapaOnboarding,
@@ -79,5 +89,7 @@ export {
     Generos,
     Languages,
     TratarComo,
-    SituacaoUsuario
+    SituacaoUsuario,
+    TipoProduto,
+    Acao
 };
