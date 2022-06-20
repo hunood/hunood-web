@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
-import { Badge, Button, Descriptions, Divider, Drawer, Form, Space, Switch } from 'antd';
+import React, { FC, useState, useEffect, useMemo } from 'react';
+import { Badge, Button, Descriptions, Divider, Drawer, Form, Space, Switch, Input } from 'antd';
 import { useWindowSize } from 'assets/hooks/useWindowResize';
 import { Lote, Produto } from 'services/product/GetAllProductsService/interfaces/response';
-import { formatCurrency } from 'assets/utils/format';
+import { AlterBatchModal } from '../AlterBatchModal';
 import { TipoProduto } from 'typing/enums';
 import { t } from 'i18n';
 import moment from 'moment';
@@ -11,11 +11,6 @@ import './style.less';
 export type EventSave = {
     produto: Produto
 };
-
-// export type EventSave = {
-//     tipoUsuario: keyof TipoUsuario,
-//     usuarioAtivo: boolean
-// };
 
 interface AlterStockModalProps {
     produto: Produto,
@@ -26,17 +21,18 @@ interface AlterStockModalProps {
 
 const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel, onSave }) => {
 
-    // const { auth } = useContext(AuthContext);
-    // const ehMaster = produto.nomeUsuario.toLowerCase() === "master";
-    // const proprioUsuario = auth.id === produto.idAutenticacao;
-
     const [tipoProduto, setTipoProduto] = useState<boolean>(produto.idTipoProduto === 1);
-    // const TipoUsuarioInvert = invertEnum<typeof TipoUsuario>(TipoUsuario);
-    // const [tipoUsuario, setTipoUsuario] = useState<keyof TipoUsuario>(produto.tipoUsuario);
+    const [visibleLote, setVisibleLote] = useState<boolean>(false);
+    const [lote, setLote] = useState({} as Lote);
 
+    produto.precoUnidade = Number(produto.precoUnidade).toFixed(2) as any
+    const [productoAtualizado, setProdutoAtualizado] = useState(produto as Produto);
+
+    const produto_ = useMemo(() => produto, [produto]);
     const window = useWindowSize();
 
     const salvar = () => {
+        console.log(productoAtualizado)
         onSave({ produto }, produto);
     };
 
@@ -49,41 +45,75 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
         return <Badge status="success" />
     }
 
+    const detalharLote = (lote: Lote) => {
+        
+        setLote(lote);
+        setVisibleLote(true);
+    }
+
+    const defensivaNulo = (nomeCampo: string) => {
+        if ((productoAtualizado as any)[nomeCampo].trim() === "") {
+            setProdutoAtualizado(prod => { return { ...prod, [nomeCampo]: (produto_ as any)[nomeCampo] } });
+        }
+    }
+
+    const atualizaValor = (event: any, nomeCampo: string) => {
+        setProdutoAtualizado((prod) => { return { ...prod, [nomeCampo]: event.target.value } });
+    }
+
+    useEffect(() => {
+        setProdutoAtualizado((prod) => { return { ...prod, idTipoProduto: (tipoProduto ? 1 : 2) } });
+    }, [tipoProduto]);
+
+
     return (
         <>
-            <Drawer
-                width={window.width < 700 ? "100%" : 700}
-                onClose={onCancel}
-                visible={visible}
-                bodyStyle={{ paddingBottom: 80 }}
-                placement={'right'}
-                extra={
-                    <Space>
-                        <Button onClick={onCancel}>Cancelar</Button>
-                        <Button onClick={salvar} type="primary">Salvar</Button>
-                    </Space>
-                }
-            >
-                <Form layout="vertical" hideRequiredMark>
+            <Form layout="vertical" hideRequiredMark>
+                <Drawer
+                    width={window.width < 700 ? "100%" : 700}
+                    onClose={onCancel}
+                    visible={visible}
+                    bodyStyle={{ paddingBottom: 80 }}
+                    placement={'right'}
+                    extra={
+                        <Space>
+                            <Button onClick={onCancel}>Cancelar</Button>
+                            <Button onClick={salvar} type="primary">Salvar</Button>
+                        </Space>
+                    }
+                >
+
                     <Descriptions bordered column={2}>
                         <Descriptions.Item label={t('Identificação')} span={2}>
-                            {produto.nome}
+                            <Input className="alter" value={productoAtualizado.nome} onChange={(e) => atualizaValor(e, "nome")} onBlur={() => defensivaNulo("nome")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Unidade de medida')} span={2}>
-                            {produto.unidadeMedida}
+                            <Input className="alter" value={productoAtualizado.unidadeMedida} onChange={(e) => atualizaValor(e, "unidadeMedida")} onBlur={() => defensivaNulo("unidadeMedida")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Preço')} span={2}>
-                            {formatCurrency(produto.precoUnidade)}
+                            <Input className="alter"
+                                type="number"
+                                prefix={"R$"}
+                                step={"0.01"}
+                                value={productoAtualizado.precoUnidade}
+                                onChange={(e) => setProdutoAtualizado((l) => {
+                                    return { ...l, precoUnidade: Number(e.target.value.toString()) }
+                                })}
+
+                                onBlur={() => setProdutoAtualizado((l) => {
+                                    return { ...l, precoUnidade: Number(productoAtualizado.precoUnidade).toFixed(2) } as any
+                                })}
+                            />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Categorização')} span={2}>
-                            {produto.marca}
+                            <Input className="alter" value={productoAtualizado.marca} onChange={(e) => atualizaValor(e, "marca")} onBlur={() => defensivaNulo("marca")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Código')} span={2}>
-                            {produto.codigo}
+                            <Input className="alter" value={productoAtualizado.codigo} onChange={(e) => atualizaValor(e, "codigo")} onBlur={() => defensivaNulo("codigo")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Perecível')} span={2}>
@@ -93,9 +123,7 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                                     checkedChildren={TipoProduto.PERECIVEL}
                                     unCheckedChildren={TipoProduto.IMPERECIVEL}
                                     defaultChecked={tipoProduto}
-                                    onChange={(checked: boolean) => {
-                                        setTipoProduto(checked);
-                                    }}
+                                    onChange={(checked: boolean) => { setTipoProduto(checked); }}
                                 />
                             }
                         </Descriptions.Item>
@@ -109,16 +137,20 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                                 <span><Badge status="error" /> Possui produto com validade vencida</span>
                             </>
                         )}
-                        {produto.lotes.length === 0 && <span style={{display: "inline-block", marginTop: 10}}>Este produto não possui lote.</span>}
+                        {produto.lotes.length === 0 && <span style={{ display: "inline-block", marginTop: 10 }}>Este produto não possui lote.</span>}
                     </div>
                     {
-                        produto.lotes.map(lote => {
+                        produto.lotes.map((lote, index) => {
                             return (
-                                <>
+                                <React.Fragment key={index}>
                                     <Descriptions bordered size={"small"} column={2}>
                                         <Descriptions.Item label="Código" span={2}>
-                                            {recuperarStatusLote(lote)}
-                                            {lote.codigo}
+                                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                                                <span>{recuperarStatusLote(lote)}{lote.codigo}</span>
+                                                <a href="Detalhar" onClick={(event) => { event.preventDefault(); detalharLote(lote) }}>
+                                                    {t("users:adminUser.detalhar")}
+                                                </a>
+                                            </div>
                                         </Descriptions.Item>
                                         <Descriptions.Item label="Fabricação">
                                             {lote.dataFabricacao === null && "Indeterminada"}
@@ -130,12 +162,14 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
                                         </Descriptions.Item>
                                     </Descriptions>
                                     <br />
-                                </>
+                                </React.Fragment>
                             )
                         })
                     }
-                </Form>
-            </Drawer>
+
+                    {visibleLote && <AlterBatchModal lote={lote} visible={visibleLote} onCancel={() => {setVisibleLote(false); setLote({} as Lote)}} onSave={() => null} />}
+                </Drawer>
+            </Form>
         </>
     );
 };
