@@ -7,16 +7,11 @@ import { TipoProduto } from 'typing/enums';
 import { t } from 'i18n';
 import moment from 'moment';
 import './style.less';
-
-export type EventSave = {
-    produto: Produto
-};
-
 interface AlterStockModalProps {
     produto: Produto,
     visible: boolean,
     onCancel: () => void,
-    onSave: (event: EventSave, produto: Produto) => void,
+    onSave: (produto: Produto) => void,
 }
 
 const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel, onSave }) => {
@@ -33,7 +28,7 @@ const AlterStockModal: FC<AlterStockModalProps> = ({ visible, produto, onCancel,
 
     const salvar = () => {
         console.log(productoAtualizado)
-        onSave({ produto }, produto);
+        onSave(productoAtualizado);
     };
 
     const recuperarStatusLote = (lote: Lote) => {

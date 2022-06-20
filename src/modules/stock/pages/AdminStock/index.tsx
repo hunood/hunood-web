@@ -2,7 +2,7 @@ import React, { FC, useState, useContext } from 'react';
 import { Table, Input, Badge } from 'antd';
 import { AuthContext } from 'assets/context/AuthContext';
 import { AlterStockModal } from 'components/modals';
-import { GetAllProductsService } from 'services/product';
+import { GetAllProductsService, UpdateProductService } from 'services/product';
 import { Produto } from 'services/product/GetAllProductsService/interfaces/response';
 import { formatCurrency } from 'assets/utils/format';
 import { t } from 'i18n';
@@ -17,7 +17,9 @@ const AdminStock: FC = () => {
     const [produtoSelecionado, setProdutoSelecionado] = useState({} as Produto);
     const [visible, setVisible] = useState<boolean>(false);
     const [filtro, setFiltro] = useState<string>('');
+
     const getAllProductsService = new GetAllProductsService().useAsHook();
+    const updateProductService = new UpdateProductService().useAsHook();
 
     React.useEffect(() => {
         getAllProductsService.send({ idEmpresa: auth.empresas[0].id });  // eslint-disable-next-line
@@ -33,8 +35,8 @@ const AdminStock: FC = () => {
         setVisible(true);
     }
 
-    const salvar = () => {
-
+    const salvar = (produto: Produto) => {
+        updateProductService.send(produto)
     }
 
     const recuperarStatus = (produto: Produto) => {
