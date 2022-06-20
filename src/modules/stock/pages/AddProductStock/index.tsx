@@ -20,6 +20,7 @@ const AddProductStock: FC = () => {
 
     const onFinish = (produto: Product) => {
         console.log(produto)
+        produto.codigoLote = (produto as any).codigoLote2;
         addProductService.send({ ...produto, idEmpresa: auth.empresas[0].id });
     };
     

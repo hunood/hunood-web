@@ -1,5 +1,6 @@
 import React, { FC, useContext, useState } from 'react';
-import { Button, Form, Layout } from 'antd';
+import { useHistory } from 'react-router';
+import { Button, Form, Layout, Result } from 'antd';
 import { BatchForm } from 'components/forms/BatchForm';
 import { AuthContext } from 'assets/context/AuthContext';
 import { AddStockService } from 'services/stock';
@@ -12,7 +13,10 @@ const EntryExitStock: FC = () => {
     React.useEffect(() => { return; });
 
     const [form] = Form.useForm();
+    const history = useHistory();
+
     const [acao, setAcao] = useState<string>("");
+    const [sucesso, setSucesso] = useState<boolean>(false);
 
     const { auth } = useContext(AuthContext);
     const addStockService = new AddStockService().useAsHook();
@@ -26,63 +30,59 @@ const EntryExitStock: FC = () => {
     form.submit = () => {
         form.validateFields().then(() => {
             const dados = form.getFieldValue(undefined as any);
-            const lote = {
-                id: dados.ehLoteNovo ? null : dados.codigoLote,
-                ehLoteNovo: dados.ehLoteNovo,
-                dataValidadeIndeterminada: dados.dataValidadeIndeterminada,
-                dataFabricacao: dados.dataFabricacaoIndeterminada,
-                dataValidade: dados.dataValidade,
-                observacoes: dados.observacoes,
-                codigo: dados.codigoLote,
-                quantidadeProdutos: dados.quantidade,
-            };
 
-            console.log(dados);
-            console.log("----");
-            // console.log(dados);
-
-            addStockService.send({
-                idAutenticacao: auth.id,
-                idEmpresa: auth.empresas[0].id,
-                idProduto: dados.identificacao,
-                tipoAcao: dados.acao.replace("í", "i").toUpperCase(),
-                dataAcao: new Date(),
-                quantidadeAcao: dados.quantidade,
-                lote
-            });
+            if(dados.quantidade > 0) {
+                const lote = {
+                    id: dados.ehLoteNovo ? null : dados.codigoLote,
+                    ehLoteNovo: dados.ehLoteNovo,
+                    dataFabricacao: dados.dataFabricacao,
+                    dataValidade: dados.dataValidade,
+                    observacoes: dados.observacoes,
+                    codigo: dados.codigoLote,
+                    quantidadeProdutos: dados.quantidade,
+                };
+    
+                addStockService.send({
+                    idAutenticacao: auth.id,
+                    idEmpresa: auth.empresas[0].id,
+                    idProduto: dados.identificacao,
+                    tipoAcao: dados.acao.replace("í", "i").toUpperCase(),
+                    dataAcao: new Date(),
+                    quantidadeAcao: dados.quantidade,
+                    lote
+                });
+            }
 
             submit_();
         });
     }
 
-    const onFinish = (produto: any) => {
-        // addStockService.send({ 
-        //     idAutenticacao:  auth.id, 
-        //     idEmpresa: auth.empresas[0].id, 
-        //     idProduto: produto.identificacao,
-        //     idLote: produto.codigoLote,
-        //     tipoAcao: produto.acao.replace("í", "i").toUpperCase(),
-        //     dataAcao: new Date(),
-        //     lote: null
-        // });
-        console.log(produto)
-
-        lote: {
-
-        }
-
-        //         acao: "Saída"
-        // codigoLote: "70add5ad-5084-4d61-8ac4-a6d1c55a2e4d"
-        // dataFabricacao: Moment {_isAMomentObject: true, _isUTC: false, _pf: {…}, _locale: Locale, _d: Fri Jun 17 2022 18:37:09 GMT-0300 (Horário Padrão de Brasília), …}
-        // dataValidade: Moment {_isAMomentObject: true, _isUTC: false, _pf: {…}, _locale: Locale, _d: Wed Jun 29 2022 18:37:12 GMT-0300 (Horário Padrão de Brasília), …}
-        // identificacao: "f9ac8f6d-f357-4628-9e76-e8a485bc1617"
-        // observacoes: "2laksdknlaksndlaknsd"
-    };
+    addStockService.onSuccess(() => {
+        setSucesso(true);
+    });
 
     React.useEffect(() => {
         // const a = form.getFieldValue("acao");
         console.log(acao);
     }, [acao]);
+
+    if (sucesso) {
+        return (
+            <Result
+                status="success"
+                title={t("product:entryExit.sucesso-cadastro")}
+                subTitle={t("product:entryExit.sucesso-entrada-saida", { acao })}
+                extra={[
+                    <Button type="primary" key="associar" onClick={() => { form.resetFields(); setSucesso(false) }}>
+                        {t("product:entryExit.nova-entrada-saida")}
+                    </Button>,
+                    <Button key="consultar" onClick={() => history.push('/stock')}>
+                        {t("product:entryExit.consultar-lista-produtos")}
+                    </Button>
+                ]}
+            />
+        )
+    }
 
     return (
         <>
@@ -90,7 +90,6 @@ const EntryExitStock: FC = () => {
                 name="batch"
                 layout="vertical"
                 form={form}
-                onFinish={onFinish}
                 autoComplete="off"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
