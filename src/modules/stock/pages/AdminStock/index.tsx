@@ -76,9 +76,9 @@ const AdminStock: FC = () => {
         });
 
         if (temProdutoVencido) {
-            return <Badge status="error" />;
+            return <span title="Há produtos vencidos"><Badge status="error" /></span>;
         }
-        return <Badge status="success" />
+        return<span title="Produtos dentro da validade"><Badge status="success" /></span>
     }
 
     const dadosTabela = (filtro: string) => {
