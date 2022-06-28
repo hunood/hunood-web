@@ -18,5 +18,13 @@
     "tipo-usuario": "Tipo usuário",
     "status-usuario": "Status usuário",
     "ultima-modificacao": "Última modificação"
+  },
+  "alter-password": {
+    "titulo": "Redefina sua senha",
+    "email": "E-mail da conta",
+    "redefinir-email": "Enviar link de redefinição",
+    "enviando-email-btn": "Enviando e-mail",
+    "forneca-email": "Forneça seu e-mail para redefinir sua senha.",
+    "enviando-email": "Enviando e-mail para redefinição de sua senha."
   }
 }
