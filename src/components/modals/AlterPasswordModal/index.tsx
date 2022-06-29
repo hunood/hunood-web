@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Modal, Form, Input } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { t } from 'i18n';
+import { SendCodeChangePasswordService } from 'services/authentication';
 
 interface AlterPasswordModalProps {
     visible: boolean,
@@ -12,18 +13,43 @@ const AlterPasswordModal: FC<AlterPasswordModalProps> = ({ visible, setVisible }
 
     const [form] = Form.useForm();
     const [confirmLoading, setConfirmLoading] = useState(false);
+    const [mensagens, setMensagens] = useState({ sucesso: false, erro: false });
+    const sendCodeChangePasswordService = new SendCodeChangePasswordService().useAsHook();
 
     const handleOk = () => {
-
-        form.validateFields().then(() => {
+        setMensagens((msg) => {
+            msg.erro = false;
+            msg.sucesso = false;
+            return msg;
+        });
+        form.validateFields().then((data) => {
+            sendCodeChangePasswordService.send({ email: data.email })
             setConfirmLoading(true);
-            setTimeout(() => {
-                setVisible(false);
-                setConfirmLoading(false);
-            }, 5000);
-
         })
     };
+
+    sendCodeChangePasswordService.onSuccess(() => {
+        setMensagens((msg) => {
+            msg.sucesso = true;
+            msg.erro = false;
+            return msg;
+        });
+        setTimeout(() => {
+            setVisible(false);
+        }, 5000);
+    })
+
+    sendCodeChangePasswordService.onError(() => {
+        setMensagens((msg) => {
+            msg.sucesso = false;
+            msg.erro = true;
+            return msg;
+        });
+    })
+
+    sendCodeChangePasswordService.onFinish(() => {
+        setConfirmLoading(false);
+    })
 
     const handleCancel = () => {
         setVisible(false);
@@ -52,7 +78,7 @@ const AlterPasswordModal: FC<AlterPasswordModalProps> = ({ visible, setVisible }
                 >
                     {!confirmLoading ? <p>{t('modals:alter-password.forneca-email')}</p> : <p>{t('modals:alter-password.enviando-email')}</p>}
                     <Form.Item
-                        name="username"
+                        name="email"
                         rules={[
                             {
                                 type: 'email',
@@ -66,6 +92,8 @@ const AlterPasswordModal: FC<AlterPasswordModalProps> = ({ visible, setVisible }
                     >
                         <Input prefix={<MailOutlined className="login-icon-input" />} type="email" placeholder={t('modals:alter-password.email')} disabled={confirmLoading} />
                     </Form.Item>
+                    {mensagens.sucesso && <p style={{ color: "green" }}>E-mail enviado com sucesso!</p>}
+                    {mensagens.erro && <p style={{ color: "red" }}>O servidor não conseguiu enviar o e-mail.</p>}
                 </Form>
             </Modal>
         </>

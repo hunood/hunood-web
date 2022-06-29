@@ -2,14 +2,16 @@ import AuthenticateService, { AuthenticateResponse, AuthenticateRequest } from '
 import SignupService, { SignupResponse, SignupRequest } from './SignupService';
 import ForbidService, { ForbidResponse, ForbidRequest } from './ForbidService';
 import ExistsAuthService, { ExistsAuthResponse, ExistsAuthRequest } from './ExistsAuthService';
-import UpdateEmailService, {UpdateEmailResponse, UpdateEmailRequest } from './UpdateEmailService';
+import UpdateEmailService, { UpdateEmailResponse, UpdateEmailRequest } from './UpdateEmailService';
+import SendCodeChangePasswordService, { SendCodeChangePasswordResponse, SendCodeChangePasswordRequest } from './SendCodeChangePasswordService';
 
 export {
     AuthenticateService,
     SignupService,
     ForbidService,
     ExistsAuthService,
-    UpdateEmailService
+    UpdateEmailService,
+    SendCodeChangePasswordService
 };
 
 export type {
@@ -17,5 +19,6 @@ export type {
     SignupResponse, SignupRequest,
     ForbidResponse, ForbidRequest,
     ExistsAuthResponse, ExistsAuthRequest,
-    UpdateEmailResponse, UpdateEmailRequest
+    UpdateEmailResponse, UpdateEmailRequest,
+    SendCodeChangePasswordResponse, SendCodeChangePasswordRequest
 }
