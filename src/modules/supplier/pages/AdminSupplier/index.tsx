@@ -8,13 +8,16 @@ import { useState } from 'react';
 import { Fornecedor } from 'services/supplier/FindByBusinessService/interfaces/response';
 import { TiposTelefone } from 'typing/enums';
 import { Contact } from 'components/forms';
+import { AlterSupplierModal } from 'components/modals/AlterSupplierModal';
 
 const AdminSupplier: FC = () => {
 
     const { auth } = useContext(AuthContext);
 
-    const [empresas, setEmpresas] = useState<Fornecedor[]>([]);
+    const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
     const [filtro, setFiltro] = useState<string>('');
+    const [fornecedorSelecionado, setFornecedorSelecionado] = useState({} as Fornecedor);
+    const [visible, setVisible] = useState<boolean>(false);
     const findByBusinessService = new FindByBusinessService().useAsHook();
 
     React.useEffect(() => {
@@ -23,22 +26,28 @@ const AdminSupplier: FC = () => {
 
 
     findByBusinessService.onSuccess(() => {
-        setEmpresas(findByBusinessService.response?.fornecedores || []);
+        setFornecedores(findByBusinessService.response?.fornecedores || []);
     });
+
+    const detalharFornecedor = (fornecedor: Fornecedor) => {
+        setFornecedorSelecionado(fornecedor);
+        setVisible(true);
+    };
 
     const dadosTabela = (filtro: string) => {
 
-        return empresas?.map((empresa: Fornecedor, key: number) => {
+        return fornecedores?.map((fornecedor: Fornecedor, key: number) => {
             return {
                 key,
-                nomeFantasia: empresa.nomeFantasia,
-                cnpj: empresa.cnpj || "XX.XXX.XXX/XXXX-XX",
-                observacoes: empresa.observacoes,
-                telefone: <>{empresa.contatos.map((c: Contact, index: number) =>
+                nomeFantasia: fornecedor.nomeFantasia,
+                cnpj: fornecedor.cnpj || "XX.XXX.XXX/XXXX-XX",
+                observacoes: fornecedor.observacoes,
+                telefone: <>{fornecedor.contatos.map((c: Contact, index: number) =>
                     <p key={index}><b>{TiposTelefone[c.tipoContato]}</b>: {c.contato} </p>
                 )}</>,
                 acao: <a href="Detalhar" onClick={(event) => {
                     event.preventDefault();
+                    detalharFornecedor(fornecedor);
                 }}>{t("users:adminUser.detalhar")}</a>
             }
         }).filter((empresa) => empresa.cnpj.includes(filtro.trim() || '') ||
@@ -70,6 +79,17 @@ const AdminSupplier: FC = () => {
                 }}
                 dataSource={dadosTabela(filtro)}
             />
+
+            {
+                visible && (
+                    <AlterSupplierModal
+                        fornecedor={{ ...fornecedorSelecionado }}
+                        visible={visible}
+                        onCancel={() => { setVisible(false); }}
+                        onSave={() => null}
+                    />
+                )
+            }
         </>
     );
 

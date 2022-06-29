@@ -12,16 +12,17 @@ export interface Contact {
 }
 
 interface ContactFormProps {
-    telefones: Contact[]
+    telefones: Contact[],
+    semTitulo?: boolean
 }
 
-const ContactForm: FC<ContactFormProps> = ({ telefones }) => {
+const ContactForm: FC<ContactFormProps> = ({ telefones, semTitulo = false }) => {
 
     React.useEffect(() => { return; });
 
     return (
         <>
-            <h1>{t('forms:contact.contatos')}</h1>
+            {!semTitulo && <h1>{t('forms:contact.contatos')}</h1>}
             { telefones.length >= 0 &&
                 <Form.List name="contatos" initialValue={telefones} >
                     {(fields, { add, remove }) => (
