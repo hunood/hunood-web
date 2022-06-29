@@ -4,6 +4,7 @@ import ForbidService, { ForbidResponse, ForbidRequest } from './ForbidService';
 import ExistsAuthService, { ExistsAuthResponse, ExistsAuthRequest } from './ExistsAuthService';
 import UpdateEmailService, { UpdateEmailResponse, UpdateEmailRequest } from './UpdateEmailService';
 import SendCodeChangePasswordService, { SendCodeChangePasswordResponse, SendCodeChangePasswordRequest } from './SendCodeChangePasswordService';
+import ChangePasswordService, { ChangePasswordResponse, ChangePasswordRequest } from './ChangePasswordService';
 
 export {
     AuthenticateService,
@@ -11,7 +12,8 @@ export {
     ForbidService,
     ExistsAuthService,
     UpdateEmailService,
-    SendCodeChangePasswordService
+    SendCodeChangePasswordService,
+    ChangePasswordService
 };
 
 export type {
@@ -20,5 +22,6 @@ export type {
     ForbidResponse, ForbidRequest,
     ExistsAuthResponse, ExistsAuthRequest,
     UpdateEmailResponse, UpdateEmailRequest,
-    SendCodeChangePasswordResponse, SendCodeChangePasswordRequest
+    SendCodeChangePasswordResponse, SendCodeChangePasswordRequest,
+    ChangePasswordResponse, ChangePasswordRequest
 }

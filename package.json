@@ -27,6 +27,7 @@
     "craco-alias": "^2.1.1",
     "craco-less": "^1.17.1",
     "i18next": "^19.8.4",
+    "jsonwebtoken": "^8.5.1",
     "less": "^4.0.0",
     "less-loader": "^7.2.1",
     "moment": "^2.29.1",

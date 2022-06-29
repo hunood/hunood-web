@@ -35,8 +35,11 @@ const RootRouter: FC = () => {
                     <CustomRoute isPrivate path="/business" component={BusinessModule} />
                     <CustomRoute isPrivate path="/stock" component={StockModule} />
                     <CustomRoute isPrivate path="/supplier" component={SupplierModule} />
-                    <Route path="*" children={({ match }) => {
-                        return (routerPaths.indexOf(match?.url || '') === -1) && <Redirect to='/404' />
+                    <Route path="*" children={({ location }) => {
+                        if (location.pathname.includes('/change') && location.search) {
+                            return <Redirect to={location.pathname + location.search} />
+                        }
+                        return (routerPaths.indexOf(location.pathname || '') === -1) && <Redirect to='/404' />
                     }} />
                 </SpinAnimation>
             </BrowserRouter>

@@ -102,6 +102,9 @@ const useAuth = () => {
     const handleLogout = async () => {
         try {
             await new ForbidService().execute().finally(clearAuth);
+            localStorage.removeItem("@Auth:token");
+            localStorage.removeItem("@Auth:refresh");
+            localStorage.removeItem("@Auth:auth");
             return Promise.resolve(true);
         }
         catch (err) {
