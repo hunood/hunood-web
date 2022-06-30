@@ -123,7 +123,7 @@ const Dashboard: FC = () => {
   return (
     <>
       <Row gutter={[16, 8]} style={{ marginBottom: 25 }}>
-        <Col md={{ span: 14 }} sm={{ span: 24 }}>
+        <Col md={{ span: 12 }} sm={{ span: 24 }}>
           <DatePicker.RangePicker
             allowClear
             style={{ width: '100%' }}
@@ -134,11 +134,11 @@ const Dashboard: FC = () => {
           />
         </Col>
 
-        <Col md={{ span: 5 }} sm={{ span: 24 }}>
+        <Col md={{ span: 6 }} sm={{ span: 24 }}>
           <ExcelButton dados={dadosArquivosDownload} disabled={metricas.length === 0} />
         </Col>
 
-        <Col md={{ span: 5 }} sm={{ span: 24 }}>
+        <Col md={{ span: 6 }} sm={{ span: 24 }}>
           <PdfButton dados={dadosArquivosDownload} cabecalhos={cabecalhosPDF} titulo={"Entradas e Saídas do Estoque"} disabled={metricas.length === 0} />
         </Col>
       </Row>
