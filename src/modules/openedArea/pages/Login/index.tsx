@@ -85,7 +85,7 @@ const LoginSignUp: FC = () => {
     const onFinish = async (values: Signup & Login) => {
         tab === 'login' ? login(values) : signup(values);
     };
-    
+
     const ehAdmin = auth?.empresas?.length && (auth?.empresas[0].tipoUsuario as any) === 'ADMINISTRADOR';
 
     if (authenticated && auth.id) {
@@ -119,15 +119,16 @@ const LoginSignUp: FC = () => {
                         onTabClick={(key) => setTab(key as TabsKey)}
                     >
                         <TabPane tab={t('openedArea:login.entrar')} key="login">
-                            {tab === 'login' && <LoginForm />}
-                            <GoogleLogin
-                                clientId="1021946640152-9akcglmplcn5jvg7buqcv3jemtnq2vl0.apps.googleusercontent.com"
-                                onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
-                                cookiePolicy={'single_host_origin'}
-                                icon={true}
-                                buttonText={'Entrar com Google'}
-                            />
+                            {tab === 'login' && <LoginForm>
+                                <GoogleLogin
+                                    clientId="1021946640152-9akcglmplcn5jvg7buqcv3jemtnq2vl0.apps.googleusercontent.com"
+                                    onSuccess={responseGoogle}
+                                    onFailure={responseGoogle}
+                                    cookiePolicy={'single_host_origin'}
+                                    icon={true}
+                                    buttonText={'Entrar com Google'}
+                                />
+                            </LoginForm>}
                         </TabPane>
                         <TabPane tab={t('openedArea:login.registre-se')} key="signup">
                             {tab === 'signup' && <SignupForm />}

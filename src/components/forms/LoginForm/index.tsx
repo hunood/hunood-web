@@ -1,5 +1,5 @@
 import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { AlterPasswordModal } from 'components/modals/AlterPasswordModal';
 import { t } from 'i18n';
@@ -17,7 +17,7 @@ interface LoginFormProps {
     form?: FormInstance
 }
 
-const LoginForm: FC<LoginFormProps> = () => {
+const LoginForm: FC<LoginFormProps> = ({ children }) => {
     React.useEffect(() => { return; });
 
     const [abrirModalRedefinicao, setAbrirModalRedefinicao] = useState(false);
@@ -46,20 +46,19 @@ const LoginForm: FC<LoginFormProps> = () => {
                     />
                 </Form.Item>
 
-                <Form.Item>
-                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>{t('openedArea:login.lembrar-senha')}</Checkbox>
-                    </Form.Item>
-
-                    <a className="login-form-forgot" href="!#" onClick={esqueciMinhaSenha}>
-                        {t('openedArea:login.esqueci-minha-senha')}
-                    </a>
-                </Form.Item>
 
                 <Form.Item name="btn-entrar">
                     <Button type="primary" htmlType="submit" className="login-form-button" block>
                         {t('openedArea:login.entrar')}
                     </Button>
+                </Form.Item>
+                <Form.Item>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 30 }}>
+                        {children}
+                        <a className="login-form-forgot" href="!#" onClick={esqueciMinhaSenha}>
+                            {t('openedArea:login.esqueci-minha-senha')}
+                        </a>
+                    </div>
                 </Form.Item>
             </span>
 
