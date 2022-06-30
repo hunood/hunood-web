@@ -23,7 +23,7 @@ const SelectBusiness: FC = () => {
 
     findByUserService.onSuccess(() => {
         const emp = findByUserService.response?.empresas || [];
-        updateAuth({empresas: emp});
+        updateAuth({empresas: emp} as any);
         emp.sort(dynamicSort('nomeFantasia'));
         setEmpresas(emp);
     });
