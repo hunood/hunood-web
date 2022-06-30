@@ -35,7 +35,7 @@ const ChangePassword: FC = () => {
 
     const onOk = () => {
         form.validateFields()
-            .then(values => {
+            .then((values: any) => {
                 changePasswordService.send({ token, senha: values.password });
             })
             .finally(() => {
