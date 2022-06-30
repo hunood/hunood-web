@@ -134,7 +134,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                 quantidadeProdutos: dados.quantidade,
             };
 
-            const retorno = ehLoteNovo ? { lote: loteNovo } : { lote: { id: lote.id } };
+            const retorno = ehLoteNovo ? { lote: loteNovo } : { lote: {...lote} };
             form.setFieldsValue({ ...retorno, ehLoteNovo });
             submit_();
         });

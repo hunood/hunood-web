@@ -30,18 +30,22 @@ const EntryExitStock: FC = () => {
     form.submit = () => {
         form.validateFields().then(() => {
             const dados = form.getFieldValue(undefined as any);
+            
+            const lote = {
+                id: dados.ehLoteNovo ? null : dados.codigoLote,
+                ehLoteNovo: dados.ehLoteNovo,
+                dataFabricacao: dados.dataFabricacao,
+                dataValidade: dados.dataValidade,
+                observacoes: dados.observacoes,
+                codigo: dados.codigoLote,
+                quantidadeProdutos: dados.quantidade,
+            };
+            
+            const acao: string = dados.acao.replace("í", "i").toUpperCase();
+            const condicaoEntrada = acao === 'ENTRADA' && dados.quantidade > 0;
+            const condicaoSaida = acao === 'SAIDA' && dados.quantidade > 0 &&  dados.quantidade <= dados.lote.quantidadeProdutos;
 
-            if(dados.quantidade > 0) {
-                const lote = {
-                    id: dados.ehLoteNovo ? null : dados.codigoLote,
-                    ehLoteNovo: dados.ehLoteNovo,
-                    dataFabricacao: dados.dataFabricacao,
-                    dataValidade: dados.dataValidade,
-                    observacoes: dados.observacoes,
-                    codigo: dados.codigoLote,
-                    quantidadeProdutos: dados.quantidade,
-                };
-    
+            if(condicaoEntrada || condicaoSaida) {
                 addStockService.send({
                     idAutenticacao: auth.id,
                     idEmpresa: auth.empresas[0].id,
