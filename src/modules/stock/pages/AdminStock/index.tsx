@@ -24,8 +24,12 @@ const AdminStock: FC = () => {
     const updateBatchService = new UpdateBatchService().useAsHook();
 
     React.useEffect(() => {
-        getAllProductsService.send({ idEmpresa: auth.empresas[0].id });  // eslint-disable-next-line
-    }, [visible]);
+        getAllProducts()
+    }, []); // eslint-disable-line
+    
+    const getAllProducts = () => {
+        getAllProductsService.send({ idEmpresa: auth.empresas[0].id });
+    }
 
     getAllProductsService.onSuccess(() => {
         const produtos = getAllProductsService.response?.produtos || [];
@@ -61,12 +65,14 @@ const AdminStock: FC = () => {
 
     const salvarProduto = (produto: Produto) => {
         updateProductService.send(produto);
-        setVisible(false)
     }
+    
+    updateProductService.onFinish(() => {
+        setVisible(false);
+        getAllProducts();
+    });
 
     const salvarLote = (lote: Lote) => {
-        
-
         updateBatchService.send(lote);
     }
 
