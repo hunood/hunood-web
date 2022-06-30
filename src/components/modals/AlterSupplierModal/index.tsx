@@ -4,7 +4,7 @@ import { MaskedInput } from 'antd-mask-input';
 import { AuthContext } from 'assets/context/AuthContext';
 import { useWindowSize } from 'assets/hooks/useWindowResize';
 import { ContactForm } from 'components/forms';
-import { UpdateSupplierService } from 'services/supplier';
+import { UpdateSupplierService, DeleteSupplierService } from 'services/supplier';
 import Fornecedor from "services/supplier/AddSupplierService/interfaces/response";
 import { t } from 'i18n';
 import './style.less';
@@ -26,6 +26,7 @@ const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, 
     const window = useWindowSize();
 
     const updateSupplierService = new UpdateSupplierService().useAsHook();
+    const deleteSupplierService = new DeleteSupplierService().useAsHook();
 
     const onCancel = () => {
         if (onCancel_) {
@@ -76,7 +77,15 @@ const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, 
 
     updateSupplierService.onFinish(() => {
         onSave();
-    })
+    });
+
+    const onDelete = () => {
+        deleteSupplierService.send({ idFornecedor: fornecedor.id, idEmpresa: auth.empresas[0].id });
+    }
+
+    deleteSupplierService.onFinish(() => {
+        onSave();
+    });
 
     return (
         <>
@@ -94,6 +103,7 @@ const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, 
                         </Space>
                     }
                 >
+
                     <Descriptions bordered column={2}>
                         <Descriptions.Item label={t('Nome Fantasia')} span={2}>
                             <Form.Item>
@@ -155,6 +165,7 @@ const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, 
                         </Descriptions.Item>
                     </Descriptions>
 
+                    <Button type="default" style={{ marginTop: 30, width: "100%", }} onClick={onDelete}>Excluir fornecedor</Button>
                 </Drawer>
             </Form>
         </>
