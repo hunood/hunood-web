@@ -1,6 +1,7 @@
 import { Contact } from "components/forms";
 
 export type Fornecedor = {
+  id: string;
   idEmpresa: string;
   cnpj?: string;
   razaoSocial?: string;
