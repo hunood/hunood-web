@@ -1,5 +1,13 @@
 @import "~antd/dist/antd.less";
 
+@desktop: ~"only screen and (min-width: 960px) and (max-width: 5000px)";
+
+@media @desktop {
+  .ant-table-content[style] {
+    overflow: hidden !important;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

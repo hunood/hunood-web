@@ -1,7 +1,8 @@
 import React, { FC, useContext, useState, useRef } from 'react';
-import { Table, DatePicker } from 'antd';
-import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Chart } from "react-google-charts";
+import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Table, DatePicker, Col, Row } from 'antd';
+import { ExcelButton } from 'components/general';
 import { AuthContext } from 'assets/context/AuthContext';
 import { ActionMetricsService } from 'services/metrics';
 import { Metrica } from 'services/metrics/ActionMetricsService/interfaces/response';
@@ -12,8 +13,7 @@ import "./style.less";
 
 interface DadosTabelaMetricas {
   key: number;
-  id: string;
-  acao: JSX.Element;
+  acao: JSX.Element | keyof typeof Acao;
   data: string;
   produto: string;
   categorizacao: string;
@@ -27,6 +27,7 @@ const Dashboard: FC = () => {
   const [metricas, setMetricas] = useState<Metrica[]>([]);
   const [datas, setDatas] = useState<[Moment | null, Moment | null]>([null, null]);
   const [dadosMetricas, setDadosMetricas] = useState<DadosTabelaMetricas[]>([]);
+  const [dadosXLS, setDadosXLS] = useState<DadosTabelaMetricas[]>([]);
 
   const addProductService = new ActionMetricsService().useAsHook();
 
@@ -62,22 +63,27 @@ const Dashboard: FC = () => {
     }
 
     setMetricas(met);
-    return met.map((metrica: Metrica, key: number) => {
-      return {
-        key,
-        id: metrica.id,
-        acao: (
-          <>
-            {metrica.tipoAcao === 'ENTRADA' ? <ArrowRightOutlined style={{ color: 'green' }} /> : <ArrowLeftOutlined style={{ color: 'red' }} />}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{(Acao as any)[(metrica.tipoAcao as any)]}
-          </>
-        ),
+    const dados = met.map((metrica: Metrica, key: number) => {
+      const dado = {
+        key: ++key,
+        acao: metrica.tipoAcao,
         data: moment(metrica.dataAcao).format("DD/MM/YYYY - HH:mm:ss A"),
         produto: metrica.produto.nome,
         categorizacao: metrica.produto.marca,
         usuario: metrica.usuario.nomeUsuario
+      };
+
+      setDadosXLS((dadosXls) => [...dadosXls, dado]);
+
+      return {
+        ...dado, acao: (<>
+          {metrica.tipoAcao === 'ENTRADA' ? <ArrowRightOutlined style={{ color: 'green' }} /> : <ArrowLeftOutlined style={{ color: 'red' }} />}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{(Acao as any)[(metrica.tipoAcao as any)]}
+        </>)
       }
-    })
+    });
+
+    return dados;
   }
 
   const columns = [
@@ -108,8 +114,8 @@ const Dashboard: FC = () => {
 
   return (
     <>
-      <div style={{ margin: 20 }}>
-        <div style={{ border: "0px solid green", marginBottom: 30 }}>
+      <Row gutter={[16, 8]} style={{ marginBottom: 25 }}>
+        <Col sm={{ span: 14 }} xs={{ span: 24 }}>
           <DatePicker.RangePicker
             allowClear
             style={{ width: '100%' }}
@@ -118,26 +124,40 @@ const Dashboard: FC = () => {
             defaultValue={datas}
             onChange={(datas_) => datas_ ? setDatas([moment((datas_ as any)[0]), moment((datas_ as any)[1])]) : setDatas([null, null])}
           />
-        </div>
+        </Col>
 
-        <Chart
-          chartType="BarChart"
-          data={dataGrafico}
-          options={optionsGrafico}
-          width={"100%"}
-          style={{ border: "1px solid #d9d9d9", borderRadius: 2 }}
-        />
+        <Col sm={{ span: 5 }} xs={{ span: 24 }}>
+          <ExcelButton dados={dadosXLS} nomeArquivo={"nome-do-arquivo-dk"} disabled={metricas.length === 0} />
+        </Col>
 
-        <Table
-          style={{ marginTop: 30 }}
-          className="components-table-demo-nested"
-          columns={columns}
-          pagination={false}
-          scroll={{ x: true }}
-          dataSource={dadosMetricas}
-        />
+        <Col sm={{ span: 5 }} xs={{ span: 24 }}>
+          <ExcelButton dados={dadosXLS} nomeArquivo={"nome-do-arquivo-dk"} disabled={true} />
+        </Col>
+      </Row>
 
-      </div>
+      <Row gutter={[16, 8]} style={{ marginBottom: 20 }}>
+        <Col sm={{ span: 24 }} xs={{ span: 24 }}>
+          <Chart
+            chartType="BarChart"
+            data={dataGrafico}
+            options={optionsGrafico}
+            width={"100%"}
+            style={{ border: "1px solid #d9d9d9", borderRadius: 2 }}
+          />
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 8]}>
+        <Col sm={{ span: 24 }} xs={{ span: 24 }}>
+          <Table
+            className="components-table-demo-nested"
+            columns={columns}
+            pagination={false}
+            scroll={{ x: true }}
+            dataSource={dadosMetricas}
+          />
+        </Col>
+      </Row>
     </>
   );
 

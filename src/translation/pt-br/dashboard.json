@@ -1,4 +1,7 @@
 {
+  "tabs": {
+    "dashboard": "Dashboard"
+  },
   "menu": {
     "dashboard": "Dashboard",
     "usuarios": "Usuários",
