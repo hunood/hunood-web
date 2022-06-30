@@ -2,7 +2,7 @@ import React, { FC, useContext, useState, useRef } from 'react';
 import { Chart } from "react-google-charts";
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Table, DatePicker, Col, Row } from 'antd';
-import { ExcelButton } from 'components/general';
+import { ExcelButton, PdfButton } from 'components/general';
 import { AuthContext } from 'assets/context/AuthContext';
 import { ActionMetricsService } from 'services/metrics';
 import { Metrica } from 'services/metrics/ActionMetricsService/interfaces/response';
@@ -12,7 +12,7 @@ import moment, { Moment } from 'moment';
 import "./style.less";
 
 interface DadosTabelaMetricas {
-  key: number;
+  key: string;
   acao: JSX.Element | keyof typeof Acao;
   data: string;
   produto: string;
@@ -27,7 +27,15 @@ const Dashboard: FC = () => {
   const [metricas, setMetricas] = useState<Metrica[]>([]);
   const [datas, setDatas] = useState<[Moment | null, Moment | null]>([null, null]);
   const [dadosMetricas, setDadosMetricas] = useState<DadosTabelaMetricas[]>([]);
-  const [dadosXLS, setDadosXLS] = useState<DadosTabelaMetricas[]>([]);
+  const [dadosArquivosDownload, setDadosArquivosDownload] = useState<DadosTabelaMetricas[]>([]);
+  const cabecalhosPDF: Array<keyof DadosTabelaMetricas> = [
+    "key",
+    "acao",
+    "data",
+    "produto",
+    "categorizacao",
+    "usuario"
+  ]
 
   const addProductService = new ActionMetricsService().useAsHook();
 
@@ -65,7 +73,7 @@ const Dashboard: FC = () => {
     setMetricas(met);
     const dados = met.map((metrica: Metrica, key: number) => {
       const dado = {
-        key: ++key,
+        key: String(++key),
         acao: metrica.tipoAcao,
         data: moment(metrica.dataAcao).format("DD/MM/YYYY - HH:mm:ss A"),
         produto: metrica.produto.nome,
@@ -73,7 +81,7 @@ const Dashboard: FC = () => {
         usuario: metrica.usuario.nomeUsuario
       };
 
-      setDadosXLS((dadosXls) => [...dadosXls, dado]);
+      setDadosArquivosDownload((dadosXls) => [...dadosXls, dado]);
 
       return {
         ...dado, acao: (<>
@@ -127,11 +135,11 @@ const Dashboard: FC = () => {
         </Col>
 
         <Col md={{ span: 5 }} sm={{ span: 24 }}>
-          <ExcelButton dados={dadosXLS} disabled={metricas.length === 0} />
+          <ExcelButton dados={dadosArquivosDownload} disabled={metricas.length === 0} />
         </Col>
 
         <Col md={{ span: 5 }} sm={{ span: 24 }}>
-          <ExcelButton dados={dadosXLS} nomeArquivo={"nome-do-arquivo-dk"} disabled={true} />
+          <PdfButton dados={dadosArquivosDownload} cabecalhos={cabecalhosPDF} titulo={"Entradas e Saídas do Estoque"} disabled={metricas.length === 0} />
         </Col>
       </Row>
 

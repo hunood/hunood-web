@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Button } from 'antd';
+import { FileExcelOutlined } from '@ant-design/icons';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import moment from 'moment';
@@ -20,10 +21,10 @@ const ExcelButton: FC<ExcelButtonProps> = ({ dados, nomeArquivo, disabled }) => 
         return `${data}_DASHBOARD;`
     }
 
-    
+
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
-    
+
     const exportToCSV = (dados: any[]) => {
         const nome = nomeArquivo || gerarNomeArquivo()
         const ws = XLSX.utils.json_to_sheet(dados);
@@ -35,7 +36,9 @@ const ExcelButton: FC<ExcelButtonProps> = ({ dados, nomeArquivo, disabled }) => 
 
     return (
         <>
-            <Button className="blue" type="primary" disabled={disabled} onClick={(e) => exportToCSV(dados)}>Exportar .XLS</Button>
+            <Button className="blue" type="primary" disabled={disabled} onClick={(e) => exportToCSV(dados)}>
+                <FileExcelOutlined style={{ fontSize: 16 }} />Exportar XLS
+            </Button>
         </>
     );
 };

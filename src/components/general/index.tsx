@@ -1,7 +1,9 @@
 import { ExcelButton } from './ExcelButton';
+import { PdfButton } from './PdfButton';
 
 export {
-    ExcelButton
+    ExcelButton,
+    PdfButton
 }
 
 export type { }
