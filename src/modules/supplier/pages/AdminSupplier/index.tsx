@@ -21,13 +21,20 @@ const AdminSupplier: FC = () => {
     const findByBusinessService = new FindByBusinessService().useAsHook();
 
     React.useEffect(() => {
-        findByBusinessService.send({ idEmpresa: auth.empresas[0].id });  // eslint-disable-next-line
+        findSupplier()  // eslint-disable-next-line
     }, []);
 
-
+    const findSupplier = () => {
+        findByBusinessService.send({ idEmpresa: auth.empresas[0].id });
+    }
+    
     findByBusinessService.onSuccess(() => {
         setFornecedores(findByBusinessService.response?.fornecedores || []);
     });
+    
+    findByBusinessService.onFinish(() => {
+        setVisible(false);
+    })
 
     const detalharFornecedor = (fornecedor: Fornecedor) => {
         setFornecedorSelecionado(fornecedor);
@@ -85,8 +92,8 @@ const AdminSupplier: FC = () => {
                     <AlterSupplierModal
                         fornecedor={{ ...fornecedorSelecionado }}
                         visible={visible}
-                        onCancel={() => { setVisible(false); }}
-                        onSave={() => null}
+                        onCancel={() => setVisible(false)}
+                        onSave={() => findSupplier()}
                     />
                 )
             }

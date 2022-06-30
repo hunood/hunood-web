@@ -1,44 +1,86 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState, useRef } from 'react';
 import { Button, Descriptions, Drawer, Form, Space, Input, InputNumber } from 'antd';
 import { MaskedInput } from 'antd-mask-input';
+import { AuthContext } from 'assets/context/AuthContext';
 import { useWindowSize } from 'assets/hooks/useWindowResize';
-import { Fornecedor } from 'services/supplier/FindByBusinessService/interfaces/response';
+import { ContactForm } from 'components/forms';
+import { UpdateSupplierService } from 'services/supplier';
+import Fornecedor from "services/supplier/AddSupplierService/interfaces/response";
 import { t } from 'i18n';
 import './style.less';
-import { ContactForm } from 'components/forms';
 
 interface AlterSupplierModalProps {
     fornecedor: Fornecedor,
     visible: boolean,
-    onCancel: () => void,
-    onSave: (fornecedor: Fornecedor) => void,
+    onCancel?: () => void,
+    onSave?: (fornecedor: Fornecedor) => void,
 }
 
-const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, onCancel, onSave }) => {
+const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, onCancel: onCancel_, onSave: onSave_ }) => {
+
+    const { auth } = useContext(AuthContext);
 
     const [form] = Form.useForm();
+    const refFornecedor = useRef(fornecedor);
     const [fornecedorAtualizado, setFornecedorAtualizado] = useState(fornecedor as Fornecedor);
     const window = useWindowSize();
 
+    const updateSupplierService = new UpdateSupplierService().useAsHook();
+
+    const onCancel = () => {
+        if (onCancel_) {
+            onCancel_();
+        }
+    }
+
+    const onSave = () => {
+        if (onSave_) {
+            onSave_(fornecedorAtualizado);
+        }
+    }
+
     const defensivaNulo = (nomeCampo: string) => {
+        if (nomeCampo === "observacoes" || nomeCampo === "complementoLogradouro") {
+            return;
+        }
+
+        form.validateFields();
+
         if (String((fornecedorAtualizado as any)[nomeCampo]).trim() === "") {
-            setFornecedorAtualizado(prod => { return { ...prod, [nomeCampo]: (fornecedor as any)[nomeCampo] } });
+            setFornecedorAtualizado(prod => {
+                return {
+                    ...prod,
+                    [nomeCampo]: (refFornecedor.current as any)[nomeCampo]
+                }
+            });
         }
     }
 
     const atualizaValor = (event: any, nomeCampo: string) => {
-        setFornecedorAtualizado((prod) => { return { ...prod, [nomeCampo]: event.target.value } });
+        const valor = String(event.target.value).replaceAll("_", "").replaceAll("-", "");
+        setFornecedorAtualizado((prod) => {
+            return {
+                ...prod,
+                [nomeCampo]: valor
+            }
+        });
     }
 
     const salvar = () => {
-        // const formValues = form.getFieldsValue();
-        // const fa = { ...fornecedorAtualizado, contatos: formValues.contatos }
-        // onSave(fornecedor);
+        form.validateFields().then(() => {
+            const formValues = form.getFieldsValue();
+            const fornecedor = { ...fornecedorAtualizado, contatos: formValues.contatos } as Fornecedor;
+            updateSupplierService.send({ idEmpresa: auth.empresas[0].id, dados: fornecedor });
+        })
     };
+
+    updateSupplierService.onFinish(() => {
+        onSave();
+    })
 
     return (
         <>
-            <Form layout="vertical" hideRequiredMark form={form}>
+            <Form layout="vertical" hideRequiredMark form={form} noValidate={false} >
                 <Drawer
                     width={window.width < 700 ? "100%" : 700}
                     onClose={onCancel}
@@ -54,23 +96,36 @@ const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, 
                 >
                     <Descriptions bordered column={2}>
                         <Descriptions.Item label={t('Nome Fantasia')} span={2}>
-                            <Input className="alter" value={fornecedorAtualizado.nomeFantasia} onChange={(e) => atualizaValor(e, "nomeFantasia")} onBlur={() => defensivaNulo("nomeFantasia")} />
+                            <Form.Item>
+                                <Input className="alter" value={fornecedorAtualizado.nomeFantasia} onChange={(e) => atualizaValor(e, "nomeFantasia")} onBlur={() => defensivaNulo("nomeFantasia")} />
+                            </Form.Item>
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('CNPJ')} span={2}>
-                            <MaskedInput className="alter" value={fornecedorAtualizado.cnpj} mask="00.000.000/0000-00" placeholder='00.000.000/0000-00' onChange={(e) => atualizaValor(e, "cnpj")} onBlur={() => defensivaNulo("cnpj")} />
+                            <Form.Item>
+                                <MaskedInput className="alter" value={fornecedorAtualizado.cnpj} mask="00.000.000/0000-00" placeholder='00.000.000/0000-00' onChange={(e) => atualizaValor(e, "cnpj")} onBlur={() => defensivaNulo("cnpj")} />
+                            </Form.Item>
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('CEP')} span={2}>
-                            <MaskedInput className="alter" value={fornecedorAtualizado.cepLogradouro} mask="00000-000" placeholder='000000-000' onChange={(e) => atualizaValor(e, "cepLogradouro")} onBlur={() => defensivaNulo("cepLogradouro")} />
+                            <Form.Item rules={[{ len: 8 }]}>
+                                <MaskedInput className="alter"
+                                    value={fornecedorAtualizado.cepLogradouro}
+                                    mask="00000-000" placeholder='00000-000'
+                                    minLength={8}
+                                    onInput={(e) => atualizaValor(e, "cepLogradouro")}
+                                    onBlur={() => defensivaNulo("cepLogradouro")} />
+                            </Form.Item>
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Logradouro')} span={2}>
-                            <Input className="alter" value={fornecedorAtualizado.nomeLogradouro} onChange={(e) => atualizaValor(e, "nomeLogradouro")} onBlur={() => defensivaNulo("nomeLogradouro")} />
+                            <Form.Item>
+                                <Input className="alter" value={fornecedorAtualizado.nomeLogradouro} onChange={(e) => atualizaValor(e, "nomeLogradouro")} onBlur={() => defensivaNulo("nomeLogradouro")} />
+                            </Form.Item>
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Número')} span={2}>
-                            <InputNumber className="alter" value={fornecedorAtualizado.numeroLogradouro} min={0} style={{ width: '100%' }} onChange={(e) => atualizaValor(e, "numeroLogradouro")} onBlur={() => defensivaNulo("numeroLogradouro")} />
+                            <InputNumber className="alter" name='numeroLogradouro' value={fornecedorAtualizado.numeroLogradouro} min={0} style={{ width: '100%' }} onInput={(e) => atualizaValor({ target: { value: e } }, "numeroLogradouro")} onBlur={() => defensivaNulo("numeroLogradouro")} />
                         </Descriptions.Item>
 
                         <Descriptions.Item label={t('Complemento')} span={2}>
