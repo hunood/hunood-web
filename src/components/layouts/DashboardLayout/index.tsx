@@ -99,7 +99,7 @@ const DashboardLayout: FC = ({ children }) => {
 
     React.useEffect(() => {
         setSelectedKeys(pathname);
-        
+
         const temPermissao = menus.find((menu) => menu.route === pathname)?.permissao.includes(auth.empresas[0].tipoUsuario as any);
 
         if (!temPermissao) {
