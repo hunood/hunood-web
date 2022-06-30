@@ -127,7 +127,7 @@ const Dashboard: FC = () => {
         </Col>
 
         <Col md={{ span: 5 }} sm={{ span: 24 }}>
-          <ExcelButton dados={dadosXLS} nomeArquivo={"nome-do-arquivo-dk"} disabled={metricas.length === 0} />
+          <ExcelButton dados={dadosXLS} disabled={metricas.length === 0} />
         </Col>
 
         <Col md={{ span: 5 }} sm={{ span: 24 }}>
