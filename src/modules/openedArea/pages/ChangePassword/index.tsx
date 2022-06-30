@@ -24,7 +24,6 @@ const ChangePassword: FC = () => {
 
     const [form] = Form.useForm();
 
-    console.log(token, email)
     if (!token || !email) {
         return <Redirect to="/" />
     }
@@ -38,9 +37,6 @@ const ChangePassword: FC = () => {
         form.validateFields()
             .then(values => {
                 changePasswordService.send({ token, senha: values.password });
-            })
-            .catch(info => {
-                console.log('Validate Failed:', info);
             })
             .finally(() => {
                 handleLogout();

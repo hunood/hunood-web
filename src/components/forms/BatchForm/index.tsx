@@ -49,7 +49,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
 
     const { auth } = useContext(AuthContext);
     const getAllProductsService = new GetAllProductsService().useAsHook();
-    
+
     const [acao, setAcao] = useState<string>(Acao.ENTRADA);
     const [lotes, setLotes] = useState<Lote[]>([]);
     const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -107,9 +107,8 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
             onClickAcao(acao);
         }
         const existeLote = lotes.find(l => l.id === idLote);
-            const qtd = acao === "Entrada" ? Infinity : existeLote?.quantidadeProdutos || 0.01;
-            setQuantidade(qtd);
-        console.log(acao);
+        const qtd = acao === "Entrada" ? Infinity : existeLote?.quantidadeProdutos || 0.01;
+        setQuantidade(qtd);
     }, [acao]); // eslint-disable-line
 
     getAllProductsService.onSuccess(() => {
@@ -183,7 +182,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                         const codigo = ((option!.children as any)?.props?.codigo)?.toLowerCase() || "";
                                         return produto.includes(input.toLowerCase()) || codigo.includes(input.toLocaleLowerCase());
                                     }}
-                                    onChange={(e: string) => { console.log(e); setIdProduto(e) }}
+                                    onChange={(e: string) => { setIdProduto(e) }}
                                 >
                                     {
                                         produtos.map((produto: Produto) => {
@@ -208,7 +207,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                     allowClear
                                     placeholder={t('product:entryExit.selecioneLote')}
                                     disabled={!idProduto}
-                                    onChange={(e: string) => { console.log(e); setIdLote(e) }}
+                                    onChange={(e: string) => { setIdLote(e) }}
                                     dropdownRender={menu => (
                                         <>
                                             {menu}
@@ -354,7 +353,7 @@ const BatchForm: FC<BatchFormProps> = ({ form, onClickAcao, ehInclusaoProduto = 
                                 <Form.Item
                                     label={t('forms:batch.codigoLote')}
                                     name="codigoLote2"
-                                    initialValue ={gerarDeCodigo()}
+                                    initialValue={gerarDeCodigo()}
                                 >
                                     <Input />
                                 </Form.Item>

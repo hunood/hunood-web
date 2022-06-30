@@ -61,11 +61,6 @@ const EntryExitStock: FC = () => {
         setSucesso(true);
     });
 
-    React.useEffect(() => {
-        // const a = form.getFieldValue("acao");
-        console.log(acao);
-    }, [acao]);
-
     if (sucesso) {
         return (
             <Result

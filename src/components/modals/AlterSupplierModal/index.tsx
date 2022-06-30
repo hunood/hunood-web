@@ -31,10 +31,8 @@ const AlterSupplierModal: FC<AlterSupplierModalProps> = ({ visible, fornecedor, 
     }
 
     const salvar = () => {
-        const formValues = form.getFieldsValue();
-        const fa = { ...fornecedorAtualizado, contatos: formValues.contatos }
-
-        console.log(fa)
+        // const formValues = form.getFieldsValue();
+        // const fa = { ...fornecedorAtualizado, contatos: formValues.contatos }
         // onSave(fornecedor);
     };
 
