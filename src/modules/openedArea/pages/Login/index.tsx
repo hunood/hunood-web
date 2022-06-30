@@ -85,13 +85,18 @@ const LoginSignUp: FC = () => {
     const onFinish = async (values: Signup & Login) => {
         tab === 'login' ? login(values) : signup(values);
     };
+    
+    const ehAdmin = auth.empresas[0].tipoUsuario === 'ADMINISTRADOR';
 
     if (authenticated && auth.id) {
         if (auth?.etapaOnboarding >= 3 && auth?.empresas.length > 1) {
             return <Redirect to='/business/select' />;
         }
-        else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1) {
+        else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1 && ehAdmin) {
             return <Redirect to='/dashboard' />;
+        }
+        else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1 && !ehAdmin) {
+            return <Redirect to='/stock' />;
         }
         else {
             return <Redirect to='/onboarding' />;

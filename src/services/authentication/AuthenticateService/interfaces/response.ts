@@ -3,7 +3,7 @@ import { Generos, TipoUsuario, TratarComo } from "typing/enums"
 
 export type UsuarioEmpresa = {
   id: string,
-  tipoUsuario: keyof TipoUsuario,
+  tipoUsuario: keyof typeof TipoUsuario,
   nomeFantasia: string
 }
 

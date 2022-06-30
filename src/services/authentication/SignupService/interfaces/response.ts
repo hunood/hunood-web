@@ -1,4 +1,4 @@
-export default interface AuthentecateResponse {
+export default interface SignupResponse {
   id: string,
   createdAt: Date
 }
