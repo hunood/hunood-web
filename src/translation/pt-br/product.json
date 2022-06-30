@@ -30,7 +30,7 @@
         "selecioneLote": "Selecione o lote",
         "adicioneLote": "Adicione um novo lote",
         "sucesso-cadastro": "Sucesso",
-        "sucesso-entrada-saida": "A ação de {{}} foi executada.",
+        "sucesso-entrada-saida": "A ação de {{acao}} foi executada.",
         "nova-entrada-saida": "Efetuar outra ação",
         "consultar-lista-produtos": "Consultar lista de produtos"
     }
