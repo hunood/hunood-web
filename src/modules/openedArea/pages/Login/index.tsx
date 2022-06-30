@@ -86,7 +86,7 @@ const LoginSignUp: FC = () => {
         tab === 'login' ? login(values) : signup(values);
     };
     
-    const ehAdmin = auth.empresas[0].tipoUsuario === 'ADMINISTRADOR';
+    const ehAdmin = auth?.empresas?.length && auth?.empresas[0].tipoUsuario === 'ADMINISTRADOR';
 
     if (authenticated && auth.id) {
         if (auth?.etapaOnboarding >= 3 && auth?.empresas.length > 1) {
