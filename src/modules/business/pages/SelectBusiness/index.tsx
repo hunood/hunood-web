@@ -33,7 +33,12 @@ const SelectBusiness: FC = () => {
         const index = novaOrdem.findIndex(emp => emp.id === empresa.id);
         novaOrdem.unshift(novaOrdem.splice(index, 1)[0]);
         updateAuth({ empresas: novaOrdem });
-        history.push('/dashboard');
+        if ((novaOrdem[0].tipoUsuario as any) === "ADMINISTRADOR") {
+            history.push('/dashboard');
+        }
+        else {
+            history.push('/stock');
+        }
     }
 
     function dynamicSort(property: string) {
