@@ -7,6 +7,7 @@ export interface Config {
     baseUrl: string,
     backendUrl: string,
     timeout: number,
-    timeoutModalGeneric: number
+    timeoutModalGeneric: number,
+    googleClientId: string
 }
  

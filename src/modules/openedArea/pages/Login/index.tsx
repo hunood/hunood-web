@@ -5,11 +5,12 @@ import { SquareAnimation } from 'components/animations';
 import { LoginForm, Login, SignupForm, Signup } from 'components/forms';
 import { AuthContext } from 'assets/context/AuthContext';
 import { SignupService } from 'services/authentication'
+import { EtapaOnboarding } from 'typing/enums';
 import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import { t } from 'i18n';
+import { config } from 'config';
 import Logo from "assets/img/logo.png";
 import "./style.less";
-import { EtapaOnboarding } from 'typing/enums';
 
 const LoginSignUp: FC = () => {
     React.useEffect(() => { return; }, []);
@@ -122,7 +123,7 @@ const LoginSignUp: FC = () => {
                         <TabPane tab={t('openedArea:login.entrar')} key="login">
                             {tab === 'login' && <LoginForm>
                                 <GoogleLogin
-                                    clientId={process.env["GOOGLE_CLIENT_ID_OAUTH"]}
+                                    clientId={config.googleClientId}
                                     onSuccess={responseGoogle}
                                     onFailure={responseGoogle}
                                     cookiePolicy={'single_host_origin'}
