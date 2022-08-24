@@ -9,6 +9,7 @@ import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 're
 import { t } from 'i18n';
 import Logo from "assets/img/logo.png";
 import "./style.less";
+import { EtapaOnboarding } from 'typing/enums';
 
 const LoginSignUp: FC = () => {
     React.useEffect(() => { return; }, []);
@@ -89,13 +90,13 @@ const LoginSignUp: FC = () => {
     const ehAdmin = auth?.empresas?.length && (auth?.empresas[0].tipoUsuario as any) === 'ADMINISTRADOR';
 
     if (authenticated && auth.id) {
-        if (auth?.etapaOnboarding >= 3 && auth?.empresas.length > 1) {
+        if (auth?.etapaOnboarding === EtapaOnboarding.COMPLETO && auth?.empresas.length > 1) {
             return <Redirect to='/business/select' />;
         }
-        else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1 && ehAdmin) {
+        else if (auth.etapaOnboarding === EtapaOnboarding.COMPLETO && auth.empresas.length === 1 && ehAdmin) {
             return <Redirect to='/dashboard' />;
         }
-        else if (auth.etapaOnboarding >= 3 && auth.empresas.length === 1 && !ehAdmin) {
+        else if (auth.etapaOnboarding === EtapaOnboarding.COMPLETO && auth.empresas.length === 1 && !ehAdmin) {
             return <Redirect to='/stock' />;
         }
         else {
@@ -121,7 +122,7 @@ const LoginSignUp: FC = () => {
                         <TabPane tab={t('openedArea:login.entrar')} key="login">
                             {tab === 'login' && <LoginForm>
                                 <GoogleLogin
-                                    clientId="1021946640152-9akcglmplcn5jvg7buqcv3jemtnq2vl0.apps.googleusercontent.com"
+                                    clientId={process.env["GOOGLE_CLIENT_ID_OAUTH"]}
                                     onSuccess={responseGoogle}
                                     onFailure={responseGoogle}
                                     cookiePolicy={'single_host_origin'}

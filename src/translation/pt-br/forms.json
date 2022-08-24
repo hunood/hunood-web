@@ -55,5 +55,10 @@
     "data-fabricacao": "Data de fabricação",
     "data-validade": "Data de validade",
     "observacoes": "Observações"
+  },
+  "changePassword": {
+    "novaSenha": "Para sua segurança, altere sua senha para prosseguir.",
+    "senha": "Nova senha",
+    "confirmarSenha": "Confirmar nova senha"
   }
 }

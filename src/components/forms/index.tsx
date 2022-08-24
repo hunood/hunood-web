@@ -1,6 +1,7 @@
 import { UserForm, User } from './UserForm';
 import { BusinessForm, Business } from './BusinessForm';
 import { AddressForm, Address } from './AddressForm';
+import { ChangePasswordForm, ChangePassword } from './ChangePasswordForm';
 import { ContactForm, Contact } from './ContactForm';
 import { ValidationAccountForm, ValidationAccount } from './ValidationAccountForm';
 import { LoginForm, Login } from './LoginForm';
@@ -13,6 +14,7 @@ export {
     UserForm,
     BusinessForm,
     AddressForm,
+    ChangePasswordForm,
     ContactForm,
     ValidationAccountForm,
     LoginForm,
@@ -26,6 +28,7 @@ export type {
     User,
     Business,
     Address,
+    ChangePassword,
     Contact,
     ValidationAccount,
     Login,

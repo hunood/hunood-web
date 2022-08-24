@@ -10,5 +10,6 @@
     "autenticacao-invalida": "Autenticação inválida.",
     "falha-autenticacao": "Não podemos autenticar seu usuário no momento, por favor, tente novamente mais tarde!",
     "reenviar": "Reenviar código",
-    "aguarde": "Aguarde ({{segundos}})"
+    "aguarde": "Aguarde ({{segundos}})",
+    "alterar-senha": "Alteração de senha"
 }
