@@ -8,7 +8,7 @@ import { SignupService } from 'services/authentication'
 import { EtapaOnboarding } from 'typing/enums';
 import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import { t } from 'i18n';
-import { config } from 'config';
+// import { config } from 'config';
 import Logo from "assets/img/logo.png";
 import "./style.less";
 
@@ -123,7 +123,7 @@ const LoginSignUp: FC = () => {
                         <TabPane tab={t('openedArea:login.entrar')} key="login">
                             {tab === 'login' && <LoginForm>
                                 <GoogleLogin
-                                    clientId={config.googleClientId}
+                                    clientId={"1021946640152-9akcglmplcn5jvg7buqcv3jemtnq2vl0.apps.googleusercontent.com"}
                                     onSuccess={responseGoogle}
                                     onFailure={responseGoogle}
                                     cookiePolicy={'single_host_origin'}
