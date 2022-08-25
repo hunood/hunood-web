@@ -5,8 +5,8 @@ export const config: Config = {
     environment: 'production',
     language: Languages.PortuguesBr,
     appName: 'Hunood Web',
-    baseUrl: process.env['BASE_URL'],
-    backendUrl: process.env['BACKEND_URL'],
+    baseUrl: "https://hunood-web.vercel.app/",
+    backendUrl: "https://hunood-backend.herokuapp.com/",
     timeout: 5000,
     timeoutModalGeneric: 30000,
     googleClientId: '1021946640152-9akcglmplcn5jvg7buqcv3jemtnq2vl0.apps.googleusercontent.com'
