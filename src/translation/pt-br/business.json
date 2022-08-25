@@ -1,5 +1,7 @@
 {
   "select-business": {
-    "entrar": "Entrar"
+    "entrar": "Entrar",
+    "selecione-para-entrar": "Selecione uma empresa abaixo para entrar.",
+    "ola": "Ola, {{nome}}!"
   }
 }

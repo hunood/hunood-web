@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { useLocation, Redirect } from 'react-router-dom';
 import { Form, Input, Modal } from 'antd';
 import { LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
@@ -14,19 +14,18 @@ const ChangePassword: FC = () => {
     React.useEffect(() => { return; }, []);
 
     const { handleLogout } = useContext(AuthContext);
+    const [redirectHome, setRedirectHome] = useState(false);
     const changePasswordService = new ChangePasswordService().useAsHook();
     
     const query = useQuery();
-    const token = query.get("token");
+    const token = query.get("token") || '';
 
     const decode = jwt.decode(token, { complete: true });
     const email = decode?.payload?.email;
 
     const [form] = Form.useForm();
 
-    if (!token || !email) {
-        return <Redirect to="/" />
-    }
+    
 
     function useQuery() {
         const { search } = useLocation();
@@ -43,7 +42,11 @@ const ChangePassword: FC = () => {
             })
     }
 
-    if (!query.has("token")) {
+    const onCancel = () => setRedirectHome(true)
+
+    changePasswordService.onFinish(() => setRedirectHome(true))
+
+    if (!token || !email || redirectHome) {
         return <Redirect to="/" />
     }
 
@@ -62,6 +65,7 @@ const ChangePassword: FC = () => {
                 okText="Redefinir senha"
                 closable={false}
                 onOk={onOk}
+                onCancel={onCancel}
             >
                 <Form
                     form={form}

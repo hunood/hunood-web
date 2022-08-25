@@ -115,8 +115,7 @@ const DashboardLayout: FC = ({ children }) => {
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={isMenuOpened} onCollapse={toggleMenuDashboard} >
                 <div id='side' className={isMenuOpened ? 'curto' : 'longo'}>
-
-                    <div className='box-logo'>
+                    <div className='box-logo' title={`${auth.usuario.nome} (${auth.empresas[0].nomeUsuario})`}>
                         <div id='logo' className={isMenuOpened ? 'curto' : 'longo'}></div>
                     </div>
 

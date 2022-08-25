@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState} from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Card, Col, Row } from 'antd';
 import { SimpleHeaderLayout } from 'components/layouts';
@@ -16,14 +16,14 @@ const SelectBusiness: FC = () => {
     const { auth, updateAuth } = useContext(AuthContext);
     const findByUserService = new FindByUserService().useAsHook();
     const [empresas, setEmpresas] = useState<UsuarioEmpresa[]>([])
-    
+
     useEffect(() => {
         findByUserService.send({ idAutenticacao: auth.id }); // eslint-disable-next-line
     }, []);
 
     findByUserService.onSuccess(() => {
         const emp = findByUserService.response?.empresas || [];
-        updateAuth({empresas: emp} as any);
+        updateAuth({ empresas: emp } as any);
         emp.sort(dynamicSort('nomeFantasia'));
         setEmpresas(emp);
     });
@@ -53,9 +53,13 @@ const SelectBusiness: FC = () => {
         }
     };
 
+    const userName = useMemo(() => auth?.usuario?.nome && auth.usuario.nome?.split(' ')[0], [auth])
+
     return (
         <SimpleHeaderLayout>
             <div className="site-card-wrapper" style={{ margin: 20 }}>
+                <h1 className='bem-vindo'>{t('business:select-business.ola', { nome: userName })}</h1>
+                <h2 className='orientacao'>{t('business:select-business.selecione-para-entrar')}</h2>
                 <Row gutter={[24, 12]} >
                     {
                         empresas.map((empresa) => (

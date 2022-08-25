@@ -4,7 +4,8 @@ import { Generos, TipoUsuario, TratarComo } from "typing/enums"
 export type UsuarioEmpresa = {
   id: string,
   tipoUsuario: keyof TipoUsuario,
-  nomeFantasia: string
+  nomeFantasia: string,
+  nomeUsuario: string
 }
 
 export type Usuario = {

@@ -3,7 +3,8 @@ import { TipoUsuario } from "typing/enums";
 export type UsuarioEmpresa = {
   id: string,
   tipoUsuario: keyof TipoUsuario,
-  nomeFantasia: string
+  nomeFantasia: string,
+  nomeUsuario: string
 }
 
 export default interface FindByUserResponse {
