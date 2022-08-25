@@ -122,7 +122,7 @@ const Dashboard: FC = () => {
 
   return (
     <>
-        <h1 className="titulo-nome-empresa">Dannilo Cortes</h1>
+        <h1 className="titulo-nome-empresa">{auth.empresas[0].nomeFantasia}</h1>
       <Row gutter={[16, 8]} style={{ marginBottom: 25 }}>
         <Col md={{ span: 12 }} sm={{ span: 24 }}>
           <DatePicker.RangePicker
